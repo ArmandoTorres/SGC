@@ -3,9 +3,6 @@ package com.delacrmi.connection;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-
-import com.delacrmi.controller.EntityManager;
-
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
