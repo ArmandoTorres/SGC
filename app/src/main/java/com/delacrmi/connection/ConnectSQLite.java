@@ -28,7 +28,7 @@ public class ConnectSQLite extends SQLiteOpenHelper{
 
     private void createTables(SQLiteDatabase db) {
         for (String value: tablesCreater) {
-            //Log.d("creating", value);
+            Log.d("creating", value);
             db.execSQL(value);
         }
     }

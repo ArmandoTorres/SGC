@@ -124,7 +124,7 @@ public class EntityManager  {
     public Entity save(Entity entity){
         if(entity != null){
             long insert = write().insert(entity.getName(), null, entity.getColumnValueList());
-            //Log.d("Save", "" + insert);
+            //Log.e("Save", "" + insert);
             if(insert > 0) {
                 entity.getColumnValueList().put(entity.getPrimaryKey(),insert);
                 return entity;
@@ -299,7 +299,7 @@ public class EntityManager  {
         String create = "create table "+entity.getName()+"(";
 
         //knowing the primary column
-        create += entity.getPrimaryKey()+" integer primary key autoincrement,";
+        //create += entity.getPrimaryKey()+" integer primary key autoincrement,";
 
 
         //getting the iterator columns to get the key values
@@ -312,11 +312,14 @@ public class EntityManager  {
                     create += me.getKey() + " " + "numeric";
                 else
                     create += me.getKey() + " " + me.getValue();
-            }
+            }else
+                create += entity.getPrimaryKey()+" integer primary key autoincrement";
 
-            if(count < columns.size()-1){
-                if(!entity.getPrimaryKey().equals(me.getKey().toString()))
-                    create += ",";
+
+
+            if(count < columns.size()) {
+                //if(!entity.getPrimaryKey().equals(me.getKey().toString()))
+                create += ",";
                 count++;
             }
         }

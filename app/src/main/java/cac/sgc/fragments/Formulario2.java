@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -13,7 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import cac.sgc.MainActivity;
 import cac.sgc.R;
@@ -35,8 +39,17 @@ public class Formulario2 extends Fragment {
 
     public Formulario2() {}
 
-    public EditText getFechaCorte() {
-        return fechaCorte;
+    public String getFechaCorte() {
+        try {
+            SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = formater.parse(fechaCorte.getText().toString());
+            return Long.toString(date.getTime());
+        } catch (ParseException e) {
+            Log.e("Error", "Al convertir la fecha de corte", e);
+            Toast.makeText(ourInstance.context,"Error al convertir la fecha de corte.", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
     }
 
     public EditText getOrdenQuema() {
