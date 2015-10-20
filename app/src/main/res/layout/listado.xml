@@ -1,72 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listado">
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Transacciones Realizadas"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:textDirection="firstStrong"
-        android:gravity="center"
-        android:paddingTop="20dp"
-        android:id="@+id/textViewTituloReporte" />
-
-    <GridLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="4"
-        android:rowCount="1"
-        android:id="@+id/gridLayoutListadoRegistros"
-        android:layout_below="@+id/textViewTituloReporte">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/listado">
 
         <TextView
-            android:layout_width="80dp"
-            android:layout_height="fill_parent"
-            android:text="Filtro: "
-            android:textSize="18dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Transacciones Realizadas"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textDirection="firstStrong"
-            android:gravity="start"
-            android:paddingLeft="10dp"
+            android:gravity="center"
             android:paddingTop="20dp"
-            android:id="@+id/textViewFiltro"/>
+            android:paddingBottom="20dp"
+            android:id="@+id/textViewTituloReporte" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="10dp"
+            android:text="Filtro: "
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:id="@+id/textViewFiltro"
+            android:layout_below="@+id/textViewTituloReporte"/>
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="10dp"
             android:layout_height="match_parent"
-            android:ems="10"
-            android:layout_columnSpan="2"
             android:gravity="center"
             android:inputType="date"
             android:id="@+id/editFiltroPorFecha"
-            android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/textViewFiltro"
-            android:layout_below="@+id/textViewTituloReporte"/>
+            android:layout_below="@+id/textViewTituloReporte"
+            android:layout_toLeftOf="@+id/generarReporte"
+            android:layout_toStartOf="@+id/generarReporte" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/buscar"
-            android:layout_column="3"
             android:id="@+id/generarReporte"
             android:background="@drawable/hover_button"
-            android:contentDescription="Buscar"/>
+            android:layout_above="@+id/ListadoTransacciones"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-    </GridLayout>
-
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/gridLayoutListadoRegistros"
-        android:id="@+id/ListadoTransacciones"
-        android:entries="@array/listado"/>
-
-
-</RelativeLayout>
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/ListadoTransacciones"
+            android:entries="@array/listado"
+            android:layout_below="@+id/editFiltroPorFecha"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+</ScrollView>
