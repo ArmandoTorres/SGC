@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         startActivity(savedInstanceState);
         configurarBaseDatos();
 
-        syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.176:3000");
+        /*syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.176:3000");
         syncFragment.getConnect().init();
         JSONObject obj = new JSONObject();
         try {
@@ -93,12 +93,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        /*Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
+        Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
         Log.i(entity.getName(),entity.getColumnValueList().
                 getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
-                getAsString(Empresas.DIRECCION_COMERCIAL));*/
+                getAsString(Empresas.DIRECCION_COMERCIAL));
     }
 
     @Override
