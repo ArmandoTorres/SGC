@@ -22,22 +22,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="efe8cfb7-29db-46d3-b996-5c2ed4ab4654" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/cac/sgc/mycomponents/SyncCardView.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/SyncFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/card_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/sync_card_view.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/sync_fragment_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/delacrmi/connection/ConnectSQLite.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/delacrmi/connection/ConnectSQLite.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Empresas.java" afterPath="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Empresas.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/delacrmi/controller/EntityManager.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/delacrmi/controller/EntityManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario2.java" afterPath="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario2.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario1.java" afterPath="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario1.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Listado.java" afterPath="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Listado.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/cac/sgc/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/cac/sgc/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Rangos.java" afterPath="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Rangos.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Transaccion.java" afterPath="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Transaccion.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/cardview_v7_21_0_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/cardview_v7_21_0_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/design_22_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/design_22_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/recyclerview_v7_21_0_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/recyclerview_v7_21_0_3.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/listado.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/listado.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SGC.iws" />
@@ -66,11 +65,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.41446614">
-              <caret line="451" column="45" selection-start-line="451" selection-start-column="45" selection-end-line="451" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="426" column="8" selection-start-line="426" selection-start-column="8" selection-end-line="426" selection-end-column="8" />
               <folding>
                 <element signature="e#1839#1910#0" expanded="true" />
               </folding>
@@ -78,21 +77,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Rangos.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Rangos.java">
+      <file leaf-file-name="SyncCardView.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/mycomponents/SyncCardView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EntityManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/delacrmi/controller/EntityManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="317" column="0" selection-start-line="317" selection-start-column="0" selection-end-line="317" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.85328186">
+              <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -100,68 +89,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Entity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/delacrmi/controller/Entity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-              <folding>
-                <element signature="e#954#955#0" expanded="true" />
-              </folding>
-            </state>
+      <file leaf-file-name="sync_card_view.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/sync_card_view.xml">
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ContentValues.java" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/content/ContentValues.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="202" column="0" selection-start-line="202" selection-start-column="0" selection-end-line="202" selection-end-column="0" />
-              <folding>
-                <element signature="e#5210#5211#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ConnectSQLite.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/delacrmi/connection/ConnectSQLite.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Formulario2.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario2.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="45" column="49" selection-start-line="45" selection-start-column="49" selection-end-line="45" selection-end-column="49" />
-              <folding>
-                <element signature="e#2011#2012#0" expanded="true" />
-                <element signature="e#2048#2049#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Transaccion.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Transaccion.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="53" selection-start-line="11" selection-start-column="53" selection-end-line="11" selection-end-column="53" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Frentes.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Frentes.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="17" column="30" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="30" />
+            <state vertical-scroll-proportion="-12.896552">
+              <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -172,8 +107,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="resourceFile" />
+        <option value="layoutResourceFile_vertical" />
         <option value="valueResourceFile" />
+        <option value="resourceFile" />
         <option value="Class" />
       </list>
     </option>
@@ -1661,15 +1597,12 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Home.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/listado.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Listado.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/formulario1.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/formulario2.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/formulario3.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/lista.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/settings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Empresas.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Lotes.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Periodos.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/SubGrupoVehiculos.java" />
@@ -1679,7 +1612,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Fincas.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/delacrmi/controller/Entity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/mycomponents/MyOnFocusListenerFactory.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario1.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario3.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/formulario4.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario4.java" />
@@ -1689,8 +1621,20 @@
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Rangos.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/delacrmi/connection/ConnectSQLite.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Transaccion.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/listado.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Listado.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/mycomponents/SyncAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario1.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/SynFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/delacrmi/controller/EntityManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/SyncFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/sync_fragment_layout.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/card_style.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/card_layout.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Empresas.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/sync_card_view.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/cac/sgc/mycomponents/SyncCardView.java" />
       </list>
     </option>
   </component>
@@ -1705,10 +1649,9 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="683" />
+    <option name="width" value="683" />
+    <option name="height" value="728" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -1882,6 +1825,68 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SGC" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SGC" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="delacrmi" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SGC" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="delacrmi" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -1913,6 +1918,28 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="sgc" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SGC" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sgc" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mycomponents" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -1959,6 +1986,16 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SGC" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="ProjectPane">
@@ -1977,7 +2014,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="recentsLimit" value="5" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Proyecto SAM Y SGC/SAM" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="192.168.56.101:5555" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus_5_API_23_x86" />
     <property name="OverrideImplement.combined" value="true" />
@@ -2234,12 +2271,12 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="683" y="0" width="683" height="728" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32744783" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6829811" sideWeight="0.4978678" order="0" side_tool="false" content_ui="tabs" />
@@ -2249,14 +2286,14 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.8197998" sideWeight="0.49573562" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.81942075" sideWeight="0.49573562" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1716418" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.8253615" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5168539" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.8245315" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -2310,76 +2347,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/AppData/Local/Android/sdk/extras/android/m2repository/com/android/support/appcompat-v7/23.0.1/appcompat-v7-23.0.1-sources.jar!/android/support/v7/app/AppCompatDelegateImplBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09758898">
-          <caret line="223" column="0" selection-start-line="223" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/view/ViewGroup.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.381171">
-          <caret line="1392" column="0" selection-start-line="1392" selection-start-column="0" selection-end-line="1392" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Empresas.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21469575">
-          <caret line="11" column="69" selection-start-line="11" selection-start-column="69" selection-end-line="11" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Periodos.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29276693">
-          <caret line="15" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Vehiculos.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29276693">
-          <caret line="15" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/SubGrupoVehiculos.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="54" selection-start-line="13" selection-start-column="54" selection-end-line="13" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/widget/TextView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1465" column="0" selection-start-line="1465" selection-start-column="0" selection-end-line="1465" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/widget/EditText.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/text/SpannableStringBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="935" column="0" selection-start-line="935" selection-start-column="0" selection-end-line="935" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/database/sqlite/SQLiteOpenHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="187" column="0" selection-start-line="187" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/database/DatabaseUtils.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2532,13 +2499,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/mycomponents/MyOnFocusListenerFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2701252">
-          <caret line="71" column="22" selection-start-line="71" selection-start-column="22" selection-end-line="71" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/formulario1.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -2547,26 +2507,6 @@
         <state vertical-scroll-proportion="0.7056604">
           <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1217#1218#0" expanded="true" />
-            <element signature="e#1248#1249#0" expanded="true" />
-            <element signature="e#1284#1285#0" expanded="true" />
-            <element signature="e#1314#1315#0" expanded="true" />
-            <element signature="e#1348#1349#0" expanded="true" />
-            <element signature="e#1376#1377#0" expanded="true" />
-            <element signature="e#1411#1412#0" expanded="true" />
-            <element signature="e#1440#1441#0" expanded="true" />
-            <element signature="e#1473#1474#0" expanded="true" />
-            <element signature="e#1500#1501#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2586,15 +2526,15 @@
         <state vertical-scroll-proportion="0.608229">
           <caret line="36" column="44" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
           <folding>
-            <element signature="e#1146#1147#0" expanded="true" />
-            <element signature="e#1196#1197#0" expanded="true" />
-            <element signature="e#1241#1242#0" expanded="true" />
-            <element signature="e#1287#1288#0" expanded="true" />
-            <element signature="e#1328#1329#0" expanded="true" />
-            <element signature="e#1385#1386#0" expanded="true" />
-            <element signature="e#1436#1437#0" expanded="true" />
-            <element signature="e#1489#1490#0" expanded="true" />
-            <element signature="e#1536#1537#0" expanded="true" />
+            <element signature="e#1146#1147#0" expanded="false" />
+            <element signature="e#1196#1197#0" expanded="false" />
+            <element signature="e#1241#1242#0" expanded="false" />
+            <element signature="e#1287#1288#0" expanded="false" />
+            <element signature="e#1328#1329#0" expanded="false" />
+            <element signature="e#1385#1386#0" expanded="false" />
+            <element signature="e#1436#1437#0" expanded="false" />
+            <element signature="e#1489#1490#0" expanded="false" />
+            <element signature="e#1536#1537#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2623,7 +2563,7 @@
         <state vertical-scroll-proportion="0.3708381">
           <caret line="34" column="50" selection-start-line="34" selection-start-column="50" selection-end-line="34" selection-end-column="50" />
           <folding>
-            <element signature="e#995#996#0" expanded="true" />
+            <element signature="e#995#996#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2647,36 +2587,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario2.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/delacrmi/controller/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="49" selection-start-line="45" selection-start-column="49" selection-end-line="45" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.09758898">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding>
-            <element signature="e#2011#2012#0" expanded="true" />
-            <element signature="e#2048#2049#0" expanded="true" />
+            <element signature="e#954#955#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/content/ContentValues.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11710677">
-          <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
-          <folding />
+        <state vertical-scroll-proportion="0.09758898">
+          <caret line="202" column="0" selection-start-line="202" selection-start-column="0" selection-end-line="202" selection-end-column="0" />
+          <folding>
+            <element signature="e#5210#5211#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/delacrmi/connection/ConnectSQLite.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.4684271">
           <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3903559">
+          <caret line="45" column="49" selection-start-line="45" selection-start-column="49" selection-end-line="45" selection-end-column="49" />
+          <folding>
+            <element signature="e#2011#2012#0" expanded="false" />
+            <element signature="e#2048#2049#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Transaccion.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.21469575">
           <caret line="11" column="53" selection-start-line="11" selection-start-column="53" selection-end-line="11" selection-end-column="53" />
           <folding />
         </state>
@@ -2684,7 +2636,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Frentes.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.33180252">
           <caret line="17" column="30" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="30" />
           <folding />
         </state>
@@ -2698,42 +2650,149 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/content/ContentValues.java">
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="202" column="0" selection-start-line="202" selection-start-column="0" selection-end-line="202" selection-end-column="0" />
-          <folding>
-            <element signature="e#5210#5211#0" expanded="true" />
-          </folding>
+          <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/delacrmi/controller/Entity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/listado.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding>
-            <element signature="e#954#955#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-1.1724138">
+          <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/delacrmi/controller/EntityManager.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Formulario1.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="317" column="0" selection-start-line="317" selection-start-column="0" selection-end-line="317" selection-end-column="0" />
+          <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/entities/Empresas.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6386404">
+          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/card_layout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48658317">
+          <caret line="16" column="12" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.81320757">
+          <caret line="76" column="63" selection-start-line="71" selection-start-column="20" selection-end-line="76" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/Listado.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3309481">
+          <caret line="88" column="13" selection-start-line="88" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
+          <folding>
+            <element signature="e#2671#2679#0" expanded="true" />
+            <element signature="e#3038#3046#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/mycomponents/MyOnFocusListenerFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7298748">
+          <caret line="70" column="28" selection-start-line="70" selection-start-column="28" selection-end-line="70" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/fragments/SyncFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="62" column="5" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/sync_fragment_layout.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38490567">
+          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/delacrmi/controller/EntityManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9391771">
+          <caret line="117" column="27" selection-start-line="117" selection-start-column="27" selection-end-line="117" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#934#935#0" expanded="true" />
+            <element signature="e#963#964#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41446614">
-          <caret line="451" column="45" selection-start-line="451" selection-start-column="45" selection-end-line="451" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="426" column="8" selection-start-line="426" selection-start-column="8" selection-end-line="426" selection-end-column="8" />
           <folding>
             <element signature="e#1839#1910#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/sync_card_view.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.896552">
+          <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/cac/sgc/mycomponents/SyncCardView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.85328186">
+          <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

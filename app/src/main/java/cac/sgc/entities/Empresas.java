@@ -19,7 +19,7 @@ public class Empresas extends Entity {
 
     @Override
     public Empresas entityConfig() {
-        setName("rh_empresa");
+        setName("pg_empresa");
         setPrimaryKey("id_empresa");
         addColumn("direccion_comercial","text");
         return this;

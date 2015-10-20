@@ -7,10 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
+import com.delacrmi.controller.Entity;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfWriter;
@@ -19,10 +22,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import cac.sgc.MainActivity;
 import cac.sgc.R;
+import cac.sgc.entities.Transaccion;
 
 /**
  * Created by Legal on 04/10/2015.
@@ -33,6 +41,7 @@ public class Listado extends Fragment {
     private MainActivity context;
     private EditText editFiltroPorFecha;
     private ImageButton generarReporte;
+    private ListView listadoTransacciones;
     private static Listado ourInstance = null;
     private int vYear, vMonthOfYear,  vDayOfMonth;
 
@@ -55,7 +64,7 @@ public class Listado extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.listado,container,false);
+        view = inflater.inflate(R.layout.listado, container, false);
         initComponents();
         return view;
     }
@@ -65,14 +74,38 @@ public class Listado extends Fragment {
      * con el xml y agregar los metodos que le dan funcionalidad a los
      * componentes.
      * */
-    private void initComponents(){
+    private void initComponents() {
         editFiltroPorFecha = (EditText) view.findViewById(R.id.editFiltroPorFecha);
         generarReporte = (ImageButton) view.findViewById(R.id.generarReporte);
+        listadoTransacciones = (ListView) view.findViewById(R.id.ListadoTransacciones);
+
+        // LLenando el listado en pantalla.
+        List<Entity> listado = ourInstance.context.getEntityManager().find(Transaccion.class, "*", null, null);
+        final List<String> resultado = new ArrayList<String>();
+        for (Entity a : listado ){
+            if ( a instanceof Transaccion ) {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                resultado.add(format.format(new Date(a.getColumnValueList().getAsLong(Transaccion.FECHA_CORTE))) );
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(ourInstance.context, android.R.layout.simple_list_item_1, resultado);
+        listadoTransacciones.setAdapter(adapter);
 
         generarReporte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarReportePDF();
+                /*List <String> resultadoFiltrado = new ArrayList<String>();
+                List <String> resultado
+                if ( editFiltroPorFecha.getText() != null ){
+                    String filtro = editFiltroPorFecha.getText().toString();
+                    if ( filtro != null && resultado != null) {
+                        for (int i = 0; i < )
+                            if ( res.equals())
+                                resultadoFiltrado.add()
+                        }
+                    }
+                }*/
             }
         });
 

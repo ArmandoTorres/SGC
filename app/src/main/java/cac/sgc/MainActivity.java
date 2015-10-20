@@ -414,6 +414,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void configurarBaseDatos () {
+
         getEntityManager().addTable(Fincas.class);
         getEntityManager().addTable(Caniales.class);
         getEntityManager().addTable(Lotes.class);
@@ -423,11 +424,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getEntityManager().addTable(Frentes.class);
         getEntityManager().init();
 
-        Fincas fincas = new Fincas().entityConfig();
+        /*Fincas fincas = new Fincas().entityConfig();
+        fincas.setValue(Fincas.FINCA,"301");
         fincas.setValue(Fincas.DESCRIPCION, "Santana");
         fincas = (Fincas) getEntityManager().save(fincas);
 
-        //Log.e("Finca: ", "Fincas: " + fincas.getColumnValueList().getAsString(Fincas.FINCA));
+        Log.e("Finca: ", "Fincas: " + fincas.getColumnValueList().getAsString(Fincas.FINCA));
 
         Caniales caniales = new Caniales().entityConfig();
         caniales.setValue(Caniales.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.FINCA));
@@ -466,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         rangos.setValue(Rangos.TICKET_HASTA,"10");
         rangos.setValue(Rangos.TICKET_ACTUAL,"1");
         rangos.setValue(Rangos.STATUS, "ACTIVO");
-        rangos = (Rangos) getEntityManager().save(rangos);
+        getEntityManager().save(rangos);
 
         /*Log.e("Valor","Valor Correlativo: "+rangos.getColumnValueList().getAsString(Rangos.CORRELATIVO));
 

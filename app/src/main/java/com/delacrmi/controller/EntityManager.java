@@ -29,6 +29,14 @@ public class EntityManager  {
     private int dbVersion;
     private SQLiteDatabase.CursorFactory factory = null;
 
+    public List<String> getTablesNames() {
+        return tablesNames;
+    }
+
+    public List<Class> getTables() {
+        return tables;
+    }
+
     public void setDbVersion(int dbVersion) {
         this.dbVersion = dbVersion;
     }
@@ -298,10 +306,6 @@ public class EntityManager  {
         Map.Entry me;
         String create = "create table "+entity.getName()+"(";
 
-        //knowing the primary column
-        //create += entity.getPrimaryKey()+" integer primary key autoincrement,";
-
-
         //getting the iterator columns to get the key values
         Iterator iteratorColumns = columns.valueSet().iterator();
         while (iteratorColumns.hasNext()){
@@ -315,10 +319,7 @@ public class EntityManager  {
             }else
                 create += entity.getPrimaryKey()+" integer primary key autoincrement";
 
-
-
             if(count < columns.size()) {
-                //if(!entity.getPrimaryKey().equals(me.getKey().toString()))
                 create += ",";
                 count++;
             }
