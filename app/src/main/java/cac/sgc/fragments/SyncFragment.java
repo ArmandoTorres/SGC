@@ -1,50 +1,61 @@
 package cac.sgc.fragments;
 
+import android.app.Fragment;
+import android.content.ContentValues;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.delacrmi.connection.SocketConnect;
 import com.delacrmi.controller.Entity;
+import com.delacrmi.controller.EntityManager;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import cac.sgc.MainActivity;
 import cac.sgc.R;
+import cac.sgc.entities.Empresas;
+import io.socket.client.Socket;
 
 /**
- * Created by Legal on 19/10/2015.
+ * Created by miguel on 19/10/15.
  */
 public class SyncFragment extends Fragment {
+    private static  SyncFragment outInstance = null;
+    private String uri;
+    private SocketConnect connect;
+    private AppCompatActivity context;
+    private EntityManager entityManager;
 
-    private static SyncFragment ourInstance = null;
-    private MainActivity context;
     private View view;
-    private List<String> listado;
     private ListView listViewSync;
+    private List listado;
 
-    public static SyncFragment init(MainActivity context) {
-        try {
-            if (ourInstance == null) {
-                ourInstance = new SyncFragment();
-                ourInstance.context = context;
-            }
-            return ourInstance;
-        } catch (Exception e) {
-            Log.e("Constructor Form1", "Error en el constructor statico.",e);
-            Toast.makeText(context, "Error al ejecutar el constructor de formulario.", Toast.LENGTH_SHORT).show();
-            return null;
+    public static SyncFragment init(AppCompatActivity context,EntityManager entityManager,String uri){
+        if(outInstance == null){
+            outInstance = new SyncFragment();
+            outInstance.context = context;
+            outInstance.entityManager = entityManager;
+            outInstance.uri = uri;
+            outInstance.socketInit();
         }
+        return outInstance;
     }
 
-    @Nullable
+    public SyncFragment(){}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -56,9 +67,93 @@ public class SyncFragment extends Fragment {
     private void initComponents() {
         listViewSync = (ListView) view.findViewById(R.id.listViewSync);
         listado = new ArrayList<>();
-        for (Class className : ourInstance.context.getEntityManager().getTables()){
+        for (Class className : entityManager.getTables()){
             listado.add(className.getSimpleName());
         }
-        listViewSync.setAdapter(new ArrayAdapter<>(ourInstance.context,R.layout.sync_fragment_layout,listado));
+        listViewSync.setAdapter(new ArrayAdapter<>(outInstance.context, R.layout.sync_fragment_layout, listado));
     }
+
+    private void socketInit(){
+        outInstance.connect = new SocketConnect(outInstance.context,outInstance.uri){
+
+            @Override
+            public void onSynchronizeClient(Object... args) {
+                try{
+                    JSONObject obj = (JSONObject) args[0];
+                    Class className = entityManager.getClassByName(obj.getString("tableName"));
+                    JSONArray rows = obj.getJSONArray("result");
+
+                    entityManager.delete(className, null, null);
+
+                    for (int index=0;index<rows.length(); index++){
+                        JSONObject row = (JSONObject) rows.getJSONObject(index);
+                        ContentValues columns = new ContentValues();
+
+                        Iterator iteratorKeys = row.keys();
+                        while (iteratorKeys.hasNext()){
+                            String key = iteratorKeys.next().toString();
+                            String value = row.getString(key);
+
+                            if(value != null && !value.equals("") && !value.equals(" "))
+                                columns.put(key.toLowerCase(), value);
+                        }
+
+                        Entity ent = entityManager.save(className,columns);
+                        Log.i(ent.getName(), ent.getColumnValueList().getAsString(ent.getPrimaryKey()));
+                        Log.e(obj.getString("tableName"),row.toString());
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
+                Log.i(entity.getName(),entity.getColumnValueList().
+                        getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
+                        getAsString(Empresas.DIRECCION_COMERCIAL));
+            }
+
+            @Override
+            public void onSynchronizeServer(Object... args) {
+
+            }
+        };
+    }
+
+    public Socket getSocket(){
+        if(outInstance != null)
+            return outInstance.connect.getSocket();
+        return null;
+    }
+
+    public SocketConnect getConnect(){
+        return outInstance.connect;
+    }
+
+    public JSONObject getJSONSelect(String tableName,String where, JSONArray whereValues){
+        JSONArray array = new JSONArray();
+        JSONObject obj  = new JSONObject();
+
+        Iterator iterator = entityManager.initInstance(entityManager.getClassByName(tableName)).iterator();
+        while (iterator.hasNext()){
+            array.put(((Map.Entry)iterator.next()).getKey());
+        }
+
+        try {
+            obj.put("table",tableName);
+            obj.put("columns",array);
+
+            if(where != null && !where.equals("") && !where.equals(" "))
+                obj.put("where",where);
+
+            if(whereValues != null && !whereValues.equals("") && !whereValues.equals(" "))
+                obj.put("whereValue",whereValues);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return  obj;
+    }
+
 }

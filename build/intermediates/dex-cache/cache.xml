@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <items version="2" >
 
-    <item
+    <item>
         jar="C:\Users\Legal\Desktop\SGC\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
@@ -22,12 +22,96 @@
         sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
         <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\classes-70b0e45d7f30a77b975c9a71e9b92d4b162b6e7c.jar" />
     </item>
-    <item
+    <item>
         jar="C:\Users\Legal\Desktop\SGC\app\libs\droidText.0.4.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="b2c14c76d9f558463af239be951367e61ea1c270">
-        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\droidText.0.4-748b21ccd2ec2a4c15c348babd3bc4f6dfa80508.jar" />
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/droidText.0.4-773c056d23d8ea3ad05fb414d11b72f22bb7487e.jar" />
+    </item>
+    <item
+        jar="/home/miguel/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.5.0/4de2b4ed3445c37ec1720a7d214712e845a24636/okhttp-2.5.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/okhttp-2.5.0-624474bd37772d09a77dcbdc252a575d84d5b736.jar" />
+    </item>
+    <item
+        jar="/media/miguel/data/projects/android/SGC/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/classes-b61f2e4a24a41d4bb1e1a70ee698e18a3fdff5c2.jar" />
+    </item>
+    <item
+        jar="/home/miguel/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/23.0.1/support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/support-annotations-23.0.1-17495c5e345f021ed95df1162e354f7fa32d98a6.jar" />
+    </item>
+    <item
+        jar="/home/miguel/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp-ws/2.5.0/e9753b7dcae5deca92e871c5c759067070b07bc/okhttp-ws-2.5.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0e9753b7dcae5deca92e871c5c759067070b07bc">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/okhttp-ws-2.5.0-5574507d2742617d38632d8960cc7d1876aa1d26.jar" />
+    </item>
+    <item
+        jar="/media/miguel/data/projects/android/SGC/app/build/intermediates/exploded-aar/com.android.support/design/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/classes-3235968c014034b295d27a035cb8d06bbebdc99b.jar" />
+    </item>
+    <item
+        jar="/media/miguel/data/projects/android/SGC/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/libs/internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/internal_impl-23.0.1-d3caca8f0a1e35c953ca52f4f6cd361b2ddd2e3c.jar" />
+    </item>
+    <item
+        jar="/home/miguel/.gradle/caches/modules-2/files-2.1/io.socket/engine.io-client/0.6.2/939f90d47c800626d5b0a4e7f89f98b3dde61dc6/engine.io-client-0.6.2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="939f90d47c800626d5b0a4e7f89f98b3dde61dc6">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/engine.io-client-0.6.2-00180214cdf74330373d3590800bd60a9ad91f25.jar" />
+    </item>
+    <item
+        jar="/home/miguel/.gradle/caches/modules-2/files-2.1/io.socket/socket.io-client/0.6.2/31fb4bf50b62daadee5e94f39679812ad8a9ae00/socket.io-client-0.6.2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="31fb4bf50b62daadee5e94f39679812ad8a9ae00">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/socket.io-client-0.6.2-dc13a2fe8c00241ed55ea46bb62db13a9a293130.jar" />
+    </item>
+    <item
+        jar="/media/miguel/data/projects/android/SGC/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.3/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/classes-8cb076f43906b27e95e0ab42543022f7261cf837.jar" />
+    </item>
+    <item
+        jar="/media/miguel/data/projects/android/SGC/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/classes-8a64b3937ca382721b07c9015a4f5708972ad750.jar" />
+    </item>
+    <item
+        jar="/home/miguel/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.6.0/98476622f10715998eacf9240d6b479f12c66143/okio-1.6.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/okio-1.6.0-75c63acded05e8122771ae9a9ef071f7346fd1f8.jar" />
+    </item>
+    <item
+        jar="/media/miguel/data/projects/android/SGC/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="/media/miguel/data/projects/android/SGC/app/build/intermediates/pre-dexed/debug/classes-b8de2cad2ad706ab83f740fe7810e4022f1b49df.jar" />
     </item>
 
 </items>
