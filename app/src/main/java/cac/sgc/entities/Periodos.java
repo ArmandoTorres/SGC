@@ -17,7 +17,6 @@ public class Periodos extends Entity {
     @Override
     public Periodos entityConfig() {
         setName("periodo");
-        setPrimaryKey("id_periodo");
         addColumn("id_empresa", "integer");
         addColumn("fecha_ini", "date");
         addColumn("fecha_fin", "date");

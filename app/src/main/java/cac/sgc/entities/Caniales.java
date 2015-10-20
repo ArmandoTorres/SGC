@@ -15,7 +15,6 @@ public class Caniales extends Entity {
     @Override
     public Caniales entityConfig() {
         setName("cp_canial");
-        setPrimaryKey("id_canial");
         addColumn("id_empresa", "integer");
         addColumn("id_finca", "integer");
         addColumn("descripcion","text");

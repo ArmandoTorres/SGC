@@ -80,25 +80,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         startActivity(savedInstanceState);
         configurarBaseDatos();
 
-        /*syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.176:3000");
+        syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.176:3000");
         syncFragment.getConnect().init();
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("room", "sync");
+        syncTables();
 
-            syncFragment.getConnect().sendMessage("login", obj);
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("pg_empresa",null,null));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-
-        Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
-        Log.i(entity.getName(),entity.getColumnValueList().
-                getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
-                getAsString(Empresas.DIRECCION_COMERCIAL));
     }
 
     @Override
@@ -162,6 +147,45 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         return true;
     }
     // </editor-fold>
+
+    public void syncTables(){
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("room", "sync");
+
+            syncFragment.getConnect().sendMessage("login", obj);
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("pg_empresa",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("cp_finca",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("cp_canial",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("cp_lote",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("rh_empleado",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("rh_frente",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("mq_vehiculo",null,null));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
+        Log.i(entity.getName(),entity.getColumnValueList().
+                getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
+                getAsString(Empresas.DIRECCION_COMERCIAL));
+
+    }
 
     private void inicializarComponentes() {
         try {
@@ -455,9 +479,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getEntityManager().addTable(Transaccion.class);
         getEntityManager().addTable(Frentes.class);
         getEntityManager().addTable(Empresas.class);
+        getEntityManager().addTable(Vehiculos.class);
         getEntityManager().init();
 
-        Fincas fincas = new Fincas().entityConfig();
+        /*Fincas fincas = new Fincas().entityConfig();
         fincas.setValue(Fincas.FINCA,"1");
         fincas.setValue(Fincas.DESCRIPCION, "Santana");
         fincas = (Fincas) getEntityManager().save(fincas);
@@ -488,7 +513,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         emp.setValue("nombre_puesto", "Conductor Cabezal");
         emp.setValue("nombre", "Juan De los Santos");
         emp.setValue("estado", "ACTIVO");
-        getEntityManager().save(emp);
+        getEntityManager().save(emp);*/
 
         Rangos rangos = new Rangos().entityConfig();
         rangos.setValue(Rangos.EMPRESA,"30");

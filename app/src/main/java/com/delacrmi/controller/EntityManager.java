@@ -22,6 +22,7 @@ public class EntityManager  {
     private List<Class> tables;
     private List<String> tablesNames;
     private HashMap<String,Class> name_class = new HashMap<String,Class>();
+    private HashMap<String,String> entitiesNickName = new HashMap<String,String>();
 
     private Context context;
     private String dbName;
@@ -95,6 +96,18 @@ public class EntityManager  {
 
     public Class getClassByName(String name){
         return name_class.get(name);
+    }
+
+    public HashMap<String, String> getEntitiesNickName() {
+        return entitiesNickName;
+    }
+
+    public void setEntitiesNickName(HashMap<String, String> entitiesNickName) {
+        this.entitiesNickName = entitiesNickName;
+    }
+
+    public String getEntityNicName(String entity){
+        return entitiesNickName.get(entity);
     }
 
     //<editor-fold desc="Saving the Entities class">

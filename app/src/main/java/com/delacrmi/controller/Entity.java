@@ -13,7 +13,9 @@ import java.util.Map;
  * Created by miguel on 09/10/15.
  */
 public abstract class Entity implements Serializable{
+
     private String entityName = "";
+    private String nickName = "";
     private String pk = "";
     private HashMap<String,ContentValues> constraint = new HashMap<String,ContentValues>();
     private ContentValues constraintDetails;
@@ -22,10 +24,18 @@ public abstract class Entity implements Serializable{
 
     public abstract Entity entityConfig();
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public void setPrimaryKey(String columnName){
         if(!columnName.equals("") || !columnName.equals(" ")) {
             pk = columnName;
-            columnList.remove("id_"+getName());
+            columnList.remove(getName()+"_id");
             columnList.put(pk,"integer");
         }
     }
@@ -94,7 +104,7 @@ public abstract class Entity implements Serializable{
 
     public Entity setName(String entityName){
         this.entityName = entityName;
-        this.pk = "id_"+entityName;
+        this.pk = entityName+"_id";
         columnList.put(pk,"integer");
         return this;
     }

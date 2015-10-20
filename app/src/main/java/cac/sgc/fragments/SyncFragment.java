@@ -24,9 +24,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import cac.sgc.R;
 import cac.sgc.entities.Empresas;
+import cac.sgc.mycomponents.SyncCardView;
 import io.socket.client.Socket;
 
 /**
@@ -41,7 +43,8 @@ public class SyncFragment extends Fragment {
 
     private View view;
     private ListView listViewSync;
-    private List listado;
+    private List<Vector<String>> listado;
+    private SyncCardView adapter;
 
     public static SyncFragment init(AppCompatActivity context,EntityManager entityManager,String uri){
         if(outInstance == null){
@@ -66,11 +69,20 @@ public class SyncFragment extends Fragment {
 
     private void initComponents() {
         listViewSync = (ListView) view.findViewById(R.id.listViewSync);
-        listado = new ArrayList<>();
-        for (Class className : entityManager.getTables()){
-            listado.add(className.getSimpleName());
+
+        listado = new ArrayList<Vector<String>>();
+        for (String name : entityManager.getTablesNames()){
+
+            Vector<String> values = new Vector<String>();
+            values.add(name);
+            values.add(entityManager.getEntityNicName(name));
+
+            listado.add(values);
         }
-        listViewSync.setAdapter(new ArrayAdapter<>(outInstance.context, R.layout.sync_fragment_layout, listado));
+
+        adapter = new SyncCardView(context,listado);
+
+        listViewSync.setAdapter(adapter);
     }
 
     private void socketInit(){
@@ -117,6 +129,12 @@ public class SyncFragment extends Fragment {
             public void onSynchronizeServer(Object... args) {
 
             }
+
+            @Override
+            public void disconnect() {
+                super.disconnect();
+                outInstance.connect = null;
+            }
         };
     }
 
@@ -136,7 +154,9 @@ public class SyncFragment extends Fragment {
 
         Iterator iterator = entityManager.initInstance(entityManager.getClassByName(tableName)).iterator();
         while (iterator.hasNext()){
-            array.put(((Map.Entry)iterator.next()).getKey());
+            String columnName = ((Map.Entry)iterator.next()).getKey().toString();
+            if(!columnName.equals(tableName + "_id"))
+                array.put(columnName);
         }
 
         try {

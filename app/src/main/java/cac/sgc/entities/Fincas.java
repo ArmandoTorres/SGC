@@ -14,7 +14,6 @@ public class Fincas extends Entity {
     @Override
     public Fincas entityConfig() {
         setName("cp_finca");
-        setPrimaryKey("id_finca");
         addColumn("descripcion", "text");
         addColumn("ubicacion","text");
 

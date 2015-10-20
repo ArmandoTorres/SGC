@@ -15,11 +15,10 @@ public class Empleados extends Entity{
     @Override
     public Empleados entityConfig() {
         setName("rh_empleado");
-        setPrimaryKey("id_empleado");
-        //addColumn("id_empresa", "integer");
-        addColumn("nombre_puesto", "text");
+        addColumn("id_empresa", "integer");
+        addColumn("id_puesto", "text");
         addColumn("nombre", "text");
-        addColumn("estado","text");
+        addColumn("estado_empleado","text");
 
         return this;
     }
