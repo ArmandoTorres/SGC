@@ -14,6 +14,7 @@ public class Frentes extends Entity {
     @Override
     public Frentes entityConfig() {
         setName("rh_frente");
+        addColumn("id_frente","integer");
         addColumn("descripcion","text");
         return this;
     }
