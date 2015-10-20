@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.delacrmi.connection.ConnectSQLite;
 
@@ -20,9 +19,9 @@ import java.util.Map;
 public class EntityManager  {
 
     private ConnectSQLite conn = null;
-    private final HashMap<String,HashMap<String,Entity>> entities = new HashMap<String,HashMap<String,Entity>>();
     private List<Class> tables;
     private List<String> tablesNames;
+    private HashMap<String,Class> name_class = new HashMap<String,Class>();
 
     private Context context;
     private String dbName;
@@ -75,33 +74,23 @@ public class EntityManager  {
         return conn.getReadableDatabase();
     }
 
-    public HashMap<String,Entity> getEntites(String entityName){
-        if(!entities.isEmpty() && entities.containsKey(entityName))
-            return entities.get(entityName);
-
-        return null;
-    }
-
     public void addTable(Class entity){
         if(tables == null)
             tables = new ArrayList<Class>();
         tables.add(entity);
     }
 
-    /*public void addTables(Class entity){
-        try {
-            Entity e = (Entity)entity.newInstance();
-            e.entityConfig();
-        } catch (InstantiationException e1) {
-            e1.printStackTrace();
-        } catch (IllegalAccessException e1) {
-            e1.printStackTrace();
-        }
-    }*/
+    public List<Class> getTables(){
+        return  tables;
+    }
 
     //Setting the tablesCreater Data Bases
     public void setTables(ArrayList<Class> tables){
         this.tables = tables;
+    }
+
+    public Class getClassByName(String name){
+        return name_class.get(name);
     }
 
     //<editor-fold desc="Saving the Entities class">
@@ -271,10 +260,12 @@ public class EntityManager  {
         tablesNames = new ArrayList<String>();
         Entity entity;
         while (tablesIterator.hasNext()){
-            entity = initInstance((Class)tablesIterator.next());
+            Class entityClass = (Class)tablesIterator.next();
+            entity = initInstance(entityClass);
             if(entity != null){
-                entity.entityConfig();
+                //entity.entityConfig();
                 tablesNames.add(entity.getName());
+                name_class.put(entity.getName(),entityClass);
                 value.add(createString(entity));
             }
         }
@@ -282,7 +273,7 @@ public class EntityManager  {
         return value;
     }
 
-    protected Entity initInstance(Class entity){
+    public Entity initInstance(Class entity){
         try {
             return  ((Entity)entity.newInstance()).entityConfig();
         } catch (InstantiationException e1) {
@@ -293,17 +284,16 @@ public class EntityManager  {
 
     //making the create String
     private String createString(Entity entity){
-        ContentValues columns = entity.getColumns();
         int count = 1;
         Map.Entry me;
         String create = "create table "+entity.getName()+"(";
 
         //knowing the primary column
-        create += entity.getPrimaryKey()+" integer primary key autoincrement,";
+        //create += entity.getPrimaryKey()+" integer primary key autoincrement,";
 
 
         //getting the iterator columns to get the key values
-        Iterator iteratorColumns = columns.valueSet().iterator();
+        Iterator iteratorColumns = entity.iterator();
         while (iteratorColumns.hasNext()){
             me = (Map.Entry)iteratorColumns.next();
 
@@ -312,11 +302,11 @@ public class EntityManager  {
                     create += me.getKey() + " " + "numeric";
                 else
                     create += me.getKey() + " " + me.getValue();
-            }
+            }else
+                create += entity.getPrimaryKey()+" integer primary key autoincrement";
 
-            if(count < columns.size()-1){
-                if(!entity.getPrimaryKey().equals(me.getKey().toString()))
-                    create += ",";
+            if(count < entity.getColumnsCount()){
+                create += ",";
                 count++;
             }
         }
