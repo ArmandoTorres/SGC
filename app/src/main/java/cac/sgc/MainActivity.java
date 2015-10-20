@@ -424,8 +424,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getEntityManager().addTable(Frentes.class);
         getEntityManager().init();
 
-        /*Fincas fincas = new Fincas().entityConfig();
-        fincas.setValue(Fincas.FINCA,"301");
+        Fincas fincas = new Fincas().entityConfig();
+        fincas.setValue(Fincas.FINCA,"1");
         fincas.setValue(Fincas.DESCRIPCION, "Santana");
         fincas = (Fincas) getEntityManager().save(fincas);
 
@@ -453,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         Empleados emp = new Empleados().entityConfig();
         emp.setValue(Empleados.EMPRESA,"30");
         emp.setValue("nombre_puesto", "Conductor Cabezal");
-        emp.setValue("nombre", "Yenifer Cuevas");
+        emp.setValue("nombre", "Juan De los Santos");
         emp.setValue("estado", "ACTIVO");
         getEntityManager().save(emp);
 
