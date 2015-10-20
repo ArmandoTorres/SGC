@@ -1,8 +1,12 @@
 package com.delacrmi.connection;
 
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.delacrmi.controller.EntityManager;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
@@ -25,6 +29,7 @@ public abstract class SocketConnect {
             socket = IO.socket(uri);
             socket.on("synchronizeClient", onSynchronizeClient);
             socket.on("synchronizeServer", onSynchronizeServer);
+            socket.on("syncReject",onSynchronizeReject);
             socket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -46,6 +51,19 @@ public abstract class SocketConnect {
     public abstract void onSynchronizeClient(final Object... args);
     public abstract void onSynchronizeServer(final Object... args);
 
+    public void onErrorConnection(){
+        Log.e("Connection", "The socket.io isn't connected");
+    }
+
+    public void onSyncReject(Object... args) {
+        JSONObject obj = (JSONObject) args[0];
+        try {
+            Log.e(obj.getString("tableName"), obj.getString("error"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendMessage(String event,JSONObject json){
         socket.emit(event,json);
     }
@@ -57,7 +75,7 @@ public abstract class SocketConnect {
             context.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(context,"Error", Toast.LENGTH_SHORT).show();
+                    onErrorConnection();
                 }
             });
         }
@@ -74,6 +92,13 @@ public abstract class SocketConnect {
         @Override
         public void call(final Object... args) {
             onSynchronizeServer(args);
+        }
+    };
+
+    private Emitter.Listener onSynchronizeReject = new Emitter.Listener(){
+        @Override
+        public void call(final Object... args) {
+            onSyncReject(args);
         }
     };
 }

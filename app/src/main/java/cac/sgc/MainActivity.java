@@ -18,7 +18,15 @@ import android.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 
+import com.delacrmi.controller.Entity;
 import com.delacrmi.controller.EntityManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
+import java.util.Map;
 
 import cac.sgc.entities.Caniales;
 import cac.sgc.entities.Empleados;
@@ -35,6 +43,7 @@ import cac.sgc.fragments.Formulario3;
 import cac.sgc.fragments.Formulario4;
 import cac.sgc.fragments.Home;
 import cac.sgc.fragments.Listado;
+import cac.sgc.fragments.SyncFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
 
@@ -49,7 +58,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Formulario4 formulario4;
     private Listado listadoRegistros;
     private Home home;
+
+    private SyncFragment syncFragment;
     private EntityManager entityManager;
+
 
     //Layout's en pantalla.
     private GridLayout gridLayoutNextBack;
@@ -67,6 +79,26 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         inicializarMetodos();
         startActivity(savedInstanceState);
         configurarBaseDatos();
+
+        syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.176:3000");
+        syncFragment.getConnect().init();
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("room", "sync");
+
+            syncFragment.getConnect().sendMessage("login", obj);
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("pg_empresa",null,null));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /*Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
+        Log.i(entity.getName(),entity.getColumnValueList().
+                getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
+                getAsString(Empresas.DIRECCION_COMERCIAL));*/
     }
 
     @Override
@@ -418,6 +450,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getEntityManager().addTable(Empleados.class);
         getEntityManager().addTable(Transaccion.class);
         getEntityManager().addTable(Rangos.class);
+        getEntityManager().addTable(Empresas.class);
         getEntityManager().init();
 
         Fincas fincas = new Fincas().entityConfig();

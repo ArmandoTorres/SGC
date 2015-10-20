@@ -2,6 +2,8 @@ package com.delacrmi.controller;
 
 import android.content.ContentValues;
 
+import org.json.JSONArray;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -62,6 +64,25 @@ public abstract class Entity implements Serializable{
 
     public ContentValues getColumns(){
         return columnList;
+    }
+
+    public JSONArray getColumnstoJSONArray(){
+        JSONArray array = new JSONArray();
+
+        Iterator iterator = iterator();
+        while (iterator.hasNext()){
+            array.put(((Map.Entry)iterator.next()).getKey());
+        }
+
+        return array;
+    }
+
+    public Iterator iterator(){
+        return  getColumns().valueSet().iterator();
+    }
+
+    public int getColumnsCount(){
+        return getColumns().size();
     }
 
     public String getName(){
