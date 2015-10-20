@@ -28,6 +28,14 @@ public class EntityManager  {
     private int dbVersion;
     private SQLiteDatabase.CursorFactory factory = null;
 
+    public List<String> getTablesNames() {
+        return tablesNames;
+    }
+
+    public List<Class> getTables() {
+        return tables;
+    }
+
     public void setDbVersion(int dbVersion) {
         this.dbVersion = dbVersion;
     }
@@ -80,10 +88,6 @@ public class EntityManager  {
         tables.add(entity);
     }
 
-    public List<Class> getTables(){
-        return  tables;
-    }
-
     //Setting the tablesCreater Data Bases
     public void setTables(ArrayList<Class> tables){
         this.tables = tables;
@@ -113,7 +117,7 @@ public class EntityManager  {
     public Entity save(Entity entity){
         if(entity != null){
             long insert = write().insert(entity.getName(), null, entity.getColumnValueList());
-            //Log.d("Save", "" + insert);
+            //Log.e("Save", "" + insert);
             if(insert > 0) {
                 entity.getColumnValueList().put(entity.getPrimaryKey(),insert);
                 return entity;
@@ -287,10 +291,6 @@ public class EntityManager  {
         int count = 1;
         Map.Entry me;
         String create = "create table "+entity.getName()+"(";
-
-        //knowing the primary column
-        //create += entity.getPrimaryKey()+" integer primary key autoincrement,";
-
 
         //getting the iterator columns to get the key values
         Iterator iteratorColumns = entity.iterator();

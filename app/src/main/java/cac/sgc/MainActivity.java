@@ -368,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
                 //formulario 2
                 transaccion.setValue(Transaccion.ORDEN_QUEMA, formulario2.getOrdenQuema().getText().toString());
-                transaccion.setValue(Transaccion.FECHA_CORTE, formulario2.getFechaCorte().getText().toString());
+                transaccion.setValue(Transaccion.FECHA_CORTE, formulario2.getFechaCorte());
                 transaccion.setValue(Transaccion.CLAVE_CORTE, formulario2.getListaClaveCorte().getSelectedItem().toString());
                 transaccion.setValue(Transaccion.CODIGO_CABEZAL, formulario2.getListaCabezales().getSelectedItem().toString());
                 transaccion.setValue(Transaccion.CONDUCTOR_CABEZAL, formulario2.getEditTextConductorCabezal().getText().toString());
@@ -384,12 +384,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 transaccion.setValue(Transaccion.CODIGO_APUNTADOR, formulario4.getEditTextCodigoApuntador().getText().toString());
                 transaccion.setValue(Transaccion.CODIGO_VAGON, formulario4.getListaCodigoVagones().getSelectedItem().toString());
 
-                Rangos rango = (Rangos) getEntityManager().findOnce(Rangos.class,"max(envio_actual)+1","where dispositivo = 'Dispositivo 1'",null);
+                Log.e("Campos: ", "Campos: " + getEntityManager().findOnce(Transaccion.class,"*",null,null));
 
-                Log.e("Valor","Valor Correlativo: "+rango.getColumnValueList().getAsString(Rangos.CORRELATIVO));
-                transaccion.setValue(Transaccion.NO_ENVIO,rango.getColumnValueList().getAsString(Rangos.CORRELATIVO));
+                Rangos rango = (Rangos) getEntityManager().findOnce(Rangos.class,"max("+Rangos.ENVIO_ACTUAL+")+1 "+Rangos.ENVIO_ACTUAL,""+Rangos.DISPOSITIVO+" = 'Dispositivo 1'",null);
 
-                getEntityManager().save(transaccion);
+                transaccion.setValue(Transaccion.NO_ENVIO, rango.getColumnValueList().getAsString(Rangos.ENVIO_ACTUAL));
+
+                transaccion = (Transaccion) getEntityManager().save(transaccion);
+
+                Log.e("Resultado","Valor del PK: "+transaccion.getColumnValueList().getAsString(Transaccion.CORRELATIVO));
 
             }
             return true;
@@ -443,21 +446,23 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void configurarBaseDatos () {
+
         getEntityManager().addTable(Fincas.class);
         getEntityManager().addTable(Caniales.class);
         getEntityManager().addTable(Lotes.class);
-        getEntityManager().addTable(Frentes.class);
         getEntityManager().addTable(Empleados.class);
-        getEntityManager().addTable(Transaccion.class);
         getEntityManager().addTable(Rangos.class);
+        getEntityManager().addTable(Transaccion.class);
+        getEntityManager().addTable(Frentes.class);
         getEntityManager().addTable(Empresas.class);
         getEntityManager().init();
 
         Fincas fincas = new Fincas().entityConfig();
+        fincas.setValue(Fincas.FINCA,"1");
         fincas.setValue(Fincas.DESCRIPCION, "Santana");
         fincas = (Fincas) getEntityManager().save(fincas);
 
-        //Log.e("Finca: ", "Fincas: " + fincas.getColumnValueList().getAsString(Fincas.FINCA));
+        Log.e("Finca: ", "Fincas: " + fincas.getColumnValueList().getAsString(Fincas.FINCA));
 
         Caniales caniales = new Caniales().entityConfig();
         caniales.setValue(Caniales.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.FINCA));
@@ -479,25 +484,28 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getEntityManager().save(fte);
 
         Empleados emp = new Empleados().entityConfig();
-    //emp.setValue(Empleados.EMPRESA,"30");
-        emp.setValue("nombre_puesto","Conductor Cabezal");
-        emp.setValue("nombre","Yenifer Cuevas");
+        emp.setValue(Empleados.EMPRESA,"30");
+        emp.setValue("nombre_puesto", "Conductor Cabezal");
+        emp.setValue("nombre", "Juan De los Santos");
         emp.setValue("estado", "ACTIVO");
         getEntityManager().save(emp);
 
         Rangos rangos = new Rangos().entityConfig();
         rangos.setValue(Rangos.EMPRESA,"30");
         rangos.setValue(Rangos.PERIODO,"19");
-        rangos.setValue(Rangos.DISPOSITIVO,"Dispositivo 1");
+        rangos.setValue(Rangos.DISPOSITIVO, "Dispositivo 1");
         rangos.setValue(Rangos.ENVIO_DESDE,"1");
         rangos.setValue(Rangos.ENVIO_HASTA,"10");
-        rangos.setValue(Rangos.ENVIO_ACTUAL,"0");
+        rangos.setValue(Rangos.ENVIO_ACTUAL,"1");
         rangos.setValue(Rangos.TICKET_DESDE,"1");
         rangos.setValue(Rangos.TICKET_HASTA,"10");
-        rangos.setValue(Rangos.TICKET_ACTUAL,"0");
-        rangos.setValue(Rangos.STATUS,"ACTIVO");
+        rangos.setValue(Rangos.TICKET_ACTUAL,"1");
+        rangos.setValue(Rangos.STATUS, "ACTIVO");
         getEntityManager().save(rangos);
 
-    }
+        /*Log.e("Valor","Valor Correlativo: "+rangos.getColumnValueList().getAsString(Rangos.CORRELATIVO));
 
+        rangos = (Rangos) getEntityManager().findOnce(Rangos.class, "MAX(" + Rangos.ENVIO_ACTUAL + ")+1 "+Rangos.ENVIO_ACTUAL,"dispositivo = 'Dispositivo 1'", null);
+        Log.e("Valor","Valor Envio: "+rangos.getColumnValueList().getAsString(Rangos.ENVIO_ACTUAL));*/
+    }
 }

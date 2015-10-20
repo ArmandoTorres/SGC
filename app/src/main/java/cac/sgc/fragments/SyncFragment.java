@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.delacrmi.connection.SocketConnect;
 import com.delacrmi.controller.Entity;
@@ -17,9 +19,13 @@ import com.delacrmi.controller.EntityManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import cac.sgc.R;
 import cac.sgc.entities.Empresas;
 import io.socket.client.Socket;
 
@@ -32,6 +38,10 @@ public class SyncFragment extends Fragment {
     private SocketConnect connect;
     private AppCompatActivity context;
     private EntityManager entityManager;
+
+    private View view;
+    private ListView listViewSync;
+    private List listado;
 
     public static SyncFragment init(AppCompatActivity context,EntityManager entityManager,String uri){
         if(outInstance == null){
@@ -48,7 +58,19 @@ public class SyncFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
+        view = inflater.inflate(R.layout.sync_fragment_layout,container,false);
+        initComponents();
+        return view;
+    }
+
+    private void initComponents() {
+        listViewSync = (ListView) view.findViewById(R.id.listViewSync);
+        listado = new ArrayList<>();
+        for (Class className : entityManager.getTables()){
+            listado.add(className.getSimpleName());
+        }
+        listViewSync.setAdapter(new ArrayAdapter<>(outInstance.context, R.layout.sync_fragment_layout, listado));
     }
 
     private void socketInit(){
@@ -77,7 +99,7 @@ public class SyncFragment extends Fragment {
                         }
 
                         Entity ent = entityManager.save(className,columns);
-                        Log.i(ent.getName(),ent.getColumnValueList().getAsString(ent.getPrimaryKey()));
+                        Log.i(ent.getName(), ent.getColumnValueList().getAsString(ent.getPrimaryKey()));
                         Log.e(obj.getString("tableName"),row.toString());
                     }
 

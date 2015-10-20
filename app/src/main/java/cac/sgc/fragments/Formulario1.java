@@ -1,7 +1,6 @@
 package cac.sgc.fragments;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
@@ -10,14 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.delacrmi.controller.Entity;
 import com.delacrmi.controller.EntityManager;
-
-import java.util.concurrent.ExecutionException;
-
 import cac.sgc.MainActivity;
 import cac.sgc.R;
 import cac.sgc.entities.Caniales;

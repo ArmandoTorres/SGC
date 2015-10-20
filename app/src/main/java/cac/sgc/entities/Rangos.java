@@ -18,21 +18,22 @@ public class Rangos extends Entity {
     public static String TICKET_ACTUAL = "ticket_actual";
     public static String STATUS       = "status";
     public static String CORRELATIVO  = "correlativo";
+    public static String TABLE_NAME   = "ba_rango";
 
     @Override
     public Rangos entityConfig() {
-        setName("ba_rango");
-        setPrimaryKey("correlativo");
-        addColumn("id_empresa", "integer");
-        addColumn("id_periodo","integer");
-        addColumn("dispositivo", "text");
-        addColumn("envio_desde", "integer");
-        addColumn("envio_hasta", "integer");
-        addColumn("envio_actual","integer");
-        addColumn("ticket_desde","integer");
-        addColumn("ticket_hasta","integer");
-        addColumn("ticket_actual","integer");
-        addColumn("status","text");
+        setName(Rangos.TABLE_NAME);
+        setPrimaryKey(Rangos.CORRELATIVO);
+        addColumn(Rangos.EMPRESA, "integer");
+        addColumn(Rangos.PERIODO,"integer");
+        addColumn(Rangos.DISPOSITIVO, "text");
+        addColumn(Rangos.ENVIO_DESDE, "integer");
+        addColumn(Rangos.ENVIO_HASTA, "integer");
+        addColumn(Rangos.ENVIO_ACTUAL,"integer");
+        addColumn(Rangos.TICKET_DESDE,"integer");
+        addColumn(Rangos.TICKET_HASTA,"integer");
+        addColumn(Rangos.TICKET_ACTUAL,"integer");
+        addColumn(Rangos.TICKET_ACTUAL,"text");
         return this;
     }
 }

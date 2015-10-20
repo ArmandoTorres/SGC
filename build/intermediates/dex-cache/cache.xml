@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <items version="2" >
 
+    <item>
+        jar="C:\Users\Legal\Desktop\SGC\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
+        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\classes-2b90fe304f1ebc86ba7582c9961bd01848350af4.jar" />
+    </item>
     <item
-        jar="/media/miguel/data/projects/android/SGC/app/libs/droidText.0.4.jar"
+        jar="C:\Users\Legal\Desktop\SGC\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\21.0.3\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
+        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\classes-1f45551bc1011a5913c98146fdf866083e69425f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Legal\Desktop\SGC\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\21.0.3\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
+        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\classes-70b0e45d7f30a77b975c9a71e9b92d4b162b6e7c.jar" />
+    </item>
+    <item>
+        jar="C:\Users\Legal\Desktop\SGC\app\libs\droidText.0.4.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="b2c14c76d9f558463af239be951367e61ea1c270">
