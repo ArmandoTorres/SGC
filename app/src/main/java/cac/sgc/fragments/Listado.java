@@ -3,6 +3,7 @@ package cac.sgc.fragments;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -31,6 +32,8 @@ import java.util.List;
 import cac.sgc.MainActivity;
 import cac.sgc.R;
 import cac.sgc.entities.Transaccion;
+import cac.sgc.mycomponents.ListadoTransacciones;
+import cac.sgc.mycomponents.TransaccionAdapter;
 
 /**
  * Created by Legal on 04/10/2015.
@@ -81,16 +84,28 @@ public class Listado extends Fragment {
 
         // LLenando el listado en pantalla.
         List<Entity> listado = ourInstance.context.getEntityManager().find(Transaccion.class, "*", null, null);
-        final List<String> resultado = new ArrayList<String>();
+        List<ListadoTransacciones> resultado = new ArrayList<>();
         for (Entity a : listado ){
+            String reporte = "";
             if ( a instanceof Transaccion ) {
+                // formando el layout del reporte.
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                resultado.add(format.format(new Date(a.getColumnValueList().getAsLong(Transaccion.FECHA_CORTE))) );
+                reporte += "Fecha: "+format.format(new Date(a.getColumnValueList().getAsLong(Transaccion.FECHA_CORTE)));
+                reporte += " - Frente Corte: "+a.getColumnValueList().getAsString(Transaccion.FRENTE_CORTE);
+                reporte += " - Alce: "+a.getColumnValueList().getAsString(Transaccion.FRENTE_ALCE);
+                reporte += " - Orden Quema: "+a.getColumnValueList().getAsString(Transaccion.ORDEN_QUEMA);
+                reporte += " - Finca: "+a.getColumnValueList().getAsString(Transaccion.ID_FINCA);
+                reporte += " - Canial: "+a.getColumnValueList().getAsString(Transaccion.ID_CANIAL);
+                reporte += " - Lote: "+a.getColumnValueList().getAsString(Transaccion.ID_LOTE);
+                reporte += " - Clave Corte: "+a.getColumnValueList().getAsString(Transaccion.CLAVE_CORTE);
+                resultado.add( new ListadoTransacciones(null,reporte) );
             }
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(ourInstance.context, android.R.layout.simple_list_item_1, resultado);
-        listadoTransacciones.setAdapter(adapter);
+        Log.e("Resultado:","Valor: "+resultado.get(0).getSubTitulo());
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(ourInstance.context, android.R.layout.simple_list_item_1, resultado);
+        //listadoTransacciones.setAdapter(adapter);
+        listadoTransacciones.setAdapter(new TransaccionAdapter(ourInstance.context,resultado));
 
         generarReporte.setOnClickListener(new View.OnClickListener() {
             @Override
