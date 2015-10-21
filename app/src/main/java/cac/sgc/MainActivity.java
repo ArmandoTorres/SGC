@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             ultimoFragmentoCargado = fragmento.getClass().getSimpleName();
 
             // Decidimos si mostrar los botones de pasar al siguiente formulario o ocultarlos.
-            if (ultimoFragmentoCargado.equals("Home") || ultimoFragmentoCargado.equals("Listado")) {
+            if ( ultimoFragmentoCargado.equals("Home") || ultimoFragmentoCargado.equals("Listado") || ultimoFragmentoCargado.equals("SyncFragment") ) {
                 gridLayoutManager(gridLayoutNextBack, View.INVISIBLE);
             } else if (ultimoFragmentoCargado.equals("Formulario1")) {
                 gridLayoutManager(gridLayoutNextBack, View.VISIBLE);
@@ -457,51 +457,57 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getEntityManager().addTable(Empresas.class);
         getEntityManager().init();
 
-        //if ( getEntityManager().findOnce(Fincas.class,"*","id_finca = 1",null) == null) {
-            Fincas fincas = new Fincas().entityConfig();
-            fincas.setValue(Fincas.DESCRIPCION, "Santana");
-            fincas = (Fincas) getEntityManager().save(fincas);
+        Fincas fincas = new Fincas().entityConfig();
+        fincas.setValue(Fincas.ID_FINCA, "1");
+        fincas.setValue(Fincas.DESCRIPCION, "Santana");
+        fincas = (Fincas) getEntityManager().save(fincas);
 
-            Log.e("Finca: ", "Fincas: " + fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
+        Log.e("Finca: ", "Fincas: " + fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
 
-            Caniales caniales = new Caniales().entityConfig();
-            caniales.setValue(Caniales.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
-            caniales.setValue(Caniales.DESCRIPCION, "SANTA CRUZ # 306");
-            caniales = (Caniales) getEntityManager().save(caniales);
+        Caniales caniales = new Caniales().entityConfig();
+        caniales.setValue(Caniales.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
+        caniales.setValue(Caniales.ID_CANIAL, "1");
+        caniales.setValue(Caniales.DESCRIPCION, "SANTA CRUZ # 306");
+        caniales = (Caniales) getEntityManager().save(caniales);
 
-            //Log.e("Caniales: ", "Caniales: "+caniales.getColumnValueList().getAsString(Caniales.CANIAL));
+        Log.e("Caniales: ", "Caniales: " + caniales.getColumnValueList().getAsString(Caniales.ID_CANIAL));
 
-            Lotes lotes = new Lotes().entityConfig();
-            lotes.setValue(Lotes.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
-            lotes.setValue(Lotes.ID_CANIAL, caniales.getColumnValueList().getAsString(Caniales.ID_CANIAL));
-            lotes.setValue(Lotes.DESCRIPCION, "SALINAS CAMPO #-940");
-            lotes = (Lotes) getEntityManager().save(lotes);
+        Lotes lotes = new Lotes().entityConfig();
+        lotes.setValue(Lotes.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
+        lotes.setValue(Lotes.ID_CANIAL, caniales.getColumnValueList().getAsString(Caniales.ID_CANIAL));
+        lotes.setValue(Lotes.ID_LOTE,"1");
+        lotes.setValue(Lotes.DESCRIPCION, "SALINAS CAMPO #-940");
+        lotes = (Lotes) getEntityManager().save(lotes);
 
-            //Log.e("Lotes: ", "Lotes: "+lotes.getColumnValueList().getAsString(Lotes.ID_LOTE));
+        Log.e("Lotes: ", "Lotes: " + lotes.getColumnValueList().getAsString(Lotes.ID_LOTE));
 
-            Frentes fte = new Frentes().entityConfig();
-            fte.setValue("descripcion", "Frente Manual");
-            getEntityManager().save(fte);
+        Frentes fte = new Frentes().entityConfig();
+        fte.setValue(Frentes.ID_FRENTE, "1");
+        fte.setValue(Frentes.DESCRIPCION, "Frente Manual");
+        fte.setValue(Frentes.TIPO_CANIA,"Caña Corta");
+        getEntityManager().save(fte);
 
-            Empleados emp = new Empleados().entityConfig();
-            emp.setValue(Empleados.ID_EMPRESA, "30");
-            emp.setValue("nombre_puesto", "Conductor Cabezal");
-            emp.setValue("nombre", "Juan De los Santos");
-            emp.setValue("estado", "ACTIVO");
-            getEntityManager().save(emp);
+        Empleados emp = new Empleados().entityConfig();
+        emp.setValue(Empleados.ID_EMPLEADO,"1");
+        emp.setValue(Empleados.ID_EMPRESA, "30");
+        emp.setValue("nombre_puesto", "Conductor Cabezal");
+        emp.setValue("nombre", "Juan De los Santos");
+        emp.setValue("estado", "ACTIVO");
+        getEntityManager().save(emp);
 
-            Rangos rangos = new Rangos().entityConfig();
-            rangos.setValue(Rangos.EMPRESA, "30");
-            rangos.setValue(Rangos.PERIODO, "19");
-            rangos.setValue(Rangos.DISPOSITIVO, "Dispositivo 1");
-            rangos.setValue(Rangos.ENVIO_DESDE, "1");
-            rangos.setValue(Rangos.ENVIO_HASTA, "10");
-            rangos.setValue(Rangos.ENVIO_ACTUAL, "1");
-            rangos.setValue(Rangos.TICKET_DESDE, "1");
-            rangos.setValue(Rangos.TICKET_HASTA, "10");
-            rangos.setValue(Rangos.TICKET_ACTUAL, "1");
-            rangos.setValue(Rangos.STATUS, "ACTIVO");
-            getEntityManager().save(rangos);
+        Rangos rangos = new Rangos().entityConfig();
+        rangos.setValue(Rangos.EMPRESA, "30");
+        rangos.setValue(Rangos.PERIODO, "19");
+        rangos.setValue(Rangos.DISPOSITIVO, "Dispositivo 1");
+        rangos.setValue(Rangos.ENVIO_DESDE, "1");
+        rangos.setValue(Rangos.ENVIO_HASTA, "10");
+        rangos.setValue(Rangos.ENVIO_ACTUAL, "1");
+        rangos.setValue(Rangos.TICKET_DESDE, "1");
+        rangos.setValue(Rangos.TICKET_HASTA, "10");
+        rangos.setValue(Rangos.TICKET_ACTUAL, "1");
+        rangos.setValue(Rangos.STATUS, "ACTIVO");
+        getEntityManager().save(rangos);
+
         //}
         /*Log.e("Valor","Valor Correlativo: "+rangos.getColumnValueList().getAsString(Rangos.CORRELATIVO));
 

@@ -8,10 +8,12 @@ public class ListadoTransacciones {
 
     private String titulo;
     private String subTitulo;
+    private String detalle;
 
-    public ListadoTransacciones(String subTitulo, String titulo) {
+    public ListadoTransacciones(String titulo, String subTitulo, String detalle) {
         this.subTitulo = subTitulo;
         this.titulo = titulo;
+        this.detalle = detalle;
     }
 
     public String getTitulo() {
@@ -21,4 +23,9 @@ public class ListadoTransacciones {
     public String getSubTitulo() {
         return subTitulo;
     }
+
+    public String getDetalle() {
+        return detalle;
+    }
+
 }

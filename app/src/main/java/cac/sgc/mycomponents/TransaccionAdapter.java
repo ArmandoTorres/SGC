@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import java.util.List;
+
 import cac.sgc.R;
 
 /**
@@ -22,10 +23,14 @@ public class TransaccionAdapter extends ArrayAdapter<ListadoTransacciones> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        View item = inflater.inflate(R.layout.listado_card_view,null);
+        View item = inflater.inflate(R.layout.listado_card_view, null);
 
         TextView subTitle = (TextView) item.findViewById(R.id.reportSubTitle);
         subTitle.setText(getItem(position).getSubTitulo());
+
+        TextView details = (TextView) item.findViewById(R.id.reportDetails);
+        details.setText(getItem(position).getDetalle());
+
         return item;
     }
 }

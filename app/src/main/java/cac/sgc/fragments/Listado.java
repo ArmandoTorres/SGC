@@ -31,6 +31,7 @@ import java.util.List;
 
 import cac.sgc.MainActivity;
 import cac.sgc.R;
+import cac.sgc.entities.Frentes;
 import cac.sgc.entities.Transaccion;
 import cac.sgc.mycomponents.ListadoTransacciones;
 import cac.sgc.mycomponents.TransaccionAdapter;
@@ -80,49 +81,45 @@ public class Listado extends Fragment {
     private void initComponents() {
         editFiltroPorFecha = (EditText) view.findViewById(R.id.editFiltroPorFecha);
         generarReporte = (ImageButton) view.findViewById(R.id.generarReporte);
-        listadoTransacciones = (ListView) view.findViewById(R.id.ListadoTransacciones);
+        listadoTransacciones = (ListView) view.findViewById(R.id.listViewTransacciones);
 
         // LLenando el listado en pantalla.
         List<Entity> listado = ourInstance.context.getEntityManager().find(Transaccion.class, "*", null, null);
         List<ListadoTransacciones> resultado = new ArrayList<>();
         for (Entity a : listado ){
             String reporte = "";
+            String subTitle = "";
             if ( a instanceof Transaccion ) {
-                // formando el layout del reporte.
+
+                // SubTitulo del reporte.
+                subTitle = ourInstance.context.getEntityManager().findOnce(Frentes.class, Frentes.TIPO_CANIA, Frentes.ID_FRENTE+" = ", null);
+
+                //Detalle
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 reporte += "Fecha: "+format.format(new Date(a.getColumnValueList().getAsLong(Transaccion.FECHA_CORTE)));
                 reporte += " - Frente Corte: "+a.getColumnValueList().getAsString(Transaccion.FRENTE_CORTE);
                 reporte += " - Alce: "+a.getColumnValueList().getAsString(Transaccion.FRENTE_ALCE);
                 reporte += " - Orden Quema: "+a.getColumnValueList().getAsString(Transaccion.ORDEN_QUEMA);
-                reporte += " - Finca: "+a.getColumnValueList().getAsString(Transaccion.ID_FINCA);
-                reporte += " - Canial: "+a.getColumnValueList().getAsString(Transaccion.ID_CANIAL);
+                reporte += " - Finca: "+ String.format("%03d", Integer.parseInt(a.getColumnValueList().getAsString(Transaccion.ID_FINCA)));
+                reporte += " - Canial: "+String.format("%04d", Integer.parseInt(a.getColumnValueList().getAsString(Transaccion.ID_CANIAL)));
                 reporte += " - Lote: "+a.getColumnValueList().getAsString(Transaccion.ID_LOTE);
                 reporte += " - Clave Corte: "+a.getColumnValueList().getAsString(Transaccion.CLAVE_CORTE);
-                resultado.add( new ListadoTransacciones(null,reporte) );
+                reporte += " - Carreta: "+a.getColumnValueList().getAsString(Transaccion.CODIGO_CARRETA);
+                reporte += " - Vagon: "+a.getColumnValueList().getAsString(Transaccion.CODIGO_VAGON);
+                reporte += " - Alzadora: "+a.getColumnValueList().getAsString(Transaccion.CODIGO_COSECHADORA);
+                reporte += " - Operador Alzadora: "+a.getColumnValueList().getAsString(Transaccion.OPERADOR_COSECHADORA);
+                reporte += " - Tractor: "+a.getColumnValueList().getAsString(Transaccion.CODIGO_TRACTOR);
+                reporte += " - Operador Tractor: "+a.getColumnValueList().getAsString(Transaccion.OPERADOR_TRACTOR);
+                reporte += " - Apuntador:"+a.getColumnValueList().getAsString(Transaccion.CODIGO_APUNTADOR);
+                reporte += " - Cabezal: "+a.getColumnValueList().getAsString(Transaccion.CODIGO_CABEZAL);
+                reporte += " - Piloto: "+a.getColumnValueList().getAsString(Transaccion.CONDUCTOR_CABEZAL);
+                resultado.add( new ListadoTransacciones(null,"Caña Larga Cortada Envio No. 430419",reporte) );
             }
         }
 
-        Log.e("Resultado:","Valor: "+resultado.get(0).getSubTitulo());
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(ourInstance.context, android.R.layout.simple_list_item_1, resultado);
-        //listadoTransacciones.setAdapter(adapter);
-        listadoTransacciones.setAdapter(new TransaccionAdapter(ourInstance.context,resultado));
-
-        generarReporte.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*List <String> resultadoFiltrado = new ArrayList<String>();
-                List <String> resultado
-                if ( editFiltroPorFecha.getText() != null ){
-                    String filtro = editFiltroPorFecha.getText().toString();
-                    if ( filtro != null && resultado != null) {
-                        for (int i = 0; i < )
-                            if ( res.equals())
-                                resultadoFiltrado.add()
-                        }
-                    }
-                }*/
-            }
-        });
+        //Log.e("Resultado:", "Valor: " + resultado.get(0).getSubTitulo());
+        TransaccionAdapter adapter = new TransaccionAdapter(ourInstance.context, resultado);
+        listadoTransacciones.setAdapter(adapter);
 
         vYear = Calendar.getInstance().get(Calendar.YEAR);
         vMonthOfYear = Calendar.getInstance().get(Calendar.MONTH);

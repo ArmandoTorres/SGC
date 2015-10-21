@@ -1,66 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/listado">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/listado">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Transacciones Realizadas"
+        android:textSize="25dp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textDirection="firstStrong"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/textViewTituloReporte" />
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:text="Transacciones Realizadas"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textDirection="firstStrong"
-            android:gravity="center"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:id="@+id/textViewTituloReporte" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:text="Filtro: "
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:id="@+id/textViewFiltro"
-            android:layout_below="@+id/textViewTituloReporte"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Filtro: "
+        android:textSize="18dp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="5dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:id="@+id/textViewFiltro"
+        android:layout_below="@+id/textViewTituloReporte"/>
 
-        <EditText
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:inputType="date"
-            android:id="@+id/editFiltroPorFecha"
-            android:layout_toRightOf="@+id/textViewFiltro"
-            android:layout_below="@+id/textViewTituloReporte"
-            android:layout_toLeftOf="@+id/generarReporte"
-            android:layout_toStartOf="@+id/generarReporte" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:inputType="date"
+        android:id="@+id/editFiltroPorFecha"
+        android:layout_toRightOf="@+id/textViewFiltro"
+        android:layout_below="@+id/textViewTituloReporte"
+        android:layout_toLeftOf="@+id/generarReporte"
+        android:layout_toStartOf="@+id/generarReporte" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/buscar"
-            android:id="@+id/generarReporte"
-            android:background="@drawable/hover_button"
-            android:layout_above="@+id/ListadoTransacciones"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:src="@drawable/buscar"
+        android:id="@+id/generarReporte"
+        android:background="@drawable/hover_button"
+        android:layout_below="@+id/textViewTituloReporte"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-        <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ListadoTransacciones"
-            android:entries="@array/listado"
-            android:layout_below="@+id/editFiltroPorFecha"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-    </RelativeLayout>
-</ScrollView>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listViewTransacciones"
+        android:layout_below="@+id/editFiltroPorFecha"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

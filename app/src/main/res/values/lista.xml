@@ -54,16 +54,16 @@
         <item>A01010</item>
     </string-array>
     <string-array name="vagones">
-        <item>A01001</item>
-        <item>A01002</item>
-        <item>A01003</item>
-        <item>A01004</item>
-        <item>A01005</item>
-        <item>A01006</item>
-        <item>A01007</item>
-        <item>A01008</item>
-        <item>A01009</item>
-        <item>A01010</item>
+        <item>C01001</item>
+        <item>C01002</item>
+        <item>C01003</item>
+        <item>C01004</item>
+        <item>C01005</item>
+        <item>C01006</item>
+        <item>C01007</item>
+        <item>C01008</item>
+        <item>C01009</item>
+        <item>C01010</item>
     </string-array>
 
     <string-array name="listado">
