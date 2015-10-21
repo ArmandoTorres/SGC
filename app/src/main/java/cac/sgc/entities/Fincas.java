@@ -8,16 +8,18 @@ import com.delacrmi.controller.Entity;
 public class Fincas extends Entity {
     //CP_FINCA(ID_EMPRESA INTEGER, ID_FINCA INTEGER, DESCRIPCION TEXT, UBICACION TEXT)";
 
-    public static String FINCA = "id_finca";
+    public static String ID_FINCA    = "id_finca";
     public static String DESCRIPCION = "descripcion";
+    public static String TABLE_NAME  = "cp_finca";
+    public static String UBICACION   = "ubicacion";
 
     @Override
     public Fincas entityConfig() {
-        setName("cp_finca");
-        setPrimaryKey("id_finca");
-        addColumn("descripcion", "text");
-        addColumn("ubicacion","text");
-
+        setName(TABLE_NAME);
+        addColumn(ID_FINCA, "integer");
+        addColumn(DESCRIPCION, "text");
+        addColumn(UBICACION,"text");
         return this;
     }
+
 }

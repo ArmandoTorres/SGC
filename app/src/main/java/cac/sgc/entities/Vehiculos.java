@@ -13,15 +13,16 @@ public class Vehiculos extends Entity {
     private static String CODIGO_GRUPO = "codigo_grupo";
     private static String CODIGO_SUBGRUPO = "codigo_subgrupo";
     private static String CODIGO_VEHICULO = "codigo_vehiculo";
+    private static String TABLE_NAME = "mq_vehiculo";
 
     @Override
     public Vehiculos entityConfig() {
-        setName("mq_vehiculo");
-        addColumn("id_empresa", "integer");
-        addColumn("id_area", "integer");
-        addColumn("codigo_grupo", "text");
-        addColumn("codigo_subgrupo","integer");
-        addColumn("codigo_vehiculo","integer");
+        setName(TABLE_NAME);
+        addColumn(ID_EMPRESA, "integer");
+        addColumn(ID_AREA, "integer");
+        addColumn(CODIGO_GRUPO, "text");
+        addColumn(CODIGO_SUBGRUPO,"integer");
+        addColumn(CODIGO_VEHICULO,"integer");
         return this;
     }
 }

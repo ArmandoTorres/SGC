@@ -9,6 +9,7 @@ public class Empresas extends Entity {
 
     public static String ID_EMPRESA = "id_empresa";
     public static String DIRECCION_COMERCIAL = "direccion_comercial";
+    public static String TABLE_NAME = "pg_empresa";
 
     private boolean selected = false;
 
@@ -18,8 +19,8 @@ public class Empresas extends Entity {
 
     @Override
     public Empresas entityConfig() {
-        setName("pg_empresa");
-        setPrimaryKey(ID_EMPRESA);
+        setName(Empresas.TABLE_NAME);
+        addColumn(ID_EMPRESA,"integer");
         addColumn(DIRECCION_COMERCIAL,"text");
         return this;
     }

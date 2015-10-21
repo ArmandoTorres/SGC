@@ -98,7 +98,7 @@ public class Formulario1 extends Fragment {
                 ourInstance.context.getEntityManager(), Frentes.class,Frentes.DESCRIPCION,Frentes.ID_FRENTE)).setTitle("Frente"));
 
         finca.setOnFocusChangeListener((new MyOnFocusListenerFactory(txtDescFinca,
-                ourInstance.context.getEntityManager(),Fincas.class,Fincas.DESCRIPCION,Fincas.FINCA)).setTitle("Finca"));
+                ourInstance.context.getEntityManager(),Fincas.class,Fincas.DESCRIPCION,Fincas.ID_FINCA)).setTitle("Finca"));
 
         canial.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -111,7 +111,7 @@ public class Formulario1 extends Fragment {
                     }
                     if ( ourInstance.context.getEntityManager() != null ){
                         Entity result = entityManager.findOnce(Caniales.class, "*",
-                                Caniales.ID_FINCA+" = ? and "+ Caniales.CANIAL+" = ? ",
+                                Caniales.ID_FINCA+" = ? and "+ Caniales.ID_CANIAL+" = ? ",
                                 new String[]{finca.getText().toString(), canial.getText().toString()});
                         if ( result != null &&  result.getColumnValueList().size() > 0){
                             txtDescCanial.setText(result.getColumnValueList().getAsString(Caniales.DESCRIPCION));

@@ -8,14 +8,15 @@ import com.delacrmi.controller.Entity;
 public class Frentes extends Entity {
     //"CREATE TABLE RH_FRENTE(ID_FRENTE INTEGER, DESCRIPCION TEXT)"
 
-    public static String ID_FRENTE = "id_frente";
+    public static String ID_FRENTE   = "id_frente";
     public static String DESCRIPCION = "descripcion";
+    public static String TABLE_NAME  = "RH_FRENTE";
 
     @Override
     public Frentes entityConfig() {
-        setName("rh_frente");
-        setPrimaryKey("id_frente");
-        addColumn("descripcion","text");
+        setName(TABLE_NAME);
+        addColumn(ID_FRENTE, "integer");
+        addColumn(DESCRIPCION,"text");
         return this;
     }
 }

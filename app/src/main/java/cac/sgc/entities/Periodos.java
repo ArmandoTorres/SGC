@@ -13,15 +13,16 @@ public class Periodos extends Entity {
     public static String FECHA_INI  = "fecha_ini";
     public static String FECHA_FIN  = "fecha_fin";
     public static String DESCRIPCION = "descripcion";
+    public static String TABLE_NAME  = "pg_periodo";
 
     @Override
     public Periodos entityConfig() {
-        setName("periodo");
-        setPrimaryKey("id_periodo");
-        addColumn("id_empresa", "integer");
-        addColumn("fecha_ini", "date");
-        addColumn("fecha_fin", "date");
-        addColumn("descripcion","text");
+        setName(TABLE_NAME);
+        addColumn(ID_PERIODO,"integer");
+        addColumn(ID_EMPRESA, "integer");
+        addColumn(FECHA_INI, "date");
+        addColumn(FECHA_FIN, "date");
+        addColumn(DESCRIPCION,"text");
         return this;
     }
 

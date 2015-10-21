@@ -462,18 +462,18 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             fincas.setValue(Fincas.DESCRIPCION, "Santana");
             fincas = (Fincas) getEntityManager().save(fincas);
 
-            Log.e("Finca: ", "Fincas: " + fincas.getColumnValueList().getAsString(Fincas.FINCA));
+            Log.e("Finca: ", "Fincas: " + fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
 
             Caniales caniales = new Caniales().entityConfig();
-            caniales.setValue(Caniales.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.FINCA));
+            caniales.setValue(Caniales.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
             caniales.setValue(Caniales.DESCRIPCION, "SANTA CRUZ # 306");
             caniales = (Caniales) getEntityManager().save(caniales);
 
             //Log.e("Caniales: ", "Caniales: "+caniales.getColumnValueList().getAsString(Caniales.CANIAL));
 
             Lotes lotes = new Lotes().entityConfig();
-            lotes.setValue(Lotes.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.FINCA));
-            lotes.setValue(Lotes.ID_CANIAL, caniales.getColumnValueList().getAsString(Caniales.CANIAL));
+            lotes.setValue(Lotes.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
+            lotes.setValue(Lotes.ID_CANIAL, caniales.getColumnValueList().getAsString(Caniales.ID_CANIAL));
             lotes.setValue(Lotes.DESCRIPCION, "SALINAS CAMPO #-940");
             lotes = (Lotes) getEntityManager().save(lotes);
 
@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             getEntityManager().save(fte);
 
             Empleados emp = new Empleados().entityConfig();
-            emp.setValue(Empleados.EMPRESA, "30");
+            emp.setValue(Empleados.ID_EMPRESA, "30");
             emp.setValue("nombre_puesto", "Conductor Cabezal");
             emp.setValue("nombre", "Juan De los Santos");
             emp.setValue("estado", "ACTIVO");
