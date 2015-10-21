@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }*/
 
         Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
-        Log.i(entity.getName(),entity.getColumnValueList().
-                getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
+        Log.i(entity.getName(), entity.getColumnValueList().
+                getAsString(entity.getPrimaryKey()) + " " + entity.getColumnValueList().
                 getAsString(Empresas.DIRECCION_COMERCIAL));
     }
 
@@ -384,15 +384,18 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 transaccion.setValue(Transaccion.CODIGO_APUNTADOR, formulario4.getEditTextCodigoApuntador().getText().toString());
                 transaccion.setValue(Transaccion.CODIGO_VAGON, formulario4.getListaCodigoVagones().getSelectedItem().toString());
 
-                Log.e("Campos: ", "Campos: " + getEntityManager().findOnce(Transaccion.class,"*",null,null));
-
+                //Buscamos el ultimo numero de envio.
                 Rangos rango = (Rangos) getEntityManager().findOnce(Rangos.class,"max("+Rangos.ENVIO_ACTUAL+")+1 "+Rangos.ENVIO_ACTUAL,""+Rangos.DISPOSITIVO+" = 'Dispositivo 1'",null);
-
+                //Setiamos el numero de envio.
                 transaccion.setValue(Transaccion.NO_ENVIO, rango.getColumnValueList().getAsString(Rangos.ENVIO_ACTUAL));
+                //Actualizamos el valor del envio.
+                getEntityManager().update(rango, "" + Rangos.DISPOSITIVO + " = 'Dispositivo 1'", null);
 
+                //Grabamos la transaccion.
                 transaccion = (Transaccion) getEntityManager().save(transaccion);
 
-                Log.e("Resultado","Valor del PK: "+transaccion.getColumnValueList().getAsString(Transaccion.CORRELATIVO));
+                //Actualizamos el numero de envio
+
 
             }
             return true;

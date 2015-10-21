@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.delacrmi.controller.Entity;
 import com.lowagie.text.Document;
@@ -92,13 +94,18 @@ public class Listado extends Fragment {
             if ( a instanceof Transaccion ) {
 
                 // SubTitulo del reporte.
-                subTitle = ourInstance.context.getEntityManager().findOnce(Frentes.class, Frentes.TIPO_CANIA, Frentes.ID_FRENTE+" = ", null);
+                subTitle = ((Frentes) ourInstance.context.getEntityManager()
+                                              .findOnce(Frentes.class,
+                                                        Frentes.TIPO_CANIA,
+                                                        Frentes.ID_FRENTE+" = "+a.getColumnValueList().getAsString(Transaccion.FRENTE_CORTE),
+                                                        null)).getColumnValueList().getAsString(Frentes.TIPO_CANIA);
+                subTitle += " Envio NO. "+a.getColumnValueList().getAsString(Transaccion.NO_ENVIO);
 
                 //Detalle
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 reporte += "Fecha: "+format.format(new Date(a.getColumnValueList().getAsLong(Transaccion.FECHA_CORTE)));
                 reporte += " - Frente Corte: "+a.getColumnValueList().getAsString(Transaccion.FRENTE_CORTE);
-                reporte += " - Alce: "+a.getColumnValueList().getAsString(Transaccion.FRENTE_ALCE);
+                reporte += " - Frente Alce: "+a.getColumnValueList().getAsString(Transaccion.FRENTE_ALCE);
                 reporte += " - Orden Quema: "+a.getColumnValueList().getAsString(Transaccion.ORDEN_QUEMA);
                 reporte += " - Finca: "+ String.format("%03d", Integer.parseInt(a.getColumnValueList().getAsString(Transaccion.ID_FINCA)));
                 reporte += " - Canial: "+String.format("%04d", Integer.parseInt(a.getColumnValueList().getAsString(Transaccion.ID_CANIAL)));
@@ -113,13 +120,21 @@ public class Listado extends Fragment {
                 reporte += " - Apuntador:"+a.getColumnValueList().getAsString(Transaccion.CODIGO_APUNTADOR);
                 reporte += " - Cabezal: "+a.getColumnValueList().getAsString(Transaccion.CODIGO_CABEZAL);
                 reporte += " - Piloto: "+a.getColumnValueList().getAsString(Transaccion.CONDUCTOR_CABEZAL);
-                resultado.add( new ListadoTransacciones(null,"Caña Larga Cortada Envio No. 430419",reporte) );
+                resultado.add( new ListadoTransacciones(null,subTitle,reporte) );
             }
         }
 
         //Log.e("Resultado:", "Valor: " + resultado.get(0).getSubTitulo());
         TransaccionAdapter adapter = new TransaccionAdapter(ourInstance.context, resultado);
         listadoTransacciones.setAdapter(adapter);
+        listadoTransacciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedOption = ((ListadoTransacciones) parent.getItemAtPosition(position)).getSubTitulo();
+                Toast.makeText(ourInstance.context,"Item seleccionado: "+selectedOption,Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         vYear = Calendar.getInstance().get(Calendar.YEAR);
         vMonthOfYear = Calendar.getInstance().get(Calendar.MONTH);

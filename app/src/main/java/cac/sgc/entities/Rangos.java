@@ -33,7 +33,7 @@ public class Rangos extends Entity {
         addColumn(Rangos.TICKET_DESDE,"integer");
         addColumn(Rangos.TICKET_HASTA,"integer");
         addColumn(Rangos.TICKET_ACTUAL,"integer");
-        addColumn(Rangos.TICKET_ACTUAL,"text");
+        addColumn(Rangos.STATUS,"text");
         return this;
     }
 }
