@@ -3,6 +3,7 @@ package cac.sgc.fragments;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,9 @@ import android.widget.Toast;
 import com.delacrmi.controller.Entity;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
 
 import java.io.File;
@@ -37,6 +41,7 @@ import cac.sgc.entities.Frentes;
 import cac.sgc.entities.Transaccion;
 import cac.sgc.mycomponents.ListadoTransacciones;
 import cac.sgc.mycomponents.TransaccionAdapter;
+import harmony.java.awt.Color;
 
 /**
  * Created by Legal on 04/10/2015.
@@ -69,7 +74,6 @@ public class Listado extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.listado, container, false);
         initComponents();
         return view;
@@ -132,9 +136,14 @@ public class Listado extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedOption = ((ListadoTransacciones) parent.getItemAtPosition(position)).getSubTitulo();
                 Toast.makeText(ourInstance.context,"Item seleccionado: "+selectedOption,Toast.LENGTH_SHORT).show();
+                try {
+                    crearReportePDF();
+                } catch (Exception e){
+                    Log.e("Error","Al crear el documento: ",e);
+                    Toast.makeText(ourInstance.context,"Error al crear el documento.",Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
 
         vYear = Calendar.getInstance().get(Calendar.YEAR);
         vMonthOfYear = Calendar.getInstance().get(Calendar.MONTH);
@@ -149,44 +158,6 @@ public class Listado extends Fragment {
             }
         });
 
-    }
-
-    private void mostrarReportePDF() {
-
-        Document documento = new Document();
-
-        try {
-
-            File archivo = crearFichero("prueba.pdf");
-
-            FileOutputStream ficheroPdf = new FileOutputStream(archivo.getAbsolutePath());
-
-            PdfWriter.getInstance(documento, ficheroPdf);
-
-            documento.open();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static File crearFichero(String s) throws IOException {
-        File ruta = getRuta();
-
-        File fichero = null;
-        if (ruta != null)
-            fichero = new File(ruta, s);
-
-        return fichero;
-
-    }
-
-    private static File getRuta() {
-        return null;
     }
 
     /**
@@ -207,5 +178,37 @@ public class Listado extends Fragment {
         DatePickerDialog datePicker = new DatePickerDialog(getActivity(), R.style.AppTheme,dateListener,vYear,vMonthOfYear,vDayOfMonth);
         datePicker.show();
    }
+
+   private void crearReportePDF() throws FileNotFoundException, DocumentException {
+       //Creamos el documento
+       Document documento = new Document();
+       //Creamos el fichero con el nombre;
+       if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+           File ruta = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),"PDF");
+           if ( ruta != null ){
+               ruta.mkdirs();
+               //Creamos el archivo
+               File fichero = new File(ruta, "prueba1.pdf");
+               // creamos el flujo de datos
+               FileOutputStream ficheroPDF = new FileOutputStream(fichero.getAbsolutePath());
+
+               //Asociamos el flujo que acabamos de crear al documentos.
+               PdfWriter.getInstance(documento, ficheroPDF);
+
+               //Abrimos el documento.
+               documento.open();
+
+               documento.add(new Paragraph("Titulo 1"));
+
+               Font font = FontFactory.getFont(FontFactory.HELVETICA,28,Font.BOLD, Color.RED);
+               documento.add(new Paragraph("Titulo personalizado",font));
+               documento.close();
+           }
+       }
+
+
+
+   }
+
 
 }
