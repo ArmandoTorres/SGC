@@ -2,7 +2,7 @@
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="130dp"
+    android:layout_height="100dp"
     android:layout_width="match_parent"
     android:minHeight="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
@@ -15,7 +15,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="16dp" >
+        android:paddingBottom="10dp" >
+
+        <TextView android:id="@+id/txtAbSubTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Sub_Title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
 
         <TextView android:id="@+id/txtAbTitulo"
             android:layout_width="match_parent"
@@ -23,12 +29,6 @@
             android:text="@string/Title"
             android:textSize="20dp"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
-
-        <TextView android:id="@+id/txtAbSubTitulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/Sub_Title"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
 
     </LinearLayout>
 

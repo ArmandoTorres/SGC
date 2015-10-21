@@ -21,7 +21,7 @@ public class SyncCardView extends ArrayAdapter<Vector<String>> {
 
     //private AppCompatActivity context;
 
-    public SyncCardView(AppCompatActivity context, List<Vector<String>>objects) {
+    public SyncCardView(AppCompatActivity context, List<Vector<String>> objects) {
         super(context, R.layout.sync_card_view, objects);
         //this.context = context;
     }
@@ -40,7 +40,11 @@ public class SyncCardView extends ArrayAdapter<Vector<String>> {
             holder = new ViewHolderSync();
             holder.title = (TextView)view.findViewById(R.id.tv_sync_name);
             holder.btn_sync = (ImageButton)view.findViewById(R.id.btn_sync);
+
             holder.pgb_sync = (ProgressBar) view.findViewById(R.id.pgb_sync);
+            holder.pgb_sync.setProgress(50);
+            holder.pgb_sync.getLayoutParams().height= 10;
+            holder.pgb_sync.invalidate();
 
             view.setTag(holder);
         }else

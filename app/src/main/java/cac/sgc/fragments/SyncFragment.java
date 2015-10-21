@@ -71,18 +71,19 @@ public class SyncFragment extends Fragment {
         listViewSync = (ListView) view.findViewById(R.id.listViewSync);
 
         listado = new ArrayList<Vector<String>>();
-        for (String name : entityManager.getTablesNames()){
+        for (String name : outInstance.entityManager.getTablesNames()){
 
             Vector<String> values = new Vector<String>();
+
+            values.add(outInstance.entityManager.getEntityNicName(name));
             values.add(name);
-            values.add(entityManager.getEntityNicName(name));
 
             listado.add(values);
         }
 
-        adapter = new SyncCardView(context,listado);
+        adapter = new SyncCardView(outInstance.context,outInstance.listado);
 
-        listViewSync.setAdapter(adapter);
+        listViewSync.setAdapter(outInstance.adapter);
     }
 
     private void socketInit(){
@@ -92,10 +93,10 @@ public class SyncFragment extends Fragment {
             public void onSynchronizeClient(Object... args) {
                 try{
                     JSONObject obj = (JSONObject) args[0];
-                    Class className = entityManager.getClassByName(obj.getString("tableName"));
+                    Class className = outInstance.entityManager.getClassByName(obj.getString("tableName"));
                     JSONArray rows = obj.getJSONArray("result");
 
-                    entityManager.delete(className, null, null);
+                    outInstance.entityManager.delete(className, null, null);
 
                     for (int index=0;index<rows.length(); index++){
                         JSONObject row = (JSONObject) rows.getJSONObject(index);
@@ -110,7 +111,7 @@ public class SyncFragment extends Fragment {
                                 columns.put(key.toLowerCase(), value);
                         }
 
-                        Entity ent = entityManager.save(className,columns);
+                        Entity ent = outInstance.entityManager.save(className,columns);
                         Log.i(ent.getName(), ent.getColumnValueList().getAsString(ent.getPrimaryKey()));
                         Log.e(obj.getString("tableName"),row.toString());
                     }
@@ -119,7 +120,7 @@ public class SyncFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
+                Empresas entity = (Empresas)outInstance.entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
                 Log.i(entity.getName(),entity.getColumnValueList().
                         getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
                         getAsString(Empresas.DIRECCION_COMERCIAL));
@@ -152,7 +153,7 @@ public class SyncFragment extends Fragment {
         JSONArray array = new JSONArray();
         JSONObject obj  = new JSONObject();
 
-        Iterator iterator = entityManager.initInstance(entityManager.getClassByName(tableName)).iterator();
+        Iterator iterator = outInstance.entityManager.initInstance(outInstance.entityManager.getClassByName(tableName)).iterator();
         while (iterator.hasNext()){
             String columnName = ((Map.Entry)iterator.next()).getKey().toString();
             if(!columnName.equals(tableName + "_id"))

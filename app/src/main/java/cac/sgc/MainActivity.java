@@ -80,9 +80,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         startActivity(savedInstanceState);
         configurarBaseDatos();
 
-        syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.176:3000");
-        syncFragment.getConnect().init();
-        syncTables();
+
+        /*syncFragment.getConnect().init();
+        syncTables();*/
 
     }
 
@@ -128,9 +128,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()){
+            case R.id.btn_sync_menu:
+                cargarFragmento(getSyncFragment());
+                break;
         }
+        /*if (id == R.id.action_settings) {
+            return true;
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -311,6 +316,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                                               Integer.parseInt(getResources().getString(R.string.DATA_BASE_VERSION)));
         }
         return entityManager;
+    }
+
+    public SyncFragment getSyncFragment(){
+        if(syncFragment == null)
+            syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.176:3000");
+        return syncFragment;
     }
 
     // </editor-fold>

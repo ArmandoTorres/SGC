@@ -282,6 +282,7 @@ public class EntityManager  {
             if(entity != null){
                 //entity.entityConfig();
                 tablesNames.add(entity.getName());
+                entitiesNickName.put(entity.getName(),entity.getNickName());
                 name_class.put(entity.getName(),entityClass);
                 value.add(createString(entity));
             }

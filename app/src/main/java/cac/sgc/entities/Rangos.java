@@ -23,6 +23,7 @@ public class Rangos extends Entity {
     @Override
     public Rangos entityConfig() {
         setName(Rangos.TABLE_NAME);
+        setNickName("Rango");
         setPrimaryKey(Rangos.CORRELATIVO);
         addColumn(Rangos.EMPRESA, "integer");
         addColumn(Rangos.PERIODO,"integer");

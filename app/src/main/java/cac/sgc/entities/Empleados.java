@@ -15,6 +15,7 @@ public class Empleados extends Entity{
     @Override
     public Empleados entityConfig() {
         setName("rh_empleado");
+        setNickName("Empleado");
         addColumn("id_empresa", "integer");
         addColumn("id_puesto", "text");
         addColumn("nombre", "text");
