@@ -1,8 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context=".MainActivity" android:id="@+id/mainRelativeLayout">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity"
+    android:id="@+id/mainRelativeLayout">
 
     <!-- toolbar por defecto -->
     <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
@@ -86,4 +88,19 @@
 
     </GridLayout>
 
-    </RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/actualizar"
+        android:layout_gravity="bottom|end"
+        app:fabSize="normal"
+        app:borderWidth="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        app:rippleColor="@color/primary"
+        android:visibility="invisible"
+        />
+
+</RelativeLayout>

@@ -8,11 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Vector;
 
 import cac.sgc.R;
+import cac.sgc.fragments.SyncFragment;
 
 /**
  * Created by Legal on 19/10/2015.
@@ -20,6 +24,9 @@ import cac.sgc.R;
 public class SyncCardView extends ArrayAdapter<Vector<String>> {
 
     //private AppCompatActivity context;
+    private View.OnClickListener onClickListener;
+    private ViewHolderSync viewHolderSync;
+
 
     public SyncCardView(AppCompatActivity context, List<Vector<String>> objects) {
         super(context, R.layout.sync_card_view, objects);
@@ -30,32 +37,52 @@ public class SyncCardView extends ArrayAdapter<Vector<String>> {
     public View getView(int position, View view, ViewGroup parent) {
         //return super.getView(position, view, parent);
 
-        ViewHolderSync holder;
 
         if(view == null){
             LayoutInflater inflater = LayoutInflater.from(getContext());
             view = inflater.inflate(R.layout.sync_card_view, null);
             //view = context.getLayoutInflater().inflate(R.layout.sync_card_view,parent,false);
 
-            holder = new ViewHolderSync();
-            holder.title = (TextView)view.findViewById(R.id.tv_sync_name);
-            holder.btn_sync = (ImageButton)view.findViewById(R.id.btn_sync);
+            viewHolderSync = new ViewHolderSync();
+            viewHolderSync.title = (TextView)view.findViewById(R.id.tv_sync_name);
+            viewHolderSync.btn_sync = (ImageButton)view.findViewById(R.id.btn_sync);
 
-            holder.pgb_sync = (ProgressBar) view.findViewById(R.id.pgb_sync);
-            holder.pgb_sync.setProgress(50);
-            holder.pgb_sync.getLayoutParams().height= 10;
-            holder.pgb_sync.invalidate();
+            viewHolderSync.pgb_sync = (ProgressBar) view.findViewById(R.id.pgb_sync);
+            viewHolderSync.pgb_sync.getLayoutParams().height= 10;
 
-            view.setTag(holder);
+            view.setTag(viewHolderSync);
+            viewHolderSync.btn_sync.setTag(viewHolderSync);
+
         }else
-            holder = (ViewHolderSync)view.getTag();
+            viewHolderSync = (ViewHolderSync)view.getTag();
 
         Vector<String> item = this.getItem(position);
+        events();
 
-        holder.title.setText(item.get(0));
-        holder.tableName = item.get(1);
+        viewHolderSync.title.setText(item.get(0));
+        viewHolderSync.tableName = item.get(1);
+        viewHolderSync.btn_sync.setOnClickListener(onClickListener);
 
         return view;
+    }
+
+    /*
+    *==============================================================================================
+    * This method to initialize all the event
+    * =============================================================================================
+    */
+
+    public void events(){
+        onClickListener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                JSONObject obj = SyncFragment.getInstance().getJSONSelect(
+                        ((ViewHolderSync)v.getTag()).tableName,null,null);
+
+                Toast.makeText(getContext(),obj.toString(),Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     // holder for layout elements

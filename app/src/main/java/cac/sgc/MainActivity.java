@@ -1,12 +1,15 @@
 package cac.sgc;
 
 import android.content.DialogInterface;
+import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
 import android.view.Menu;
 import android.app.Fragment;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -60,11 +63,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Home home;
 
     private SyncFragment syncFragment;
+    private FloatingActionButton fab_app;
     private EntityManager entityManager;
 
 
     //Layout's en pantalla.
     private GridLayout gridLayoutNextBack;
+    private GridLayout glyMainMenu;
 
     //Variables de control.
     private String ultimoFragmentoCargado;
@@ -99,12 +104,18 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         } else {
             try{
                 ultimoFragmentoCargado = savedInstanceState.getString("UltimoFragmentoCargado");
+
                 switch ( ultimoFragmentoCargado.toUpperCase() ){
                     case "FORMULARIO1": cargarFragmento(getFormulario1()); break;
                     case "FORMULARIO2": cargarFragmento(getFormulario2()); break;
                     case "FORMULARIO3": cargarFragmento(getFormulario3()); break;
                     case "FORMULARIO4": cargarFragmento(getFormulario4()); break;
                     case "LISTADO": cargarFragmento(getListadoRegistros()); break;
+                    case "SYNCFRAGMENT":
+                        cargarFragmento(getSyncFragment());
+                        fab_app.setVisibility(View.VISIBLE);
+                        gridLayoutManager(glyMainMenu, View.INVISIBLE);
+                        break;
                     case "HOME": cargarFragmento(getHome()); break;
                 }
             } catch (Exception e) {
@@ -131,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         switch (item.getItemId()){
             case R.id.btn_sync_menu:
                 cargarFragmento(getSyncFragment());
+                fab_app.setVisibility(View.VISIBLE);
+                gridLayoutManager(glyMainMenu, View.INVISIBLE);
                 break;
         }
         /*if (id == R.id.action_settings) {
@@ -153,45 +166,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
     // </editor-fold>
 
-    public void syncTables(){
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("room", "sync");
-
-            syncFragment.getConnect().sendMessage("login", obj);
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("pg_empresa",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("cp_finca",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("cp_canial",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("cp_lote",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("rh_empleado",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("rh_frente",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("mq_vehiculo",null,null));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
-        Log.i(entity.getName(),entity.getColumnValueList().
-                getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
-                getAsString(Empresas.DIRECCION_COMERCIAL));
-
-    }
-
     private void inicializarComponentes() {
         try {
             //Enlazamos los objetos
@@ -200,12 +174,20 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             btnAnterior = (ImageButton) this.findViewById(R.id.btnAnterior);
             btnSiguiente = (ImageButton) this.findViewById(R.id.btnSiguiente);
             btnHome = (ImageButton) this.findViewById(R.id.btn_home);
+
             gridLayoutNextBack = (GridLayout) this.findViewById(R.id.gridLayoutBtnNextBack);
+            glyMainMenu = (GridLayout) findViewById(R.id.gridLayoutBtnHomeNewList);
+
+            fab_app = (FloatingActionButton) findViewById(R.id.fab_app);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                fab_app.setBackgroundTintList(getResources().getColorStateList(R.color.fab_color,getTheme()));
+            }
 
             //Inicializamos el action bar.
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("");
+
         } catch (Exception e) {
             Log.e("InicializarComponentes", "Error: "+e.getMessage());
             e.printStackTrace();
@@ -234,7 +216,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             ultimoFragmentoCargado = fragmento.getClass().getSimpleName();
 
             // Decidimos si mostrar los botones de pasar al siguiente formulario o ocultarlos.
-            if (ultimoFragmentoCargado.equals("Home") || ultimoFragmentoCargado.equals("Listado")) {
+            if (ultimoFragmentoCargado.equals("Home") ||
+                    ultimoFragmentoCargado.equals("Listado") ||
+                    ultimoFragmentoCargado.equals("SyncFragment")) {
                 gridLayoutManager(gridLayoutNextBack, View.INVISIBLE);
             } else if (ultimoFragmentoCargado.equals("Formulario1")) {
                 gridLayoutManager(gridLayoutNextBack, View.VISIBLE);
@@ -259,6 +243,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             FragmentTransaction transaccion = manejador.beginTransaction();
             //Realizamos el reemplazo del fragmento.
             transaccion.replace(R.id.contenedor_fragments, fragmento);
+
+            if(fab_app.getVisibility() == View.VISIBLE) {
+                fab_app.setVisibility(View.INVISIBLE);
+                gridLayoutManager(glyMainMenu, View.VISIBLE);
+            }
+
             //Hacemos efectivo el cambio.
             transaccion.commit();
 
@@ -388,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    private Boolean grabarFormularios() {
+    protected Boolean grabarFormularios() {
 
         try {
             if (formulario1 != null && formulario2 != null && formulario3 != null && formulario4 != null) {

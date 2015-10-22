@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -46,6 +47,9 @@ public class SyncFragment extends Fragment {
     private List<Vector<String>> listado;
     private SyncCardView adapter;
 
+    private View.OnClickListener onClickListener;
+    private AdapterView.OnItemClickListener onItemClickListener;
+
     public static SyncFragment init(AppCompatActivity context,EntityManager entityManager,String uri){
         if(outInstance == null){
             outInstance = new SyncFragment();
@@ -54,6 +58,13 @@ public class SyncFragment extends Fragment {
             outInstance.uri = uri;
             outInstance.socketInit();
         }
+        return outInstance;
+    }
+
+    public static SyncFragment getInstance(){
+        if(outInstance == null)
+            throw new NullPointerException("the SyncFragment isn't created, " +
+                    "call the init method first to try use this instance");
         return outInstance;
     }
 
@@ -67,25 +78,37 @@ public class SyncFragment extends Fragment {
         return view;
     }
 
+    /*
+    *==============================================================================================
+    * Configuring the sync class information
+    * =============================================================================================
+    */
     private void initComponents() {
-        listViewSync = (ListView) view.findViewById(R.id.listViewSync);
+        outInstance.listViewSync = (ListView) view.findViewById(R.id.listViewSync);
 
-        listado = new ArrayList<Vector<String>>();
+        outInstance.listado = new ArrayList<Vector<String>>();
         for (String name : outInstance.entityManager.getTablesNames()){
 
             Vector<String> values = new Vector<String>();
+            if(!name.equals("ba_mtransaccion")){
+                values.add(outInstance.entityManager.getEntityNicName(name));
+                values.add(name);
 
-            values.add(outInstance.entityManager.getEntityNicName(name));
-            values.add(name);
+                outInstance.listado.add(values);
+            }
 
-            listado.add(values);
         }
 
-        adapter = new SyncCardView(outInstance.context,outInstance.listado);
+        outInstance.adapter = new SyncCardView(outInstance.context,outInstance.listado);
 
-        listViewSync.setAdapter(outInstance.adapter);
+        outInstance.listViewSync.setAdapter(outInstance.adapter);
     }
 
+    /*
+    *==============================================================================================
+    * Starting the socket connection class
+    * =============================================================================================
+    */
     private void socketInit(){
         outInstance.connect = new SocketConnect(outInstance.context,outInstance.uri){
 
@@ -139,21 +162,47 @@ public class SyncFragment extends Fragment {
         };
     }
 
-    public Socket getSocket(){
-        if(outInstance != null)
-            return outInstance.connect.getSocket();
-        return null;
+    public AppCompatActivity getContext(){
+        return outInstance.context;
     }
 
     public SocketConnect getConnect(){
         return outInstance.connect;
     }
 
+    /*
+    *==============================================================================================
+    * This method to initialize all the event
+    * =============================================================================================
+    */
+
+    public void events(){
+        onClickListener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+            }
+        };
+    }
+
+
+    /*
+    *==============================================================================================
+    * @args: String tableName
+    *        String where
+    *        JSONArray whereValues
+    *
+    * This method return a json object with the attribute table
+    * information to sync the client tables information
+    * =============================================================================================
+    */
     public JSONObject getJSONSelect(String tableName,String where, JSONArray whereValues){
         JSONArray array = new JSONArray();
         JSONObject obj  = new JSONObject();
 
-        Iterator iterator = outInstance.entityManager.initInstance(outInstance.entityManager.getClassByName(tableName)).iterator();
+        Iterator iterator = outInstance.entityManager.
+                initInstance(outInstance.entityManager.getClassByName(tableName)).iterator();
+
         while (iterator.hasNext()){
             String columnName = ((Map.Entry)iterator.next()).getKey().toString();
             if(!columnName.equals(tableName + "_id"))
@@ -175,6 +224,40 @@ public class SyncFragment extends Fragment {
         }
 
         return  obj;
+    }
+
+    public void syncTables(JSONObject tableJSONObject){
+        //JSONObject obj = new JSONObject();
+            /*obj.put("room", "sync");
+
+            outInstance.connect.sendMessage("login", obj);*/
+
+        outInstance.connect.sendMessage("synchronizerClient",
+                outInstance.getJSONSelect("pg_empresa", null, null));
+
+            /*syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("cp_finca",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("cp_canial",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("cp_lote",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("rh_empleado",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("rh_frente",null,null));
+
+            syncFragment.getConnect().sendMessage("synchronizerClient",
+                    syncFragment.getJSONSelect("mq_vehiculo",null,null));*/
+
+        /*Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
+        Log.i(entity.getName(),entity.getColumnValueList().
+                getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
+                getAsString(Empresas.DIRECCION_COMERCIAL));*/
+
     }
 
 }
