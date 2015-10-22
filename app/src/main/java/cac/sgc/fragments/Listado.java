@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,7 +27,6 @@ import com.lowagie.text.pdf.PdfWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -136,12 +134,7 @@ public class Listado extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedOption = ((ListadoTransacciones) parent.getItemAtPosition(position)).getSubTitulo();
                 Toast.makeText(ourInstance.context,"Item seleccionado: "+selectedOption,Toast.LENGTH_SHORT).show();
-                try {
-                    crearReportePDF();
-                } catch (Exception e){
-                    Log.e("Error","Al crear el documento: ",e);
-                    Toast.makeText(ourInstance.context,"Error al crear el documento.",Toast.LENGTH_SHORT).show();
-                }
+                crearReportePDF((ListadoTransacciones)parent.getItemAtPosition(position));
             }
         });
 
@@ -179,36 +172,46 @@ public class Listado extends Fragment {
         datePicker.show();
    }
 
-   private void crearReportePDF() throws FileNotFoundException, DocumentException {
+   private void crearReportePDF( ListadoTransacciones detailsToShow ) {
        //Creamos el documento
        Document documento = new Document();
-       //Creamos el fichero con el nombre;
-       if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-           File ruta = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),"PDF");
-           if ( ruta != null ){
-               ruta.mkdirs();
-               //Creamos el archivo
-               File fichero = new File(ruta, "prueba1.pdf");
-               // creamos el flujo de datos
-               FileOutputStream ficheroPDF = new FileOutputStream(fichero.getAbsolutePath());
 
-               //Asociamos el flujo que acabamos de crear al documentos.
-               PdfWriter.getInstance(documento, ficheroPDF);
+       try {
+           String fileName = String.format("%02d", vDayOfMonth) +
+                   String.format("%02d", vMonthOfYear) +
+                   vYear + Calendar.getInstance().get(Calendar.HOUR) +
+                   Calendar.getInstance().get(Calendar.MINUTE) +
+                   Calendar.getInstance().get(Calendar.SECOND) + ".pdf";
+           //Creamos el fichero con el nombre;
+           if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+               File ruta = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "SGC_PDF");
+               if (ruta != null) {
+                   ruta.mkdirs();
+                   //Creamos el archivo
+                   File fichero = new File(ruta, fileName);
+                   // creamos el flujo de datos
+                   FileOutputStream ficheroPDF = new FileOutputStream(fichero.getAbsolutePath());
 
-               //Abrimos el documento.
-               documento.open();
+                   //Asociamos el flujo que acabamos de crear al documentos.
+                   PdfWriter.getInstance(documento, ficheroPDF);
 
-               documento.add(new Paragraph("Titulo 1"));
+                   //Abrimos el documento.
+                   documento.open();
 
-               Font font = FontFactory.getFont(FontFactory.HELVETICA,28,Font.BOLD, Color.RED);
-               documento.add(new Paragraph("Titulo personalizado",font));
-               documento.close();
+                   Paragraph p1 = new Paragraph(detailsToShow.getSubTitulo(), FontFactory.getFont(FontFactory.HELVETICA, 24, Font.BOLD, Color.BLACK));
+                   p1.setAlignment(Paragraph.ALIGN_CENTER);
+                   documento.add(p1);
+
+                   Paragraph p2 = new Paragraph(detailsToShow.getDetalle(), FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL, Color.BLACK));
+                   p2.setAlignment(Paragraph.ALIGN_JUSTIFIED);
+                   documento.add(p2);
+               }
            }
+       } catch (Exception e){
+           Log.e("Error","Error al crear el reporte PDF",e);
+           Toast.makeText(ourInstance.context,"Ocurrio un error al crear el PDF",Toast.LENGTH_SHORT).show();
+       } finally {
+           documento.close();
        }
-
-
-
    }
-
-
 }
