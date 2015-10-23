@@ -2,46 +2,32 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.6.0\98476622f10715998eacf9240d6b479f12c66143\okio-1.6.0.jar"
+        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\com.itextpdf\itextpdf\5.0.6\d7b0091cc9f6862dd388180cce94a2b0f4cc19e7\itextpdf-5.0.6.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="98476622f10715998eacf9240d6b479f12c66143">
-        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\okio-1.6.0-c6e11d7a9fe0f274a0c16924a76c18962fb10695.jar" />
+        sha1="d7b0091cc9f6862dd388180cce94a2b0f4cc19e7">
+        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\itextpdf-5.0.6-df606e56ca328b918c7f4b520c23d4cfdbca3a83.jar" />
     </item>
     <item
-        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp-ws\2.5.0\e9753b7dcae5deca92e871c5c759067070b07bc\okhttp-ws-2.5.0.jar"
+        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\org.bouncycastle\bctsp-jdk14\1.38\4821122f8390d15f4b5ee652621e2a2bb1f1bf16\bctsp-jdk14-1.38.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="0e9753b7dcae5deca92e871c5c759067070b07bc">
-        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\okhttp-ws-2.5.0-91f30bbb3aa23b1b96dfcc10fd122c7663806ab8.jar" />
+        sha1="4821122f8390d15f4b5ee652621e2a2bb1f1bf16">
+        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\bctsp-jdk14-1.38-5208918f52ca291244e6e74fe8c982a703b5b7f8.jar" />
     </item>
     <item
-        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\io.socket\engine.io-client\0.6.2\939f90d47c800626d5b0a4e7f89f98b3dde61dc6\engine.io-client-0.6.2.jar"
+        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\org.bouncycastle\bcprov-jdk14\1.38\de366c3243a586eb3c0e2bcde1ed9bb1bfb985ff\bcprov-jdk14-1.38.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="939f90d47c800626d5b0a4e7f89f98b3dde61dc6">
-        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\engine.io-client-0.6.2-27eba01b12f79ed0abca8744a2a871bd251f7060.jar" />
+        sha1="de366c3243a586eb3c0e2bcde1ed9bb1bfb985ff">
+        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\bcprov-jdk14-1.38-a921c30b71cbc24eb2bd3807ca15b0cfe37da606.jar" />
     </item>
     <item
-        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\io.socket\socket.io-client\0.6.2\31fb4bf50b62daadee5e94f39679812ad8a9ae00\socket.io-client-0.6.2.jar"
+        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\org.bouncycastle\bcmail-jdk14\1.38\14ff2dfec8578f5f6838c4d6a77a86789afe5382\bcmail-jdk14-1.38.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="31fb4bf50b62daadee5e94f39679812ad8a9ae00">
-        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\socket.io-client-0.6.2-ad501192ba73d3f2ad71e3dec0486e5c351265c6.jar" />
-    </item>
-    <item
-        jar="C:\Users\Legal\Desktop\SGC\app\build\intermediates\exploded-aar\com.joanzapata.pdfview\android-pdfview\1.0.4\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="df559ab8a9d5d44cf0a49dbb2be402637b90ba90">
-        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\classes-905fd9f1d17ccc5d368a77bf59a7beb14cd50a46.jar" />
-    </item>
-    <item
-        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp\2.5.0\4de2b4ed3445c37ec1720a7d214712e845a24636\okhttp-2.5.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
-        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\okhttp-2.5.0-39b8974b64fc54ae5af54d1691ecee3b0c3ce8e1.jar" />
+        sha1="14ff2dfec8578f5f6838c4d6a77a86789afe5382">
+        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\bcmail-jdk14-1.38-bf529ef254767c2e28f445df5db95c48555a9929.jar" />
     </item>
 
 </items>

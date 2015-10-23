@@ -2,6 +2,7 @@ package cac.sgc.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -17,12 +18,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.delacrmi.controller.Entity;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,7 +41,6 @@ import cac.sgc.entities.Frentes;
 import cac.sgc.entities.Transaccion;
 import cac.sgc.mycomponents.ListadoTransacciones;
 import cac.sgc.mycomponents.TransaccionAdapter;
-import harmony.java.awt.Color;
 
 /**
  * Created by Legal on 04/10/2015.
@@ -198,11 +199,13 @@ public class Listado extends Fragment {
                    //Abrimos el documento.
                    documento.open();
 
-                   Paragraph p1 = new Paragraph(detailsToShow.getSubTitulo(), FontFactory.getFont(FontFactory.HELVETICA, 24, Font.BOLD, Color.BLACK));
+                   Paragraph p1 = new Paragraph(detailsToShow.getSubTitulo(), FontFactory.getFont(FontFactory.HELVETICA,18,Font.BOLD, BaseColor.BLACK));
                    p1.setAlignment(Paragraph.ALIGN_CENTER);
                    documento.add(p1);
 
-                   Paragraph p2 = new Paragraph(detailsToShow.getDetalle(), FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL, Color.BLACK));
+                   documento.add(new LineSeparator(0.5f, 100, null, 0, -5));
+
+                   Paragraph p2 = new Paragraph(detailsToShow.getDetalle(), FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL, BaseColor.BLACK));
                    p2.setAlignment(Paragraph.ALIGN_JUSTIFIED);
                    documento.add(p2);
                }
