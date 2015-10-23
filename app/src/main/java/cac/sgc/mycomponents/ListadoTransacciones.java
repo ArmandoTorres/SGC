@@ -9,11 +9,13 @@ public class ListadoTransacciones {
     private String titulo;
     private String subTitulo;
     private String detalle;
+    private String barcode;
 
-    public ListadoTransacciones(String titulo, String subTitulo, String detalle) {
+    public ListadoTransacciones(String titulo, String subTitulo, String detalle, String barcode) {
         this.subTitulo = subTitulo;
         this.titulo = titulo;
         this.detalle = detalle;
+        this.barcode = barcode;
     }
 
     public String getTitulo() {
@@ -28,4 +30,7 @@ public class ListadoTransacciones {
         return detalle;
     }
 
+    public String getBarcode() {
+        return barcode;
+    }
 }

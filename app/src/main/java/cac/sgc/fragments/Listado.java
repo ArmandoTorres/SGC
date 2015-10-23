@@ -22,7 +22,9 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BarcodePDF417;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
@@ -92,8 +94,9 @@ public class Listado extends Fragment {
         List<Entity> listado = ourInstance.context.getEntityManager().find(Transaccion.class, "*", null, null);
         List<ListadoTransacciones> resultado = new ArrayList<>();
         for (Entity a : listado ){
-            String reporte = "";
+            String reporte  = "";
             String subTitle = "";
+            String barcode  = "";
             if ( a instanceof Transaccion ) {
 
                 // SubTitulo del reporte.
@@ -123,7 +126,27 @@ public class Listado extends Fragment {
                 reporte += " - Apuntador:"+a.getColumnValueList().getAsString(Transaccion.CODIGO_APUNTADOR);
                 reporte += " - Cabezal: "+a.getColumnValueList().getAsString(Transaccion.CODIGO_CABEZAL);
                 reporte += " - Piloto: "+a.getColumnValueList().getAsString(Transaccion.CONDUCTOR_CABEZAL);
-                resultado.add( new ListadoTransacciones(null,subTitle,reporte) );
+
+                //Barcode
+                barcode += format.format(new Date(a.getColumnValueList().getAsLong(Transaccion.FECHA_CORTE)))+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.FRENTE_CORTE)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.FRENTE_ALCE)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.ORDEN_QUEMA)+"|";
+                barcode += String.format("%03d", Integer.parseInt(a.getColumnValueList().getAsString(Transaccion.ID_FINCA)))+"|";
+                barcode += String.format("%04d", Integer.parseInt(a.getColumnValueList().getAsString(Transaccion.ID_CANIAL)))+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.ID_LOTE)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.CLAVE_CORTE)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.CODIGO_CARRETA)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.CODIGO_VAGON)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.CODIGO_COSECHADORA)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.OPERADOR_COSECHADORA)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.CODIGO_TRACTOR)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.OPERADOR_TRACTOR)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.CODIGO_APUNTADOR)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.CODIGO_CABEZAL)+"|";
+                barcode += a.getColumnValueList().getAsString(Transaccion.CONDUCTOR_CABEZAL)+";";
+
+                resultado.add( new ListadoTransacciones(null,subTitle,reporte, barcode) );
             }
         }
 
@@ -199,12 +222,21 @@ public class Listado extends Fragment {
                    //Abrimos el documento.
                    documento.open();
 
-                   Paragraph p1 = new Paragraph(detailsToShow.getSubTitulo(), FontFactory.getFont(FontFactory.HELVETICA,18,Font.BOLD, BaseColor.BLACK));
+                   //Codigo de Barras
+                   BarcodePDF417 barcode = new BarcodePDF417();
+                   barcode.setText(detailsToShow.getBarcode());
+                   Image img = barcode.getImage();
+                   img.scalePercent(100, 50 * barcode.getYHeight());
+                   documento.add(img);
+
+                   //Subtitilo del reporte
+                   Paragraph p1 = new Paragraph(detailsToShow.getSubTitulo(), FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLD, BaseColor.BLACK));
                    p1.setAlignment(Paragraph.ALIGN_CENTER);
                    documento.add(p1);
 
                    documento.add(new LineSeparator(0.5f, 100, null, 0, -5));
 
+                   //Detalle del reporte
                    Paragraph p2 = new Paragraph(detailsToShow.getDetalle(), FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL, BaseColor.BLACK));
                    p2.setAlignment(Paragraph.ALIGN_JUSTIFIED);
                    documento.add(p2);
