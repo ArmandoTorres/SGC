@@ -1,5 +1,6 @@
 package cac.sgc;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -61,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     private SyncFragment syncFragment;
     private EntityManager entityManager;
-
 
     //Layout's en pantalla.
     private GridLayout gridLayoutNextBack;
