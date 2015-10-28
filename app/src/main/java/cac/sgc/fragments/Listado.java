@@ -2,6 +2,8 @@ package cac.sgc.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.atorres.BluetoothPrinterManager;
 import com.delacrmi.controller.Entity;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -56,6 +59,7 @@ public class Listado extends Fragment {
     private ListView listadoTransacciones;
     private static Listado ourInstance = null;
     private int vYear, vMonthOfYear,  vDayOfMonth;
+    private BluetoothPrinterManager btm;
 
     public Listado() {}
 
@@ -157,8 +161,8 @@ public class Listado extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedOption = ((ListadoTransacciones) parent.getItemAtPosition(position)).getSubTitulo();
-                Toast.makeText(ourInstance.context,"Item seleccionado: "+selectedOption,Toast.LENGTH_SHORT).show();
-                crearReportePDF((ListadoTransacciones)parent.getItemAtPosition(position));
+                Toast.makeText(ourInstance.context, "Item seleccionado: " + selectedOption, Toast.LENGTH_SHORT).show();
+                crearReportePDF((ListadoTransacciones) parent.getItemAtPosition(position));
             }
         });
 
@@ -172,6 +176,14 @@ public class Listado extends Fragment {
                 if (hasFocus) {
                     showDialogDatePicker();
                 }
+            }
+        });
+
+        generarReporte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btm = new BluetoothPrinterManager(ourInstance.context);
+                btm.initComunication();
             }
         });
 
@@ -229,6 +241,8 @@ public class Listado extends Fragment {
                    img.scalePercent(100, 50 * barcode.getYHeight());
                    documento.add(img);
 
+                   Bitmap bmp = BitmapFactory.decodeByteArray(img.getOriginalData(),0,img.getOriginalData().length);
+
                    //Subtitilo del reporte
                    Paragraph p1 = new Paragraph(detailsToShow.getSubTitulo(), FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLD, BaseColor.BLACK));
                    p1.setAlignment(Paragraph.ALIGN_CENTER);
@@ -240,6 +254,7 @@ public class Listado extends Fragment {
                    Paragraph p2 = new Paragraph(detailsToShow.getDetalle(), FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL, BaseColor.BLACK));
                    p2.setAlignment(Paragraph.ALIGN_JUSTIFIED);
                    documento.add(p2);
+
                }
            }
        } catch (Exception e){

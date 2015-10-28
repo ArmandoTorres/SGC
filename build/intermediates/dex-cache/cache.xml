@@ -2,6 +2,13 @@
 <items version="2" >
 
     <item
+        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\org.bouncycastle\bcmail-jdk14\1.38\14ff2dfec8578f5f6838c4d6a77a86789afe5382\bcmail-jdk14-1.38.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="14ff2dfec8578f5f6838c4d6a77a86789afe5382">
+        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\bcmail-jdk14-1.38-bf529ef254767c2e28f445df5db95c48555a9929.jar" />
+    </item>
+    <item
         jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\com.itextpdf\itextpdf\5.0.6\d7b0091cc9f6862dd388180cce94a2b0f4cc19e7\itextpdf-5.0.6.jar"
         jumboMode="false"
         revision="23.0.1"
@@ -23,11 +30,11 @@
         <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\bcprov-jdk14-1.38-a921c30b71cbc24eb2bd3807ca15b0cfe37da606.jar" />
     </item>
     <item
-        jar="C:\Users\Legal\.gradle\caches\modules-2\files-2.1\org.bouncycastle\bcmail-jdk14\1.38\14ff2dfec8578f5f6838c4d6a77a86789afe5382\bcmail-jdk14-1.38.jar"
+        jar="C:\Users\Legal\Desktop\SGC\app\libs\customandroidapi.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="14ff2dfec8578f5f6838c4d6a77a86789afe5382">
-        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\bcmail-jdk14-1.38-bf529ef254767c2e28f445df5db95c48555a9929.jar" />
+        sha1="981576190bd859e34a84f479f2c6c4262e1bec61">
+        <dex dex="C:\Users\Legal\Desktop\SGC\app\build\intermediates\pre-dexed\debug\customandroidapi-f76ab28775deb4ec768f30ade7257035dadd47cf.jar" />
     </item>
 
 </items>

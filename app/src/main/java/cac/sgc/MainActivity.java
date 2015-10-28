@@ -394,9 +394,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 //Grabamos la transaccion.
                 transaccion = (Transaccion) getEntityManager().save(transaccion);
 
-                //Actualizamos el numero de envio
-
-
             }
             return true;
         } catch (Exception e){
@@ -460,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getEntityManager().addTable(Empresas.class);
         getEntityManager().init();
 
-        Fincas fincas = new Fincas().entityConfig();
+       /* Fincas fincas = new Fincas().entityConfig();
         fincas.setValue(Fincas.ID_FINCA, "1");
         fincas.setValue(Fincas.DESCRIPCION, "Santana");
         fincas = (Fincas) getEntityManager().save(fincas);
