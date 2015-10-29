@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">SGC</string>
-    <string name="Title">Sistema de Gestion de Cosecha</string>
-    <string name="Sub_Title">SGC</string>
+    <string name="title">Sistema de Gestion de Cosecha</string>
+    <string name="acronym">SGC</string>
     <string name="action_settings">Configuraciones</string>
     <string name="sincronizar">Sincronización</string>
+    <string name="syncSuccess">Sincronizado</string>
+    <string name="sync_name">Sincronizar Tablas</string>
 </resources>

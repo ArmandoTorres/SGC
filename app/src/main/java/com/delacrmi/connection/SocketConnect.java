@@ -31,13 +31,10 @@ public abstract class SocketConnect {
             socket.on("synchronizeServer", onSynchronizeServer);
             socket.on("syncReject",onSynchronizeReject);
             socket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
+            socket.on(Socket.EVENT_CONNECT,onConnectSuccess);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-    }
-
-    public void disconnect(){
-        socket.disconnect();
     }
 
     public void init(){
@@ -48,8 +45,9 @@ public abstract class SocketConnect {
         return socket;
     }
 
-    public abstract void onSynchronizeClient(final Object... args);
-    public abstract void onSynchronizeServer(final Object... args);
+    public abstract void onSynchronizeClient(final Object ... args);
+    public abstract void onSynchronizeServer(final Object ... args);
+    public abstract void onSyncSuccess(final Object ... args);
 
     public void onErrorConnection(){
         Log.e("Connection", "The socket.io isn't connected");
@@ -84,7 +82,13 @@ public abstract class SocketConnect {
     private Emitter.Listener onSynchronizeClient = new Emitter.Listener(){
         @Override
         public void call(final Object... args) {
-            onSynchronizeClient(args);
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    onSynchronizeClient(args);
+                }
+            });
+
         }
     };
 
@@ -98,7 +102,27 @@ public abstract class SocketConnect {
     private Emitter.Listener onSynchronizeReject = new Emitter.Listener(){
         @Override
         public void call(final Object... args) {
-            onSyncReject(args);
+            context.runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    onSyncReject(args);
+                }
+            });
+
+        }
+    };
+
+    private Emitter.Listener onConnectSuccess = new Emitter.Listener(){
+        @Override
+        public void call(final Object... args) {
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    onSyncSuccess(args);
+                }
+            });
+
         }
     };
 }

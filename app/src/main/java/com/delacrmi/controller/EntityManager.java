@@ -22,6 +22,7 @@ public class EntityManager  {
     private List<Class> tables;
     private List<String> tablesNames;
     private HashMap<String,Class> name_class = new HashMap<String,Class>();
+    private HashMap<String,String> entitiesNickName = new HashMap<String,String>();
 
     private Context context;
     private String dbName;
@@ -97,8 +98,20 @@ public class EntityManager  {
         return name_class.get(name);
     }
 
+    public HashMap<String, String> getEntitiesNickName() {
+        return entitiesNickName;
+    }
+
+    public void setEntitiesNickName(HashMap<String, String> entitiesNickName) {
+        this.entitiesNickName = entitiesNickName;
+    }
+
+    public String getEntityNicName(String entity){
+        return entitiesNickName.get(entity);
+    }
+
     //<editor-fold desc="Saving the Entities class">
-    public Entity save(Class entity,ContentValues args){
+    public synchronized Entity save(Class entity,ContentValues args){
         Entity ent= initInstance(entity);
         ent.entityConfig();
 
@@ -106,6 +119,8 @@ public class EntityManager  {
             ent.setValues(args);
 
             long insert = write().insert(ent.getName(),null,ent.getColumnValueList());
+            write().close();
+
             if(insert > 0) {
                 ent.getColumnValueList().put(ent.getPrimaryKey(),insert);
                 return ent;
@@ -114,9 +129,10 @@ public class EntityManager  {
         return null;
     }
 
-    public Entity save(Entity entity){
+    public synchronized Entity save(Entity entity){
         if(entity != null){
             long insert = write().insert(entity.getName(), null, entity.getColumnValueList());
+            write().close();
             //Log.e("Save", "" + insert);
             if(insert > 0) {
                 entity.getColumnValueList().put(entity.getPrimaryKey(),insert);
@@ -129,7 +145,7 @@ public class EntityManager  {
     //</editor-fold>
 
     //<editor-fold desc="Updating the Entities class">
-    public Entity update(Class entity,ContentValues columnsValue,String where, String[] whereValues){
+    public synchronized Entity update(Class entity,ContentValues columnsValue,String where, String[] whereValues){
 
         Entity ent= findOnce(entity,"*",where,whereValues);
 
@@ -139,6 +155,7 @@ public class EntityManager  {
 
             ent.setValues(columnsValue);
             long insert = write().update(ent.getName(), columnsValue, where, null);
+            write().close();
 
             if (insert > 0)
                 return ent;
@@ -148,9 +165,10 @@ public class EntityManager  {
         return null;
     }
 
-    public Entity update(Entity entity,String where,String[] whereValues){
+    public synchronized Entity update(Entity entity,String where,String[] whereValues){
         if(entity != null){
             long insert = write().update(entity.getName(), entity.getColumnValueList(), where, whereValues);
+            write().close();
             if(insert > 0)
                 return entity;
             else
@@ -161,7 +179,7 @@ public class EntityManager  {
     //</editor-fold>
 
     //<editor-fold desc="Finding the Entities class">
-    public Entity findOnce(Class entity,String[] columns,String where,
+    public synchronized Entity findOnce(Class entity,String[] columns,String where,
                            String[] whereValues, String groupBy, String having, String orderBy){
         Entity ent= initInstance(entity);
         Cursor cursor = read().query(ent.getName(),columns,where,whereValues,groupBy,
@@ -170,10 +188,11 @@ public class EntityManager  {
         if(cursor != null && cursor.moveToFirst())
             addEntityValues(cursor,ent);
 
+        read().close();
         return ent;
     }
 
-    public Entity findOnce(Class entity,String columns,String conditions,String[] args){
+    public synchronized Entity findOnce(Class entity,String columns,String conditions,String[] args){
         Entity ent= initInstance(entity);
 
         String sql = "select "+columns+" from "+ent.getName();
@@ -181,17 +200,22 @@ public class EntityManager  {
             sql += " where "+conditions;
 
         Cursor cursor = read().rawQuery(sql, args);
+
+
         if(cursor != null && cursor.moveToFirst())
             addEntityValues(cursor, ent);
 
+        read().close();
         return ent;
     }
 
-    public List<Entity> find(Class entity,boolean distinct,String[] columns,String where,
+    public synchronized List<Entity> find(Class entity,boolean distinct,String[] columns,String where,
                            String[] whereValues, String groupBy, String having, String orderBy,
                            String limit){
         Cursor cursor = read().query(distinct, initInstance(entity).getName(),
                 columns, where, whereValues, groupBy, having, orderBy, limit);
+
+
         if(cursor != null && cursor.moveToFirst()){
             List<Entity> list = new ArrayList<Entity>();
             do {
@@ -200,12 +224,15 @@ public class EntityManager  {
                 list.add(ent);
             }while(cursor.moveToNext());
 
+            read().close();
+
             return  list;
         }
+        read().close();
         return new ArrayList<Entity>();
     }
 
-    public List<Entity> find(Class entity,String columns,String conditions,String[] args){
+    public synchronized List<Entity> find(Class entity,String columns,String conditions,String[] args){
         Entity ent= initInstance(entity);
 
         String sql = "select "+columns+" from "+ent.getName();
@@ -213,6 +240,7 @@ public class EntityManager  {
             sql += " where "+conditions;
 
         Cursor cursor = read().rawQuery(sql, args);
+
         if(cursor != null && cursor.moveToFirst()){
             List<Entity> list = new ArrayList<Entity>();
             do {
@@ -221,25 +249,34 @@ public class EntityManager  {
                 list.add(ent);
             }while(cursor.moveToNext());
 
+            read().close();
+
             return  list;
         }
+        read().close();
         return new ArrayList<Entity>();
     }
     //</editor-fold>
 
     //<editor-fold desc="deleting the Entities class">
-    public boolean delete(Class entity,String where,String[] whereValues){
+    public synchronized boolean delete(Class entity,String where,String[] whereValues){
         Entity ent = initInstance(entity);
+
         int deleted = write().delete(ent.getName(),where,whereValues);
+        write().close();
+
         if(deleted > 0)
             return true;
         else
             return false;
     }
 
-    public boolean delete(Entity entity){
+    public synchronized boolean delete(Entity entity){
+
         int deleted = write().delete(entity.getName(),entity.getPrimaryKey()+" = ?",
                 new String[]{entity.getColumnValueList().getAsString(entity.getPrimaryKey())});
+        write().close();
+
         if(deleted > 0)
             return true;
         else
@@ -269,6 +306,7 @@ public class EntityManager  {
             if(entity != null){
                 //entity.entityConfig();
                 tablesNames.add(entity.getName());
+                entitiesNickName.put(entity.getName(),entity.getNickName());
                 name_class.put(entity.getName(),entityClass);
                 value.add(createString(entity));
             }

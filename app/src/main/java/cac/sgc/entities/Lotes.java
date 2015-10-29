@@ -16,7 +16,7 @@ public class Lotes extends Entity {
     @Override
     public Lotes entityConfig() {
         setName("cp_lote");
-        setPrimaryKey("id_lote");
+        setNickName("Lote");
         addColumn("id_empresa", "integer");
         addColumn("id_finca", "integer");
         addColumn("id_canial", "integer");

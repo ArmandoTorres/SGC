@@ -17,8 +17,7 @@ public class Vehiculos extends Entity {
     @Override
     public Vehiculos entityConfig() {
         setName("mq_vehiculo");
-        addColumn("id_empresa", "integer");
-        addColumn("id_area", "integer");
+        setNickName("Vehiculo");
         addColumn("codigo_grupo", "text");
         addColumn("codigo_subgrupo","integer");
         addColumn("codigo_vehiculo","integer");

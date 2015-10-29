@@ -1,7 +1,13 @@
 package cac.sgc;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.internal.view.menu.ActionMenuItemView;
 import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
@@ -9,6 +15,7 @@ import android.view.Menu;
 import android.app.Fragment;
 import android.widget.GridLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -18,15 +25,7 @@ import android.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 
-import com.delacrmi.controller.Entity;
 import com.delacrmi.controller.EntityManager;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Iterator;
-import java.util.Map;
 
 import cac.sgc.entities.Caniales;
 import cac.sgc.entities.Empleados;
@@ -50,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     //Referencias en pantalla
     private ImageButton btnCrearRegistro, btnMostrarListas, btnHome, btnAnterior, btnSiguiente;
     private Toolbar toolbar;
+    private TextView tvTitle;
+    private FragmentManager manejador;
 
     //Fragmentos a utilizar.
     private Formulario1 formulario1;
@@ -60,14 +61,18 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Home home;
 
     private SyncFragment syncFragment;
+    private FloatingActionButton fab_app;
     private EntityManager entityManager;
 
 
     //Layout's en pantalla.
     private GridLayout gridLayoutNextBack;
+    private GridLayout glyMainMenu;
 
     //Variables de control.
     private String ultimoFragmentoCargado;
+
+    private View.OnClickListener onClickItem;
 
     // <editor-fold defaultstate="collapsed" desc="Metodos sobre cargados">
 
@@ -75,30 +80,20 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //crearmos el manejador de fragmentos
+        manejador = this.getFragmentManager();
+
         inicializarComponentes();
         inicializarMetodos();
-        startActivity(savedInstanceState);
+
+        if(savedInstanceState == null)
+            cargarFragmento(getHome(),null);
+        else
+            startActivity(savedInstanceState.getString("UltimoFragmentoCargado"));
+
         configurarBaseDatos();
 
-        /*syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.176:3000");
-        syncFragment.getConnect().init();
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("room", "sync");
-
-            syncFragment.getConnect().sendMessage("login", obj);
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("pg_empresa",null,null));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-
-        Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
-        Log.i(entity.getName(),entity.getColumnValueList().
-                getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
-                getAsString(Empresas.DIRECCION_COMERCIAL));
     }
 
     @Override
@@ -107,23 +102,28 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         super.onSaveInstanceState(outState);
     }
 
-    private void startActivity(Bundle savedInstanceState){
+    private void startActivity(String fragmentName){
 
-        if ( savedInstanceState == null ) {
-            cargarFragmento(getHome());
+        if ( fragmentName == null ) {
+            cargarFragmento(getHome(),null);
         } else {
             try{
-                ultimoFragmentoCargado = savedInstanceState.getString("UltimoFragmentoCargado");
-                switch ( ultimoFragmentoCargado.toUpperCase() ){
-                    case "FORMULARIO1": cargarFragmento(getFormulario1()); break;
-                    case "FORMULARIO2": cargarFragmento(getFormulario2()); break;
-                    case "FORMULARIO3": cargarFragmento(getFormulario3()); break;
-                    case "FORMULARIO4": cargarFragmento(getFormulario4()); break;
-                    case "LISTADO": cargarFragmento(getListadoRegistros()); break;
-                    case "HOME": cargarFragmento(getHome()); break;
+                switch ( fragmentName.toUpperCase() ){
+                    case "FORMULARIO1": cargarFragmento(getFormulario1(),null); break;
+                    case "FORMULARIO2": cargarFragmento(getFormulario2(),null); break;
+                    case "FORMULARIO3": cargarFragmento(getFormulario3(),null); break;
+                    case "FORMULARIO4": cargarFragmento(getFormulario4(),null); break;
+                    case "LISTADO": cargarFragmento(getListadoRegistros(),null); break;
+                    case "SYNCFRAGMENT":
+                        tvTitle.setText(R.string.sync_name);
+                        cargarFragmento(getSyncFragment(),"sync");
+                        fab_app.setVisibility(View.VISIBLE);
+                        gridLayoutManager(glyMainMenu, View.INVISIBLE);
+                        break;
+                    case "HOME": cargarFragmento(getHome(),null); break;
                 }
             } catch (Exception e) {
-                cargarFragmento(getHome());
+                cargarFragmento(getHome(),null);
             }
         }
     }
@@ -135,17 +135,29 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()){
+            case R.id.btn_sync_menu:
+                ActionMenuItemView btn;
+                if (ultimoFragmentoCargado.equals(SyncFragment.class.getSimpleName())) {
+                    startActivity(Home.class.getSimpleName().toUpperCase());
+                    btn = (ActionMenuItemView ) findViewById(R.id.btn_sync_menu);
+                    btn.setIcon(MainActivity.this.getResources().getDrawable(R.drawable.actualizar, getTheme()));
+                    //btn.setBackgroundResource(R.drawable.actualizar);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+                }else{
+                    startActivity(SyncFragment.class.getSimpleName().toUpperCase());
+                    btn = (ActionMenuItemView ) findViewById(R.id.btn_sync_menu);
+                    btn.setIcon(MainActivity.this.getResources().getDrawable(R.drawable.home, getTheme()));
+                    //btn.setBackgroundResource(R.drawable.home);
+                }
+                break;
         }
+        /*if (id == R.id.action_settings) {
+            return true;
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -161,9 +173,29 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
         return true;
     }
+
+    private void events(){
+        onClickItem = new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.fab_app:
+                        if(manejador.findFragmentByTag("sync").getClass().getSimpleName().
+                                equals(SyncFragment.class.getSimpleName()))
+                            Toast.makeText(MainActivity.this,"actualizar todas las tablas",Toast.LENGTH_SHORT).show();
+                        getSyncFragment().syncAllTables();
+                        break;
+                }
+            }
+        };
+    }
+
     // </editor-fold>
 
     private void inicializarComponentes() {
+
+        events();
+
         try {
             //Enlazamos los objetos
             btnCrearRegistro = (ImageButton) this.findViewById(R.id.btn_crear_registro);
@@ -171,12 +203,25 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             btnAnterior = (ImageButton) this.findViewById(R.id.btnAnterior);
             btnSiguiente = (ImageButton) this.findViewById(R.id.btnSiguiente);
             btnHome = (ImageButton) this.findViewById(R.id.btn_home);
+
             gridLayoutNextBack = (GridLayout) this.findViewById(R.id.gridLayoutBtnNextBack);
+            glyMainMenu = (GridLayout) findViewById(R.id.gridLayoutBtnHomeNewList);
+
+            fab_app = (FloatingActionButton) findViewById(R.id.fab_app);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                fab_app.setBackgroundTintList(getResources().getColorStateList(R.color.fab_color,getTheme()));
+            }
+            fab_app.setOnClickListener(onClickItem);
 
             //Inicializamos el action bar.
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("");
+
+            tvTitle = (TextView)findViewById(R.id.txtAbTitulo);
+            tvTitle.setText(R.string.title);
+            tvTitle.setTextSize(17f);
+
         } catch (Exception e) {
             Log.e("InicializarComponentes", "Error: "+e.getMessage());
             e.printStackTrace();
@@ -199,13 +244,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    public void cargarFragmento(Fragment fragmento) {
+    public void cargarFragmento(Fragment fragmento, String tag) {
         try {
             // Guardamos el ultimo fragmento cargado.
             ultimoFragmentoCargado = fragmento.getClass().getSimpleName();
 
             // Decidimos si mostrar los botones de pasar al siguiente formulario o ocultarlos.
-            if (ultimoFragmentoCargado.equals("Home") || ultimoFragmentoCargado.equals("Listado")) {
+            if (ultimoFragmentoCargado.equals("Home") ||
+                    ultimoFragmentoCargado.equals("Listado") ||
+                    ultimoFragmentoCargado.equals("SyncFragment")) {
                 gridLayoutManager(gridLayoutNextBack, View.INVISIBLE);
             } else if (ultimoFragmentoCargado.equals("Formulario1")) {
                 gridLayoutManager(gridLayoutNextBack, View.VISIBLE);
@@ -224,18 +271,24 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 btnSiguiente.setImageResource(R.drawable.grabar);
             }
 
-            //crearmos el manejador de fragmentos
-            FragmentManager manejador = this.getFragmentManager();
             //creamos la transaccion para cargar el fragmento.
             FragmentTransaction transaccion = manejador.beginTransaction();
             //Realizamos el reemplazo del fragmento.
-            transaccion.replace(R.id.contenedor_fragments, fragmento);
+            if(tag != null && !tag.equals("") && !tag.equals(" "))
+                transaccion.replace(R.id.contenedor_fragments,fragmento,tag);
+            else
+                transaccion.replace(R.id.contenedor_fragments, fragmento);
+
+            if(fab_app.getVisibility() == View.VISIBLE) {
+                fab_app.setVisibility(View.INVISIBLE);
+                gridLayoutManager(glyMainMenu, View.VISIBLE);
+            }
+
             //Hacemos efectivo el cambio.
             transaccion.commit();
 
         } catch (Exception e){
-            Log.e("CargarFragmento","Error: "+e.getMessage());
-            e.printStackTrace();
+            Log.e("CargarFragmento", "Error al cargar el fragmento.",e);
             Toast.makeText(this,"Ocurrio un error al cargar el fragmento.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -289,14 +342,20 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         return entityManager;
     }
 
+    public SyncFragment getSyncFragment(){
+        if(syncFragment == null)
+            syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.164:3000");
+        return syncFragment;
+    }
+
     // </editor-fold>
 
     private void cambiarFragmento(View view) {
         try {
             if ( !(view == null) ) {
                 switch (view.getId()) {
-                    case R.id.btn_crear_registro: cargarFragmento(getFormulario1()); break;
-                    case R.id.btn_mostrar_listas: cargarFragmento(getListadoRegistros()); break;
+                    case R.id.btn_crear_registro: cargarFragmento(getFormulario1(),null); break;
+                    case R.id.btn_mostrar_listas: cargarFragmento(getListadoRegistros(),null); break;
                     case R.id.btn_home:
                         if (!ultimoFragmentoCargado.isEmpty() && !ultimoFragmentoCargado.equals("Home")) {
                             new AlertDialog.Builder(this)
@@ -305,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                                     .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            cargarFragmento(getHome());
+                                            cargarFragmento(getHome(),null);
                                             clearForms();
                                         }
                                     })
@@ -315,31 +374,31 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                         break;
                     case R.id.btnAnterior:
                         switch (ultimoFragmentoCargado.toUpperCase()) {
-                            case "FORMULARIO2": cargarFragmento(getFormulario1()); break;
-                            case "FORMULARIO3": cargarFragmento(getFormulario2()); break;
-                            case "FORMULARIO4": cargarFragmento(getFormulario3()); break;
+                            case "FORMULARIO2": cargarFragmento(getFormulario1(),null); break;
+                            case "FORMULARIO3": cargarFragmento(getFormulario2(),null); break;
+                            case "FORMULARIO4": cargarFragmento(getFormulario3(),null); break;
                         }
                         break;
                     case R.id.btnSiguiente:
                         switch (ultimoFragmentoCargado.toUpperCase()) {
                             case "FORMULARIO1":
                                 if ( formulario1.validateForm() )
-                                    cargarFragmento(getFormulario2());
+                                    cargarFragmento(getFormulario2(),null);
                                 break;
                             case "FORMULARIO2":
                                 if ( formulario2.validateForm() )
-                                    cargarFragmento(getFormulario3());
+                                    cargarFragmento(getFormulario3(),null);
                                 break;
                             case "FORMULARIO3":
                                 if ( formulario3.validateForm() )
-                                    cargarFragmento(getFormulario4());
+                                    cargarFragmento(getFormulario4(),null);
                                 break;
                             case "FORMULARIO4":
                                 if ( formulario1.validateForm() && formulario2.validateForm() && formulario3.validateForm() && formulario4.validateForm() ) {
                                     if  ( grabarFormularios() ) {
                                         Toast.makeText(this, "El formulario ha sido cargado correctamente", Toast.LENGTH_SHORT).show();
                                     }
-                                    cargarFragmento(getHome());
+                                    cargarFragmento(getHome(),null);
                                 }
                                 break;
                         }
@@ -353,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    private Boolean grabarFormularios() {
+    protected Boolean grabarFormularios() {
 
         try {
             if (formulario1 != null && formulario2 != null && formulario3 != null && formulario4 != null) {
@@ -449,15 +508,16 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         getEntityManager().addTable(Fincas.class);
         getEntityManager().addTable(Caniales.class);
+        getEntityManager().addTable(Frentes.class);
+        getEntityManager().addTable(Empresas.class);
+        getEntityManager().addTable(Vehiculos.class);
         getEntityManager().addTable(Lotes.class);
         getEntityManager().addTable(Empleados.class);
         getEntityManager().addTable(Rangos.class);
         getEntityManager().addTable(Transaccion.class);
-        getEntityManager().addTable(Frentes.class);
-        getEntityManager().addTable(Empresas.class);
         getEntityManager().init();
 
-        Fincas fincas = new Fincas().entityConfig();
+        /*Fincas fincas = new Fincas().entityConfig();
         fincas.setValue(Fincas.FINCA,"1");
         fincas.setValue(Fincas.DESCRIPCION, "Santana");
         fincas = (Fincas) getEntityManager().save(fincas);
@@ -488,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         emp.setValue("nombre_puesto", "Conductor Cabezal");
         emp.setValue("nombre", "Juan De los Santos");
         emp.setValue("estado", "ACTIVO");
-        getEntityManager().save(emp);
+        getEntityManager().save(emp);*/
 
         Rangos rangos = new Rangos().entityConfig();
         rangos.setValue(Rangos.EMPRESA,"30");

@@ -81,6 +81,7 @@ public class MyOnFocusListenerFactory implements View.OnFocusChangeListener {
                     }
                 }
             } catch ( Exception e ) {
+                e.printStackTrace();
                 Log.e("Error","Error al buscar el resultado: "+e.getMessage());
                 return false;
             }
