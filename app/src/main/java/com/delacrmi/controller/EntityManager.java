@@ -184,11 +184,11 @@ public class EntityManager  {
         Entity ent= initInstance(entity);
         Cursor cursor = read().query(ent.getName(),columns,where,whereValues,groupBy,
                 having,orderBy,"1");
-        read().close();
 
         if(cursor != null && cursor.moveToFirst())
             addEntityValues(cursor,ent);
 
+        read().close();
         return ent;
     }
 
@@ -200,11 +200,12 @@ public class EntityManager  {
             sql += " where "+conditions;
 
         Cursor cursor = read().rawQuery(sql, args);
-        read().close();
+
 
         if(cursor != null && cursor.moveToFirst())
             addEntityValues(cursor, ent);
 
+        read().close();
         return ent;
     }
 
@@ -213,7 +214,7 @@ public class EntityManager  {
                            String limit){
         Cursor cursor = read().query(distinct, initInstance(entity).getName(),
                 columns, where, whereValues, groupBy, having, orderBy, limit);
-        read().close();
+
 
         if(cursor != null && cursor.moveToFirst()){
             List<Entity> list = new ArrayList<Entity>();
@@ -223,8 +224,11 @@ public class EntityManager  {
                 list.add(ent);
             }while(cursor.moveToNext());
 
+            read().close();
+
             return  list;
         }
+        read().close();
         return new ArrayList<Entity>();
     }
 
@@ -236,7 +240,6 @@ public class EntityManager  {
             sql += " where "+conditions;
 
         Cursor cursor = read().rawQuery(sql, args);
-        read().close();
 
         if(cursor != null && cursor.moveToFirst()){
             List<Entity> list = new ArrayList<Entity>();
@@ -246,8 +249,11 @@ public class EntityManager  {
                 list.add(ent);
             }while(cursor.moveToNext());
 
+            read().close();
+
             return  list;
         }
+        read().close();
         return new ArrayList<Entity>();
     }
     //</editor-fold>

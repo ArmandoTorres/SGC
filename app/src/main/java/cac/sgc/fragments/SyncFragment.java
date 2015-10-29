@@ -2,15 +2,19 @@ package cac.sgc.fragments;
 
 import android.app.Fragment;
 import android.content.ContentValues;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.delacrmi.connection.SocketConnect;
 import com.delacrmi.controller.Entity;
@@ -22,15 +26,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import cac.sgc.R;
-import cac.sgc.entities.Empresas;
-import cac.sgc.mycomponents.SyncCardView;
-import io.socket.client.Socket;
+import cac.sgc.tools.SyncAdapter;
+import cac.sgc.tools.ViewSyncHolder;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Created by miguel on 19/10/15.
@@ -43,12 +49,25 @@ public class SyncFragment extends Fragment {
     private EntityManager entityManager;
 
     private View view;
-    private ListView listViewSync;
-    private List<Vector<String>> listado;
-    private SyncCardView adapter;
+    public RecyclerView recyclerView;
+
+    private List<Vector<String>> list;
+    private SyncAdapter syncAdapter;
+    private Map<String,Integer> mapListPosition = new HashMap<String,Integer>();
+    private Map<String,View> syncProgressElements = new HashMap<String,View>();
 
     private View.OnClickListener onClickListener;
-    private AdapterView.OnItemClickListener onItemClickListener;
+    private int SYNCHRONIZING = 1;
+    private int SYNCHRONIZED = 0;
+    private int syncCount = 0;
+
+    public int getSyncStatus(){
+        if(outInstance.syncCount == outInstance.SYNCHRONIZED)
+            return outInstance.SYNCHRONIZED;
+        else
+            return outInstance.SYNCHRONIZING;
+    }
+
 
     public static SyncFragment init(AppCompatActivity context,EntityManager entityManager,String uri){
         if(outInstance == null){
@@ -56,7 +75,6 @@ public class SyncFragment extends Fragment {
             outInstance.context = context;
             outInstance.entityManager = entityManager;
             outInstance.uri = uri;
-            outInstance.socketInit();
         }
         return outInstance;
     }
@@ -73,9 +91,20 @@ public class SyncFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.sync_fragment_layout,container,false);
+        if(view == null)
+            view = inflater.inflate(R.layout.sync_fragment_layout,container,false);
+
         initComponents();
+        outInstance.connect.init();
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i("onDrestroyView", "out");
+        outInstance.connect.getSocket().disconnect();
     }
 
     /*
@@ -84,24 +113,43 @@ public class SyncFragment extends Fragment {
     * =============================================================================================
     */
     private void initComponents() {
-        outInstance.listViewSync = (ListView) view.findViewById(R.id.listViewSync);
 
-        outInstance.listado = new ArrayList<Vector<String>>();
+        outInstance.socketInit();
+
+        outInstance.recyclerView = (RecyclerView)view.findViewById(R.id.recycleSync);
+
+        //The recycleView Size not change
+        outInstance.recyclerView.setHasFixedSize(true);
+
+        fillList();
+
+        outInstance.syncAdapter = new SyncAdapter(outInstance.list);
+
+        outInstance.recyclerView.setAdapter(syncAdapter);
+        outInstance.recyclerView.setLayoutManager(
+                new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+
+    }
+
+    private void fillList(){
+        outInstance.list = new ArrayList<Vector<String>>();
+
+        int count = 0;
+
         for (String name : outInstance.entityManager.getTablesNames()){
 
-            Vector<String> values = new Vector<String>();
             if(!name.equals("ba_mtransaccion")){
-                values.add(outInstance.entityManager.getEntityNicName(name));
-                values.add(name);
+                Vector<String> values = new Vector<String>();
 
-                outInstance.listado.add(values);
+                values.add(0, outInstance.entityManager.getEntityNicName(name));
+                values.add(1, name);
+                values.add(2, String.valueOf(0));
+                outInstance.list.add(values);
+
+                mapListPosition.put(name, count);
+                count++;
             }
-
         }
-
-        outInstance.adapter = new SyncCardView(outInstance.context,outInstance.listado);
-
-        outInstance.listViewSync.setAdapter(outInstance.adapter);
     }
 
     /*
@@ -109,57 +157,57 @@ public class SyncFragment extends Fragment {
     * Starting the socket connection class
     * =============================================================================================
     */
-    private void socketInit(){
-        outInstance.connect = new SocketConnect(outInstance.context,outInstance.uri){
+    private boolean socketInit(){
+        if(outInstance.connect == null)
+            outInstance.connect = new SocketConnect(outInstance.context,outInstance.uri){
 
-            @Override
-            public void onSynchronizeClient(Object... args) {
-                try{
-                    JSONObject obj = (JSONObject) args[0];
-                    Class className = outInstance.entityManager.getClassByName(obj.getString("tableName"));
-                    JSONArray rows = obj.getJSONArray("result");
+                @Override
+                public void onSynchronizeClient(Object... args) {
+                    try{
+                        JSONObject obj = (JSONObject) args[0];
+                        String tableName = obj.getString("tableName");
 
-                    outInstance.entityManager.delete(className, null, null);
+                        ProgressUpdate progressUpdate = new ProgressUpdate(tableName,
+                                outInstance.entityManager,obj.getJSONArray("result"));
+                        outInstance.syncCount += outInstance.SYNCHRONIZING;
+                        progressUpdate.execute();
 
-                    for (int index=0;index<rows.length(); index++){
-                        JSONObject row = (JSONObject) rows.getJSONObject(index);
-                        ContentValues columns = new ContentValues();
-
-                        Iterator iteratorKeys = row.keys();
-                        while (iteratorKeys.hasNext()){
-                            String key = iteratorKeys.next().toString();
-                            String value = row.getString(key);
-
-                            if(value != null && !value.equals("") && !value.equals(" "))
-                                columns.put(key.toLowerCase(), value);
-                        }
-
-                        Entity ent = outInstance.entityManager.save(className,columns);
-                        Log.i(ent.getName(), ent.getColumnValueList().getAsString(ent.getPrimaryKey()));
-                        Log.e(obj.getString("tableName"),row.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
 
-                Empresas entity = (Empresas)outInstance.entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
-                Log.i(entity.getName(),entity.getColumnValueList().
-                        getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
-                        getAsString(Empresas.DIRECCION_COMERCIAL));
-            }
+                @Override
+                public void onSynchronizeServer(Object... args) {
 
-            @Override
-            public void onSynchronizeServer(Object... args) {
+                }
 
-            }
+                @Override
+                public void onSyncSuccess(Object... args) {
+                    JSONObject obj = new JSONObject();
+                    try{
+                        obj.put("login","sync");
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
 
-            @Override
-            public void disconnect() {
-                super.disconnect();
-                outInstance.connect = null;
-            }
-        };
+                @Override
+                public void onSyncReject(Object... args) {
+                    JSONObject obj = (JSONObject) args[0];
+                    /*try {
+                        outInstance.syncProgressElements.get(obj.getString("tableName")).pgb_sync.setIndeterminate(true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }*/
+
+                    super.onSyncReject(args);
+                }
+            };
+        else
+            outInstance.connect.getSocket().connect();
+
+        return outInstance.connect != null;
     }
 
     public AppCompatActivity getContext(){
@@ -186,7 +234,7 @@ public class SyncFragment extends Fragment {
     }
 
 
-    /*
+    /**
     *==============================================================================================
     * @args: String tableName
     *        String where
@@ -226,38 +274,163 @@ public class SyncFragment extends Fragment {
         return  obj;
     }
 
-    public void syncTables(JSONObject tableJSONObject){
-        //JSONObject obj = new JSONObject();
-            /*obj.put("room", "sync");
-
-            outInstance.connect.sendMessage("login", obj);*/
-
-        outInstance.connect.sendMessage("synchronizerClient",
-                outInstance.getJSONSelect("pg_empresa", null, null));
-
-            /*syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("cp_finca",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("cp_canial",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("cp_lote",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("rh_empleado",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("rh_frente",null,null));
-
-            syncFragment.getConnect().sendMessage("synchronizerClient",
-                    syncFragment.getJSONSelect("mq_vehiculo",null,null));*/
-
-        /*Empresas entity = (Empresas)entityManager.findOnce(Empresas.class,"*","id_empresa = ?",new String[]{"30"});
-        Log.i(entity.getName(),entity.getColumnValueList().
-                getAsString(entity.getPrimaryKey())+" "+entity.getColumnValueList().
-                getAsString(Empresas.DIRECCION_COMERCIAL));*/
+    /**
+    * =============================================================================================
+    * @args JSONObject
+    * This method send the client information if the application is connected
+    * with the synchronizer server
+    * =============================================================================================
+    */
+    public void syncTable(JSONObject tableJSONObject){
+        if(outInstance.socketInit())
+            outInstance.connect.sendMessage("synchronizerClient",tableJSONObject);
+        else
+            Log.e("Socket","is null outInstance.connect ");
 
     }
 
+    /*
+    * Trying to sync all the client catalog information.
+    */
+    public void syncAllTables(){
+        Iterator iterator = outInstance.list.iterator();
+        while (iterator.hasNext()){
+            threadSynchronizer(((Vector<String>)iterator.next()).get(1));
+        }
+    }
+
+    public void moveItemPosition(){
+        Vector<String> obj = outInstance.list.get(0);
+        for(int ind = 1; ind <= outInstance.list.size()-1;ind++)
+            outInstance.list.set(ind-1, outInstance.list.get(ind));
+
+        outInstance.list.set(7, obj);
+        outInstance.syncAdapter.notifyItemMoved(0,7);
+
+        ((LinearLayoutManager)outInstance.recyclerView.getLayoutManager())
+                .scrollToPositionWithOffset(0, 0);
+    }
+
+    /*
+    *Getting the Item View from the ListView component
+    */
+   /* public View getViewByPosition(int pos){
+        try {
+            final int fistElement = outInstance.listViewSync.getFirstVisiblePosition();
+            final int lastElement = fistElement + outInstance.listViewSync.getChildCount() - 1;
+
+            if (pos < fistElement || pos > lastElement) {
+                return outInstance.listViewSync.getAdapter().getView(pos, null, outInstance.listViewSync);
+            } else {
+                return outInstance.listViewSync.getChildAt(pos);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }*/
+
+    public void threadSynchronizer(String tableName){
+        outInstance.syncTable(outInstance.getJSONSelect(tableName, null, null));
+    }
+
+    /**
+    * =============================================================================================
+    * Class ProgressUpdate
+    * In this class we change the progress status of our progressBar view
+    * if the progressUpdate table name is equals to view table name.
+    *
+    * @args: String TableName
+    *        EntityManager entityManager
+    *        JSONArray rows
+    * =============================================================================================
+    */
+    public class ProgressUpdate extends AsyncTask<Void,Integer,Boolean>{
+
+        View view;
+        Vector<String> persistenceItem;
+        ProgressBar progressObject;
+        EntityManager entityManager;
+        JSONArray rows;
+        String tableName;
+        int position;
+
+        public ProgressUpdate(String tableName, EntityManager entityManager,JSONArray rows){
+            //this.vhs = vhs;
+            //progressObject = vhs.pgb_sync;
+            //this.view = view;
+            this.tableName = tableName;
+            this.entityManager = entityManager;
+            this.rows = rows;
+
+            position = outInstance.mapListPosition.get(tableName);
+        }
+
+        public void setPosition(int position){this.position = position;}
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Class className = entityManager.getClassByName(tableName);
+
+            entityManager.delete(className, null, null);
+
+            int parts = (int)Math.round(100 / rows.length());
+            try {
+                for (int index = 0; index < rows.length(); index++) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    JSONObject row = (JSONObject) rows.getJSONObject(index);
+                    ContentValues columns = new ContentValues();
+
+                    Iterator iteratorKeys = row.keys();
+                    while (iteratorKeys.hasNext()) {
+                        String key = iteratorKeys.next().toString();
+                        String value = row.getString(key);
+
+                        if (value != null && !value.equals("") && !value.equals(" "))
+                            columns.put(key.toLowerCase(), value);
+                    }
+
+                    Entity ent = entityManager.save(className, columns);
+                    if(ent.getColumnValueList().getAsInteger(ent.getPrimaryKey()) > 0)
+                        publishProgress(parts*index);
+                }
+
+                outInstance.syncCount -= outInstance.SYNCHRONIZING;
+                publishProgress(100);
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            return true;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+
+            int progress = values[0];
+            persistenceItem.set(2, String.valueOf(progress));
+
+            try {
+                ViewSyncHolder vsh = (ViewSyncHolder)
+                        outInstance.syncAdapter.getViewOfTable(tableName).getTag();
+                if(vsh.tableName.equals(tableName))
+                    vsh.pgb_sync.setProgress(progress);
+                    vsh.tvProgress.setText(progress+"%");
+            }catch (NullPointerException e){}
+
+            if(outInstance.syncCount == outInstance.SYNCHRONIZED)
+                Snackbar.make(outInstance.view,R.string.syncSuccess,Snackbar.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            persistenceItem = outInstance.list.get(position);
+            persistenceItem.add(2, String.valueOf(0));
+        }
+    }
 }

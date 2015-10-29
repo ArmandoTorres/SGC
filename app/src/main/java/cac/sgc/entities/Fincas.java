@@ -15,6 +15,7 @@ public class Fincas extends Entity {
     public Fincas entityConfig() {
         setName("cp_finca");
         setNickName("Finca");
+        addColumn("id_finca","integer");
         addColumn("descripcion", "text");
         addColumn("ubicacion","text");
 
