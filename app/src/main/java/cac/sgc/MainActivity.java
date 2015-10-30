@@ -46,6 +46,9 @@ import cac.sgc.fragments.SyncFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
 
+    //Main Menu
+    private Menu menu;
+
     //Referencias en pantalla
     private ImageButton btnCrearRegistro, btnMostrarListas, btnHome, btnAnterior, btnSiguiente;
     private Toolbar toolbar;
@@ -132,26 +135,26 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
+
+        menu.findItem(R.id.btn_sync_menu).setIcon(R.drawable.actualizar);
         return true;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.btn_sync_menu:
-                ActionMenuItemView btn;
+                MenuItem btn;
                 if (ultimoFragmentoCargado.equals(SyncFragment.class.getSimpleName())) {
                     startActivity(Home.class.getSimpleName().toUpperCase());
-                    btn = (ActionMenuItemView ) findViewById(R.id.btn_sync_menu);
-                    btn.setIcon(MainActivity.this.getResources().getDrawable(R.drawable.actualizar, getTheme()));
-                    //btn.setBackgroundResource(R.drawable.actualizar);
+                    //btn.setIcon(MainActivity.this.getResources().getDrawable(R.drawable.actualizar, getTheme()));
+                    item.setIcon(R.drawable.actualizar);
 
                 }else{
                     startActivity(SyncFragment.class.getSimpleName().toUpperCase());
-                    btn = (ActionMenuItemView ) findViewById(R.id.btn_sync_menu);
-                    btn.setIcon(MainActivity.this.getResources().getDrawable(R.drawable.home, getTheme()));
-                    //btn.setBackgroundResource(R.drawable.home);
+                    //btn.setIcon(MainActivity.this.getResources().getDrawable(R.drawable.home, getTheme()));
+                    item.setIcon(R.drawable.home);
                 }
                 break;
         }
@@ -197,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         events();
 
         try {
+
             //Enlazamos los objetos
             btnCrearRegistro = (ImageButton) this.findViewById(R.id.btn_crear_registro);
             btnMostrarListas = (ImageButton) this.findViewById(R.id.btn_mostrar_listas);

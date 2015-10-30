@@ -103,7 +103,6 @@ public class SyncFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i("onDrestroyView", "out");
         outInstance.connect.getSocket().disconnect();
     }
 

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
 
     <item android:id="@+id/btn_sync_menu"
-        android:icon="@drawable/actualizar"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_settings"
