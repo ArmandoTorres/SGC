@@ -18,7 +18,7 @@ public class MyDialogDateListenerFactory implements DatePickerDialog.OnDateSetLi
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        if ( field instanceof EditText)
+        if ( field instanceof EditText )
             ((EditText) field).setText(dayOfMonth + "/" + monthOfYear + "/" + year);
     }
 

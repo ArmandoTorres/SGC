@@ -1,10 +1,10 @@
 package cac.sgc.fragments;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -13,14 +13,17 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.DatePicker;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-
+import com.atorres.AndroidUtils;
 import com.atorres.BluetoothPrinterManager;
+import com.atorres.PrinterObjectFormat;
 import com.delacrmi.controller.Entity;
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
@@ -30,9 +33,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BarcodePDF417;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +46,10 @@ import cac.sgc.R;
 import cac.sgc.entities.Frentes;
 import cac.sgc.entities.Transaccion;
 import cac.sgc.mycomponents.ListadoTransacciones;
+import cac.sgc.mycomponents.MyDialogDateListenerFactory;
 import cac.sgc.mycomponents.TransaccionAdapter;
+
+import static com.atorres.BluetoothPrinterManager.*;
 
 /**
  * Created by Legal on 04/10/2015.
@@ -57,9 +61,9 @@ public class Listado extends Fragment {
     private EditText editFiltroPorFecha;
     private ImageButton generarReporte;
     private ListView listadoTransacciones;
+
     private static Listado ourInstance = null;
-    private int vYear, vMonthOfYear,  vDayOfMonth;
-    private BluetoothPrinterManager btm;
+    private BluetoothPrinterManager bluetoothPrinterManager;
 
     public Listado() {}
 
@@ -90,9 +94,9 @@ public class Listado extends Fragment {
      * componentes.
      * */
     private void initComponents() {
-        editFiltroPorFecha = (EditText) view.findViewById(R.id.editFiltroPorFecha);
-        generarReporte = (ImageButton) view.findViewById(R.id.generarReporte);
-        listadoTransacciones = (ListView) view.findViewById(R.id.listViewTransacciones);
+        editFiltroPorFecha      = (EditText) view.findViewById(R.id.editFiltroPorFecha);
+        generarReporte          = (ImageButton) view.findViewById(R.id.generarReporte);
+        listadoTransacciones    = (ListView) view.findViewById(R.id.listViewTransacciones);
 
         // LLenando el listado en pantalla.
         List<Entity> listado = ourInstance.context.getEntityManager().find(Transaccion.class, "*", null, null);
@@ -154,27 +158,25 @@ public class Listado extends Fragment {
             }
         }
 
-        //Log.e("Resultado:", "Valor: " + resultado.get(0).getSubTitulo());
         TransaccionAdapter adapter = new TransaccionAdapter(ourInstance.context, resultado);
         listadoTransacciones.setAdapter(adapter);
         listadoTransacciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedOption = ((ListadoTransacciones) parent.getItemAtPosition(position)).getSubTitulo();
-                Toast.makeText(ourInstance.context, "Item seleccionado: " + selectedOption, Toast.LENGTH_SHORT).show();
-                crearReportePDF((ListadoTransacciones) parent.getItemAtPosition(position));
+                //crearReportePDF((ListadoTransacciones) parent.getItemAtPosition(position));
+                printBluetoothReport((ListadoTransacciones) parent.getItemAtPosition(position));
             }
         });
-
-        vYear = Calendar.getInstance().get(Calendar.YEAR);
-        vMonthOfYear = Calendar.getInstance().get(Calendar.MONTH);
-        vDayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
         editFiltroPorFecha.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    showDialogDatePicker();
+                    DatePickerDialog datePicker = new DatePickerDialog(getActivity(),R.style.AppTheme,new MyDialogDateListenerFactory(editFiltroPorFecha),
+                            Calendar.getInstance().get(Calendar.YEAR),
+                            Calendar.getInstance().get(Calendar.MONTH),
+                            Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                    datePicker.show();
                 }
             }
         });
@@ -182,40 +184,45 @@ public class Listado extends Fragment {
         generarReporte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btm = new BluetoothPrinterManager(ourInstance.context);
-                btm.initComunication();
+                final Dialog dialog = new Dialog(ourInstance.context);
+                dialog.setContentView(R.layout.custom_alert_dialog);
+                dialog.setTitle("Elegir dispositivo");
+
+                Button customAlertDialogButton   = (Button) dialog.findViewById(R.id.customAlertDialogButton);
+                ListView customAlertDialogList   = (ListView) dialog.findViewById(R.id.customAlertDialogList);
+
+                customAlertDialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                ArrayAdapter<String> adapter = getBluetoothPrinterManager().getBluetoothDevices();
+                if ( adapter != null ) {
+                    customAlertDialogList.setAdapter(adapter);
+                    customAlertDialogList.setItemChecked(0, true);
+                    customAlertDialogList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                    customAlertDialogList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            getBluetoothPrinterManager().setBluetoothDeviceSelected(position);
+                        }
+                    });
+                    dialog.show();
+                }
             }
         });
-
     }
 
-    /**
-     * Metodo utilizado para mostrar un dialog con el calendario.
-     * */
-    private void showDialogDatePicker() {
-
-        DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener(){
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                vYear = year;
-                vMonthOfYear = monthOfYear;
-                vDayOfMonth = dayOfMonth;
-                editFiltroPorFecha.setText(vDayOfMonth + "/" + vMonthOfYear + "/" + vYear);
-            }
-        };
-
-        DatePickerDialog datePicker = new DatePickerDialog(getActivity(), R.style.AppTheme,dateListener,vYear,vMonthOfYear,vDayOfMonth);
-        datePicker.show();
-   }
-
-   private void crearReportePDF( ListadoTransacciones detailsToShow ) {
+    private void crearReportePDF( ListadoTransacciones detailsToShow ) {
        //Creamos el documento
        Document documento = new Document();
 
        try {
-           String fileName = String.format("%02d", vDayOfMonth) +
-                   String.format("%02d", vMonthOfYear) +
-                   vYear + Calendar.getInstance().get(Calendar.HOUR) +
+           String fileName = String.format("%02d", Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) +
+                   String.format("%02d", Calendar.getInstance().get(Calendar.MONTH)) +
+                   Calendar.getInstance().get(Calendar.YEAR) + Calendar.getInstance().get(Calendar.HOUR) +
                    Calendar.getInstance().get(Calendar.MINUTE) +
                    Calendar.getInstance().get(Calendar.SECOND) + ".pdf";
            //Creamos el fichero con el nombre;
@@ -264,4 +271,66 @@ public class Listado extends Fragment {
            documento.close();
        }
    }
+
+    public BluetoothPrinterManager getBluetoothPrinterManager() {
+        if ( bluetoothPrinterManager == null ) {
+            bluetoothPrinterManager = new BluetoothPrinterManager(context);
+        }
+        return bluetoothPrinterManager;
+    }
+
+    public void printBluetoothReport ( ListadoTransacciones detailsToShow) {
+
+        //Verificamos si existe alguna impresora seleccionada.
+        if ( !getBluetoothPrinterManager().isDeviceSelected() ) {
+            //De no existe algun dispositivo seleccionado se llama a la lista para que el usuario seleccione un dispositivo.
+            // 1-) Creamos el dialogo.
+            final Dialog dialog = new Dialog(ourInstance.context);
+            dialog.setContentView(R.layout.custom_alert_dialog);
+            dialog.setTitle("Elegir dispositivo");
+            // 2-) Enlazamos los botones y lista.
+            Button customAlertDialogButton   = (Button) dialog.findViewById(R.id.customAlertDialogButton);
+            ListView customAlertDialogList   = (ListView) dialog.findViewById(R.id.customAlertDialogList);
+            //3-) Al presionar el boton ocultamos el dialog.
+            customAlertDialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            //4-) Conseguimos la lista de dispositivos.
+            ArrayAdapter<String> adapter = getBluetoothPrinterManager().getBluetoothDevices();
+            if ( adapter != null ) {
+                customAlertDialogList.setAdapter(adapter);
+                customAlertDialogList.setItemChecked(0, true);
+                customAlertDialogList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                customAlertDialogList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        getBluetoothPrinterManager().setBluetoothDeviceSelected(position);
+                    }
+                });
+                dialog.show();
+                //Terminamos la ejecucion del metodo.
+                return;
+            }
+        }
+
+        // Solo si se selecciono un dispositivo procedemos a imprimir el reporte
+        if ( getBluetoothPrinterManager().isDeviceSelected() ) {
+
+            //Creamos el arreglo a imprimir.
+            List<PrinterObjectFormat> paramToPrint = new ArrayList<>();
+            paramToPrint.add(new PrinterObjectFormat(PRINTER_FONT.BOLD,PRINTER_OBJECT.TEXT,detailsToShow.getTitulo()));
+            paramToPrint.add(new PrinterObjectFormat(PRINTER_FONT.BOLD,PRINTER_OBJECT.TEXT,detailsToShow.getSubTitulo()));
+            paramToPrint.add(new PrinterObjectFormat(PRINTER_FONT.NORMAL,PRINTER_OBJECT.TEXT,detailsToShow.getDetalle()));
+            paramToPrint.add(new PrinterObjectFormat(PRINTER_OBJECT.PICTURE,BitmapFactory.decodeResource(ourInstance.context.getResources(),R.drawable.actualizar)));
+
+            //Imprimimos el objeto.
+            getBluetoothPrinterManager().print(paramToPrint);
+
+            AndroidUtils.showAlertMsg(ourInstance.context,"Notificación","Imprimimos el reporte. :-)");
+        } else
+            AndroidUtils.showAlertMsg(ourInstance.context,"Notificación","Debe seleccionar un dispositivo bluetooth para continuar con la impresion.");
+    }
 }
