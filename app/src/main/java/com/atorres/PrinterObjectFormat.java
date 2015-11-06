@@ -6,15 +6,19 @@ public class PrinterObjectFormat {
 
     private BluetoothPrinterManager.PRINTER_FONT fontType;
     private BluetoothPrinterManager.PRINTER_OBJECT objectType;
-    private String Text;
+    private BluetoothPrinterManager.PRINTER_FONT_SIZE fontSize;
+    private boolean underline;
+    private String text;
     private Bitmap bmp;
 
     public PrinterObjectFormat() {}
 
-    public PrinterObjectFormat( BluetoothPrinterManager.PRINTER_FONT fontType, BluetoothPrinterManager.PRINTER_OBJECT objectType, String text ) {
+    public PrinterObjectFormat( BluetoothPrinterManager.PRINTER_FONT fontType, BluetoothPrinterManager.PRINTER_FONT_SIZE fontSize,  BluetoothPrinterManager.PRINTER_OBJECT objectType, boolean underline, String text ) {
         this.fontType = fontType;
         this.objectType = objectType;
-        Text = text;
+        this.fontSize = fontSize;
+        this.underline = underline;
+        this.text = text;
     }
 
     public PrinterObjectFormat( BluetoothPrinterManager.PRINTER_OBJECT objectType, Bitmap bmp ) {
@@ -39,11 +43,16 @@ public class PrinterObjectFormat {
     }
 
     public String getText() {
-        return Text;
+        //Verificamos si el texto no contenga caracteres no permitidos.
+        if ( text != null ) {
+            text = text.replaceAll("ñ", "n");
+            text = text.replaceAll("Ñ", "N");
+        }
+        return text;
     }
 
     public void setText(String text) {
-        Text = text;
+        text = text;
     }
 
     public Bitmap getBmp() {
@@ -52,5 +61,20 @@ public class PrinterObjectFormat {
 
     public void setBmp(Bitmap bmp) {
         this.bmp = bmp;
+    }
+
+    public BluetoothPrinterManager.PRINTER_FONT_SIZE getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(BluetoothPrinterManager.PRINTER_FONT_SIZE fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    public boolean isUnderline() {        return underline;
+    }
+
+    public void setUnderline(boolean underline) {
+        this.underline = underline;
     }
 }

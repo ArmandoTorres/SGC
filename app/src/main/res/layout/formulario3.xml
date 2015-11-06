@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewCodigoCarreta"
-            android:text="Introduzca - Codigo Carreta"
+            android:text="Codigo Carreta"
             android:textStyle="bold"
             android:layout_marginTop="10dp" />
 
@@ -24,7 +24,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listaCodigoCarreta"
-            android:entries="@array/carretas"
             android:layout_below="@+id/textViewCodigoCarreta"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -34,7 +33,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewCodigoCosechadora"
-            android:text="Introduzca - Codigo Cosechadora"
+            android:text="Codigo Cosechadora"
             android:layout_below="@+id/listaCodigoCarreta"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
@@ -44,7 +43,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listaCodigoCosechadora"
-            android:entries="@array/cosechadora"
             android:layout_below="@+id/textViewCodigoCosechadora"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -54,7 +52,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewConductorCosechadora"
-            android:text="Introduzca - Conductor Cosechadora"
+            android:text="Conductor Cosechadora"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/listaCodigoCosechadora"/>
@@ -89,7 +87,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewCodigoTractor"
-            android:text="Introduzca - Codigo Tractor"
+            android:text="Codigo Tractor"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/editTextConductorCosechadora"/>
@@ -98,7 +96,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listaCodigoTractor"
-            android:entries="@array/tractores"
             android:layout_below="@+id/textViewCodigoTractor"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -108,7 +105,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewConductorTractor"
-            android:text="Introduzca - Conductor Tractor"
+            android:text="Conductor Tractor"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/listaCodigoTractor"/>

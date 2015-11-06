@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -18,29 +17,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 import com.atorres.AndroidUtils;
+import com.atorres.BarcodeEncoder;
 import com.atorres.BluetoothPrinterManager;
+import com.atorres.Contents;
 import com.atorres.PrinterObjectFormat;
 import com.delacrmi.controller.Entity;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BarcodePDF417;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.LineSeparator;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import cac.sgc.MainActivity;
 import cac.sgc.R;
 import cac.sgc.entities.Frentes;
@@ -154,7 +148,20 @@ public class Listado extends Fragment {
                 barcode += a.getColumnValueList().getAsString(Transaccion.CODIGO_CABEZAL)+"|";
                 barcode += a.getColumnValueList().getAsString(Transaccion.CONDUCTOR_CABEZAL)+";";
 
-                resultado.add( new ListadoTransacciones(null,subTitle,reporte, barcode) );
+                ListadoTransacciones lt = new ListadoTransacciones(null,subTitle,reporte, barcode);
+
+                BarcodeEncoder qrCodeEncoder = new BarcodeEncoder(barcode, null,
+                        Contents.Type.TEXT, BarcodeFormat.PDF_417.toString(), 500);
+
+                Bitmap bitmap;
+                try {
+                    bitmap = qrCodeEncoder.encodeAsBitmap();
+                    lt.setBmp(bitmap);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+
+                resultado.add( lt );
             }
         }
 
@@ -163,8 +170,7 @@ public class Listado extends Fragment {
         listadoTransacciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //crearReportePDF((ListadoTransacciones) parent.getItemAtPosition(position));
-                printBluetoothReport((ListadoTransacciones) parent.getItemAtPosition(position));
+            printBluetoothReport((ListadoTransacciones) parent.getItemAtPosition(position));
             }
         });
 
@@ -181,96 +187,7 @@ public class Listado extends Fragment {
             }
         });
 
-        generarReporte.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(ourInstance.context);
-                dialog.setContentView(R.layout.custom_alert_dialog);
-                dialog.setTitle("Elegir dispositivo");
-
-                Button customAlertDialogButton   = (Button) dialog.findViewById(R.id.customAlertDialogButton);
-                ListView customAlertDialogList   = (ListView) dialog.findViewById(R.id.customAlertDialogList);
-
-                customAlertDialogButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                ArrayAdapter<String> adapter = getBluetoothPrinterManager().getBluetoothDevices();
-                if ( adapter != null ) {
-                    customAlertDialogList.setAdapter(adapter);
-                    customAlertDialogList.setItemChecked(0, true);
-                    customAlertDialogList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                    customAlertDialogList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            getBluetoothPrinterManager().setBluetoothDeviceSelected(position);
-                        }
-                    });
-                    dialog.show();
-                }
-            }
-        });
     }
-
-    private void crearReportePDF( ListadoTransacciones detailsToShow ) {
-       //Creamos el documento
-       Document documento = new Document();
-
-       try {
-           String fileName = String.format("%02d", Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) +
-                   String.format("%02d", Calendar.getInstance().get(Calendar.MONTH)) +
-                   Calendar.getInstance().get(Calendar.YEAR) + Calendar.getInstance().get(Calendar.HOUR) +
-                   Calendar.getInstance().get(Calendar.MINUTE) +
-                   Calendar.getInstance().get(Calendar.SECOND) + ".pdf";
-           //Creamos el fichero con el nombre;
-           if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-               File ruta = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "SGC_PDF");
-               if (ruta != null) {
-                   ruta.mkdirs();
-                   //Creamos el archivo
-                   File fichero = new File(ruta, fileName);
-                   // creamos el flujo de datos
-                   FileOutputStream ficheroPDF = new FileOutputStream(fichero.getAbsolutePath());
-
-                   //Asociamos el flujo que acabamos de crear al documentos.
-                   PdfWriter.getInstance(documento, ficheroPDF);
-
-                   //Abrimos el documento.
-                   documento.open();
-
-                   //Codigo de Barras
-                   BarcodePDF417 barcode = new BarcodePDF417();
-                   barcode.setText(detailsToShow.getBarcode());
-                   Image img = barcode.getImage();
-                   img.scalePercent(100, 50 * barcode.getYHeight());
-                   documento.add(img);
-
-                   Bitmap bmp = BitmapFactory.decodeByteArray(img.getOriginalData(),0,img.getOriginalData().length);
-
-                   //Subtitilo del reporte
-                   Paragraph p1 = new Paragraph(detailsToShow.getSubTitulo(), FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLD, BaseColor.BLACK));
-                   p1.setAlignment(Paragraph.ALIGN_CENTER);
-                   documento.add(p1);
-
-                   documento.add(new LineSeparator(0.5f, 100, null, 0, -5));
-
-                   //Detalle del reporte
-                   Paragraph p2 = new Paragraph(detailsToShow.getDetalle(), FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL, BaseColor.BLACK));
-                   p2.setAlignment(Paragraph.ALIGN_JUSTIFIED);
-                   documento.add(p2);
-
-               }
-           }
-       } catch (Exception e){
-           Log.e("Error","Error al crear el reporte PDF",e);
-           Toast.makeText(ourInstance.context,"Ocurrio un error al crear el PDF",Toast.LENGTH_SHORT).show();
-       } finally {
-           documento.close();
-       }
-   }
 
     public BluetoothPrinterManager getBluetoothPrinterManager() {
         if ( bluetoothPrinterManager == null ) {
@@ -279,7 +196,7 @@ public class Listado extends Fragment {
         return bluetoothPrinterManager;
     }
 
-    public void printBluetoothReport ( ListadoTransacciones detailsToShow) {
+    public void printBluetoothReport ( ListadoTransacciones detailsToShow ) {
 
         //Verificamos si existe alguna impresora seleccionada.
         if ( !getBluetoothPrinterManager().isDeviceSelected() ) {
@@ -311,8 +228,6 @@ public class Listado extends Fragment {
                     }
                 });
                 dialog.show();
-                //Terminamos la ejecucion del metodo.
-                return;
             }
         }
 
@@ -321,15 +236,33 @@ public class Listado extends Fragment {
 
             //Creamos el arreglo a imprimir.
             List<PrinterObjectFormat> paramToPrint = new ArrayList<>();
-            paramToPrint.add(new PrinterObjectFormat(PRINTER_FONT.BOLD,PRINTER_OBJECT.TEXT,detailsToShow.getTitulo()));
-            paramToPrint.add(new PrinterObjectFormat(PRINTER_FONT.BOLD,PRINTER_OBJECT.TEXT,detailsToShow.getSubTitulo()));
-            paramToPrint.add(new PrinterObjectFormat(PRINTER_FONT.NORMAL,PRINTER_OBJECT.TEXT,detailsToShow.getDetalle()));
-            paramToPrint.add(new PrinterObjectFormat(PRINTER_OBJECT.PICTURE,BitmapFactory.decodeResource(ourInstance.context.getResources(),R.drawable.actualizar)));
+
+            //try {
+
+                Bitmap bitmap = detailsToShow.getBmp();
+
+                /*File archivo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "barcode.png");
+                FileOutputStream fos = new FileOutputStream(archivo);
+                bitmap.compress(Bitmap.CompressFormat.PNG,100,fos);
+                fos.close();
+                Bitmap newBitmap = BitmapFactory.decodeFile(archivo.getAbsolutePath());*/
+                PrinterObjectFormat pof = new PrinterObjectFormat();
+                pof.setBmp(bitmap);
+                pof.setObjectType(PRINTER_OBJECT.PICTURE);
+                paramToPrint.add(pof);
+            /*} catch ( FileNotFoundException f){
+                f.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
+
+            //paramToPrint.add(new PrinterObjectFormat(PRINTER_FONT.NORMAL, PRINTER_FONT_SIZE.FOUR, PRINTER_OBJECT.TEXT, true, detailsToShow.getTitulo()));
+           // paramToPrint.add(new PrinterObjectFormat(PRINTER_FONT.NORMAL, PRINTER_FONT_SIZE.ONE, PRINTER_OBJECT.TEXT, false, detailsToShow.getSubTitulo()));
+            //paramToPrint.add(new PrinterObjectFormat(PRINTER_FONT.NORMAL, PRINTER_FONT_SIZE.ONE, PRINTER_OBJECT.TEXT, false, detailsToShow.getDetalle()));
 
             //Imprimimos el objeto.
             getBluetoothPrinterManager().print(paramToPrint);
 
-            AndroidUtils.showAlertMsg(ourInstance.context,"Notificación","Imprimimos el reporte. :-)");
         } else
             AndroidUtils.showAlertMsg(ourInstance.context,"Notificación","Debe seleccionar un dispositivo bluetooth para continuar con la impresion.");
     }

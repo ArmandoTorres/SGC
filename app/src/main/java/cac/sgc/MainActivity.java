@@ -455,6 +455,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getEntityManager().addTable(Transaccion.class);
         getEntityManager().addTable(Frentes.class);
         getEntityManager().addTable(Empresas.class);
+        getEntityManager().addTable(Vehiculos.class);
         getEntityManager().init();
 
         Fincas fincas = new Fincas().entityConfig();
@@ -462,15 +463,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         fincas.setValue(Fincas.DESCRIPCION, "Santana");
         fincas = (Fincas) getEntityManager().save(fincas);
 
-        Log.e("Finca: ", "Fincas: " + fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
-
         Caniales caniales = new Caniales().entityConfig();
         caniales.setValue(Caniales.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
         caniales.setValue(Caniales.ID_CANIAL, "1");
         caniales.setValue(Caniales.DESCRIPCION, "SANTA CRUZ # 306");
         caniales = (Caniales) getEntityManager().save(caniales);
-
-        Log.e("Caniales: ", "Caniales: " + caniales.getColumnValueList().getAsString(Caniales.ID_CANIAL));
 
         Lotes lotes = new Lotes().entityConfig();
         lotes.setValue(Lotes.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.ID_FINCA));
@@ -479,12 +476,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         lotes.setValue(Lotes.DESCRIPCION, "SALINAS CAMPO #-940");
         lotes = (Lotes) getEntityManager().save(lotes);
 
-        Log.e("Lotes: ", "Lotes: " + lotes.getColumnValueList().getAsString(Lotes.ID_LOTE));
-
         Frentes fte = new Frentes().entityConfig();
         fte.setValue(Frentes.ID_FRENTE, "1");
         fte.setValue(Frentes.DESCRIPCION, "Frente Manual");
-        fte.setValue(Frentes.TIPO_CANIA,"Caña Corta");
+        fte.setValue(Frentes.TIPO_CANIA, "Caña Corta");
         getEntityManager().save(fte);
 
         Empleados emp = new Empleados().entityConfig();
@@ -508,10 +503,75 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         rangos.setValue(Rangos.STATUS, "ACTIVO");
         getEntityManager().save(rangos);
 
-        //}
-        /*Log.e("Valor","Valor Correlativo: "+rangos.getColumnValueList().getAsString(Rangos.CORRELATIVO));
+        Vehiculos vehiculos = new Vehiculos().entityConfig();
+        vehiculos.setValue(Vehiculos.CODIGO_GRUPO,"B");
+        vehiculos.setValue(Vehiculos.CODIGO_SUBGRUPO,"1");
+        vehiculos.setValue(Vehiculos.CODIGO_VEHICULO,"1");
+        vehiculos.setValue(Vehiculos.ID_AREA,"3");
+        vehiculos.setValue(Vehiculos.ID_EMPRESA,"30");
+        vehiculos.setValue(Vehiculos.STATUS, "1");
+        vehiculos = (Vehiculos) getEntityManager().save(vehiculos);
 
-        rangos = (Rangos) getEntityManager().findOnce(Rangos.class, "MAX(" + Rangos.ENVIO_ACTUAL + ")+1 "+Rangos.ENVIO_ACTUAL,"dispositivo = 'Dispositivo 1'", null);
-        Log.e("Valor","Valor Envio: "+rangos.getColumnValueList().getAsString(Rangos.ENVIO_ACTUAL));*/
+        Log.e("Vehiculo", "Correlativo: " + vehiculos.getColumnValueList().getAsString(Vehiculos.PRIMARY_KEY));
+
+        Vehiculos vehiculos1 = new Vehiculos().entityConfig();
+        vehiculos1.setValue(Vehiculos.CODIGO_GRUPO,"B");
+        vehiculos1.setValue(Vehiculos.CODIGO_SUBGRUPO,"1");
+        vehiculos1.setValue(Vehiculos.CODIGO_VEHICULO,"2");
+        vehiculos1.setValue(Vehiculos.ID_AREA,"3");
+        vehiculos1.setValue(Vehiculos.ID_EMPRESA,"30");
+        vehiculos1.setValue(Vehiculos.STATUS,"1");
+        vehiculos1 = (Vehiculos) getEntityManager().save(vehiculos1);
+
+        Log.e("Vehiculo1", "Correlativo: " + vehiculos1.getColumnValueList().getAsString(Vehiculos.PRIMARY_KEY));
+
+        Vehiculos vehiculos2 = new Vehiculos().entityConfig();
+        vehiculos2.setValue(Vehiculos.CODIGO_GRUPO,"B");
+        vehiculos2.setValue(Vehiculos.CODIGO_SUBGRUPO,"1");
+        vehiculos2.setValue(Vehiculos.CODIGO_VEHICULO,"3");
+        vehiculos2.setValue(Vehiculos.ID_AREA,"3");
+        vehiculos2.setValue(Vehiculos.ID_EMPRESA, "30");
+        vehiculos2.setValue(Vehiculos.STATUS,"1");
+
+        vehiculos2 = (Vehiculos) getEntityManager().save(vehiculos2);
+
+        Log.e("Vehiculo2", "Correlativo: " + vehiculos2.getColumnValueList().getAsString(Vehiculos.PRIMARY_KEY));
+
+        Vehiculos carreta = new Vehiculos().entityConfig();
+        carreta.setValue(Vehiculos.CODIGO_GRUPO,"C");
+        carreta.setValue(Vehiculos.CODIGO_SUBGRUPO,"1");
+        carreta.setValue(Vehiculos.CODIGO_VEHICULO,"3");
+        carreta.setValue(Vehiculos.ID_AREA,"3");
+        carreta.setValue(Vehiculos.ID_EMPRESA, "30");
+        carreta.setValue(Vehiculos.STATUS,"1");
+
+        carreta = (Vehiculos) getEntityManager().save(carreta);
+
+        Log.e("carreta", "Correlativo: " + carreta.getColumnValueList().getAsString(Vehiculos.PRIMARY_KEY));
+
+        Vehiculos cosechadora = new Vehiculos().entityConfig();
+        cosechadora.setValue(Vehiculos.CODIGO_GRUPO,"D");
+        cosechadora.setValue(Vehiculos.CODIGO_SUBGRUPO,"1");
+        cosechadora.setValue(Vehiculos.CODIGO_VEHICULO,"3");
+        cosechadora.setValue(Vehiculos.ID_AREA,"3");
+        cosechadora.setValue(Vehiculos.ID_EMPRESA, "30");
+        cosechadora.setValue(Vehiculos.STATUS,"1");
+
+        cosechadora = (Vehiculos) getEntityManager().save(cosechadora);
+
+        Log.e("cosechadora", "Correlativo: " + cosechadora.getColumnValueList().getAsString(Vehiculos.PRIMARY_KEY));
+
+        Vehiculos tractor = new Vehiculos().entityConfig();
+        tractor.setValue(Vehiculos.CODIGO_GRUPO,"A");
+        tractor.setValue(Vehiculos.CODIGO_SUBGRUPO,"1");
+        tractor.setValue(Vehiculos.CODIGO_VEHICULO,"3");
+        tractor.setValue(Vehiculos.ID_AREA,"3");
+        tractor.setValue(Vehiculos.ID_EMPRESA, "30");
+        tractor.setValue(Vehiculos.STATUS,"1");
+
+        tractor = (Vehiculos) getEntityManager().save(tractor);
+
+        Log.e("tractor", "Correlativo: " + tractor.getColumnValueList().getAsString(Vehiculos.PRIMARY_KEY));
+
     }
 }

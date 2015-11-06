@@ -27,7 +27,8 @@ public class Transaccion extends Entity {
     public static String OPERADOR_TRACTOR = "operador_tractor";
     public static String CODIGO_APUNTADOR = "codigo_apuntador";
     public static String CODIGO_VAGON     = "codigo_vagon";
-
+    public static String PERIODO     = "id_periodo";
+    public static String EMPRESA     = "id_empresa";
 
     @Override
     public Transaccion entityConfig() {

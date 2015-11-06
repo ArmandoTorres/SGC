@@ -18,7 +18,7 @@ public class Rangos extends Entity {
     public static String TICKET_ACTUAL = "ticket_actual";
     public static String STATUS       = "status";
     public static String CORRELATIVO  = "correlativo";
-    public static String TABLE_NAME   = "ba_rango";
+    public static String TABLE_NAME   = "ba_rango_envio";
 
     @Override
     public Rangos entityConfig() {

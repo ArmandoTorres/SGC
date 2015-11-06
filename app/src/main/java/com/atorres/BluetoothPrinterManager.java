@@ -8,16 +8,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import static com.atorres.BluetoothPrinterManager.PRINTER_OBJECT.*;
-import static com.atorres.BluetoothPrinterManager.PRINTER_FONT.*;
 
 /**
  * Created by Legal on 28/10/2015.
@@ -55,7 +47,7 @@ public class BluetoothPrinterManager {
         Log.i("Api version","BluetoothTestApp: "+apiVersion);
 
         //Verificamos el status del printer.
-        handler.postDelayed(GetStatusRunnable, STATUS_TIME);
+        //handler.postDelayed(GetStatusRunnable, STATUS_TIME);
 
         this.context = context;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -154,7 +146,7 @@ public class BluetoothPrinterManager {
             for ( PrinterObjectFormat a : objectList) {
                 switch (a.getObjectType()){
                     case TEXT:
-                        printText(a.getText(), a.getFontType());
+                        printText(a);
                         break;
                     case PICTURE:
                         printPicture(a.getBmp());
@@ -165,65 +157,113 @@ public class BluetoothPrinterManager {
 
     }
 
-    private void printPicture(Bitmap bmp) {
+    private void printPicture(final Bitmap bmp) {
 
-        if ( bmp != null && isOpenDevice()){
+        if ( bmp != null && isOpenDevice()) {
 
-            try{
-                if ( printer != null ) {
-                    printer.printImage(bmp,CustomPrinter.IMAGE_ALIGN_TO_CENTER, CustomPrinter.IMAGE_SCALE_TO_FIT,0);
+            Thread thread1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (printer != null) {
+                            printer.printImage(bmp, CustomPrinter.IMAGE_ALIGN_TO_CENTER, CustomPrinter.IMAGE_SCALE_TO_FIT, 0);
+                        }
+                    } catch (Exception ex) {
+                        AndroidUtils.showAlertMsg(context, "Error", "Al imprimir la imagen.");
+                        Log.e("Error", "Ocurrio un error al imprimir la imagen.", ex);
+                    }
+                    //***************************************************************************
+                    // FEEDS and CUT
+                    //***************************************************************************
+                    try {
+                        //Feeds (3)
+                        printer.feed(3);
+                        //Cut (Total)
+                        printer.cut(CustomPrinter.CUT_TOTAL);
+                    } catch(CustomException e ) {
+                        //Only if isn't unsupported
+                        if (e.GetErrorCode() != CustomException.ERR_UNSUPPORTEDFUNCTION) {
+                            //Show Error
+                            AndroidUtils.showAlertMsg(context,"Error...", e.getMessage());
+                        }
+                    } catch (Exception e) {
+                        AndroidUtils.showAlertMsg(context, "Error", "Al imprimir la imagen. Feeds and Cut");
+                        Log.e("Error", "Ocurrio un error al imprimir la imagen. Feeds and Cut", e);
+                    }
+
+                    //***************************************************************************
+                    // PRESENT
+                    //***************************************************************************
+
+                    try {
+                        //Present (40mm)
+                        printer.present(40);
+                    } catch(CustomException e ) {
+                        //Only if isn't unsupported
+                        if (e.GetErrorCode() != CustomException.ERR_UNSUPPORTEDFUNCTION) {
+                            //Show Error
+                            AndroidUtils.showAlertMsg(context,"Error...", e.getMessage());
+                        }
+                    } catch(Exception e ) {
+                        AndroidUtils.showAlertMsg(context, "Error", "Al imprimir la imagen. Present.");
+                        Log.e("Error", "Ocurrio un error al imprimir la imagen. Present.", e);
+                    }
                 }
-            }catch (Exception ex){
-                AndroidUtils.showAlertMsg(context, "Error", "Al imprimir la imagen.");
-                Log.e("Error","Ocurrio un error al imprimir la imagen.",ex);
-            }
-            //***************************************************************************
-            // FEEDS and CUT
-            //***************************************************************************
-            try {
-                //Feeds (3)
-                printer.feed(3);
-                //Cut (Total)
-                printer.cut(CustomPrinter.CUT_TOTAL);
-            }catch(Exception e ) {
-                AndroidUtils.showAlertMsg(context, "Error", "Al imprimir la imagen. Feeds and Cut");
-                Log.e("Error", "Ocurrio un error al imprimir la imagen. Feeds and Cut", e);
-            }
-
-            //***************************************************************************
-            // PRESENT
-            //***************************************************************************
-
-            try {
-                //Present (40mm)
-                printer.present(40);
-            } catch(Exception e ) {
-                AndroidUtils.showAlertMsg(context, "Error", "Al imprimir la imagen. Present.");
-                Log.e("Error", "Ocurrio un error al imprimir la imagen. Present.", e);
-            }
+            });
+            thread1.start();
         }
     }
 
-    private void printText(String textToPrint, PRINTER_FONT fontStyle) {
+    private void printText(PrinterObjectFormat printerObjectFormat) {
 
-        if ( textToPrint != null && !textToPrint.isEmpty() && !textToPrint.equals("")) {
+        if ( printerObjectFormat.getText() != null && !printerObjectFormat.getText().isEmpty() && !printerObjectFormat.getText().equals("")) {
             PrinterFont textFormat = new PrinterFont();
-
-            //Verificamos si el texto no contenga caracteres no permitidos.
-            textToPrint = textToPrint.replaceAll("ñ", "n");
-            textToPrint = textToPrint.replaceAll("Ñ", "N");
 
             if (isOpenDevice() == false)
                 return;
 
             try {
-                textFormat.setCharHeight(PrinterFont.FONT_SIZE_X1);
-                textFormat.setCharWidth(PrinterFont.FONT_SIZE_X1);
-                if (fontStyle != null) {
-                    textFormat.setEmphasized(fontStyle == PRINTER_FONT.BOLD);
+
+                switch (printerObjectFormat.getFontSize()){
+                    case ONE:
+                        textFormat.setCharHeight(PrinterFont.FONT_SIZE_X1);
+                        textFormat.setCharWidth(PrinterFont.FONT_SIZE_X1);
+                        break;
+                    case TWO:
+                        textFormat.setCharHeight(PrinterFont.FONT_SIZE_X2);
+                        textFormat.setCharWidth(PrinterFont.FONT_SIZE_X2);
+                        break;
+                    case THREE:
+                        textFormat.setCharHeight(PrinterFont.FONT_SIZE_X3);
+                        textFormat.setCharWidth(PrinterFont.FONT_SIZE_X3);
+                        break;
+                    case FOUR:
+                        textFormat.setCharHeight(PrinterFont.FONT_SIZE_X4);
+                        textFormat.setCharWidth(PrinterFont.FONT_SIZE_X4);
+                        break;
+                    case FIVE:
+                        textFormat.setCharHeight(PrinterFont.FONT_SIZE_X5);
+                        textFormat.setCharWidth(PrinterFont.FONT_SIZE_X5);
+                        break;
+                    case SIX:
+                        textFormat.setCharHeight(PrinterFont.FONT_SIZE_X6);
+                        textFormat.setCharWidth(PrinterFont.FONT_SIZE_X6);
+                        break;
+                    case SEVEN:
+                        textFormat.setCharHeight(PrinterFont.FONT_SIZE_X7);
+                        textFormat.setCharWidth(PrinterFont.FONT_SIZE_X7);
+                        break;
+                    case EIGHT:
+                        textFormat.setCharHeight(PrinterFont.FONT_SIZE_X8);
+                        textFormat.setCharWidth(PrinterFont.FONT_SIZE_X8);
+                        break;
+                }
+
+                if (printerObjectFormat.getFontType() != null) {
+                    textFormat.setEmphasized(printerObjectFormat.getFontType() == PRINTER_FONT.BOLD);
                 }
                 textFormat.setItalic(false);
-                textFormat.setUnderline(false);
+                textFormat.setUnderline(printerObjectFormat.isUnderline());
                 textFormat.setJustification(PrinterFont.FONT_JUSTIFICATION_CENTER);
                 textFormat.setInternationalCharSet(PrinterFont.FONT_CS_DEFAULT);
 
@@ -234,13 +274,13 @@ public class BluetoothPrinterManager {
             synchronized (lock) {
                 try {
                     //Titulo del reporte.
-                    printer.printTextLF(textToPrint, textFormat);
+                    printer.printTextLF(printerObjectFormat.getText(), textFormat);
                 } catch (CustomException ce) {
                     AndroidUtils.showAlertMsg(context, "Error", "Ocurrio un error al imprimir el texto.");
-                    Log.e("Error", "Error al imprimir. " + textToPrint, ce);
+                    Log.e("Error", "Error al imprimir. " + printerObjectFormat.getText(), ce);
                 } catch (Exception ex) {
                     AndroidUtils.showAlertMsg(context, "Error", "Ocurrio un error al imprimir el texto.");
-                    Log.e("Error", "Error al imprimir. " + textToPrint, ex);
+                    Log.e("Error", "Error al imprimir. " + printerObjectFormat.getText(), ex);
                 }
             }
         }
@@ -305,5 +345,9 @@ public class BluetoothPrinterManager {
 
     public enum PRINTER_OBJECT{
         TEXT,PICTURE
+    }
+
+    public enum PRINTER_FONT_SIZE {
+        ONE,TWO,THREE, FOUR, FIVE, SIX, SEVEN, EIGHT
     }
 }
