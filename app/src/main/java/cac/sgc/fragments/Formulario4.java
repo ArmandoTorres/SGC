@@ -3,17 +3,26 @@ package cac.sgc.fragments;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.delacrmi.controller.Entity;
+import com.delacrmi.controller.EntityManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cac.sgc.MainActivity;
 import cac.sgc.R;
 import cac.sgc.entities.Empleados;
+import cac.sgc.entities.Vehiculos;
 import cac.sgc.mycomponents.MyOnFocusListenerFactory;
 
 /**
@@ -58,6 +67,13 @@ public class Formulario4 extends Fragment {
         editTextCodigoApuntador.setOnFocusChangeListener((new MyOnFocusListenerFactory(txtDescCodigoApuntador,
                 ourInstance.context.getEntityManager(), Empleados.class, Empleados.NOMBRE, Empleados.ID_EMPLEADO)).setTitle("Empleado"));
 
+        try{
+            listaCodigoVagones.setAdapter(findCodigosVehiculos(Vehiculos.class,"C"));
+        }catch (Exception ex){
+            Log.e("Error","Al cargar las listas en el formulario principal.",ex);
+            Toast.makeText(this.context,"Error al cargar la lista en pantalla.",Toast.LENGTH_SHORT).show();
+        }
+
         return view;
     }
 
@@ -80,5 +96,23 @@ public class Formulario4 extends Fragment {
             }
         }
         return true;
+    }
+
+    private ArrayAdapter<String> findCodigosVehiculos(Class entidad, String codigoGrupo ) {
+
+        EntityManager entityManager = ourInstance.context.getEntityManager();
+        List<Entity> entidades =  entityManager.find(entidad, "*", Vehiculos.CODIGO_GRUPO + " = '" + codigoGrupo + "' and " + Vehiculos.STATUS + " = 1", null);
+        List<String> listado = new ArrayList<>();
+        for ( Entity a : entidades ){
+            String descripcion = a.getColumnValueList().getAsString(Vehiculos.CODIGO_GRUPO);
+            descripcion += String.format("%02d", Integer.parseInt(a.getColumnValueList().getAsString(Vehiculos.CODIGO_SUBGRUPO)));
+            descripcion += String.format("%03d", Integer.parseInt(a.getColumnValueList().getAsString(Vehiculos.CODIGO_VEHICULO)));
+            listado.add(descripcion);
+        }
+
+        if ( listado != null && !listado.isEmpty() ) {
+            return new ArrayAdapter<>(this.context, android.R.layout.simple_selectable_list_item, listado);
+        }else
+            return new ArrayAdapter<>(this.context, android.R.layout.simple_selectable_list_item, new ArrayList<String>());
     }
 }

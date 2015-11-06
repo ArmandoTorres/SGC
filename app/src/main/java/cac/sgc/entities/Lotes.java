@@ -8,20 +8,22 @@ import com.delacrmi.controller.Entity;
 public class Lotes extends Entity {
     //"CREATE TABLE CP_LOTE(ID_EMPRESA INTEGER, ID_FINCA INTEGER, ID_CANIAL INTEGER, ID_LOTE INTEGER, DESCIPCION TEXT)";
 
-    public static String ID_LOTE = "id_lote";
-    public static String ID_FINCA = "id_finca";
-    public static String ID_CANIAL = "id_canial";
+    public static String ID_LOTE     = "id_lote";
+    public static String ID_FINCA    = "id_finca";
+    public static String ID_CANIAL   = "id_canial";
     public static String DESCRIPCION = "descripcion";
+    public static String TABLE_NAME  = "cp_lote";
+    public static String ID_EMPRESA  = "id_empresa";
 
     @Override
     public Lotes entityConfig() {
-        setName("cp_lote");
+        setName(TABLE_NAME);
         setNickName("Lote");
-        addColumn("id_empresa", "integer");
-        addColumn("id_finca", "integer");
-        addColumn("id_canial", "integer");
-        addColumn("descripcion", "text");
-
+        addColumn(ID_LOTE, "integer");
+        addColumn(ID_EMPRESA, "integer");
+        addColumn(ID_FINCA, "integer");
+        addColumn(ID_CANIAL, "integer");
+        addColumn(DESCRIPCION, "text");
         return this;
     }
 }

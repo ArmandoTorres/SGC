@@ -9,19 +9,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.delacrmi.controller.Entity;
+import com.delacrmi.controller.EntityManager;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import cac.sgc.MainActivity;
 import cac.sgc.R;
 import cac.sgc.entities.Empleados;
+import cac.sgc.entities.Vehiculos;
 import cac.sgc.mycomponents.MyDialogDateListenerFactory;
 import cac.sgc.mycomponents.MyOnFocusListenerFactory;
 
@@ -89,7 +97,12 @@ public class Formulario2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.formulario2,container,false);
-        initComponents();
+        try {
+            initComponents();
+        } catch (Exception ex) {
+            Log.e("Error.","Error en formulario 2.",ex);
+            Toast.makeText(this.context,"Ocurrio un error en este formulario.",Toast.LENGTH_SHORT).show();
+        }
         return view;
     }
 
@@ -98,7 +111,7 @@ public class Formulario2 extends Fragment {
      * con el xml y agregar los metodos que le dan funcionalidad a los
      * componentes.
      * */
-    private void initComponents(){
+    private void initComponents() throws Exception {
         ordenQuema = (EditText) view.findViewById(R.id.editTextOrdenQuema);
         fechaCorte = (EditText) view.findViewById(R.id.editTextFechaCorte);
         editTextConductorCabezal = (EditText) view.findViewById(R.id.editTextConductorCabezal);
@@ -129,6 +142,17 @@ public class Formulario2 extends Fragment {
 
         editTextConductorCabezal.setOnFocusChangeListener((new MyOnFocusListenerFactory(txtDescConductorCabezal,
                 ourInstance.context.getEntityManager(), Empleados.class, Empleados.NOMBRE, Empleados.ID_EMPLEADO)).setTitle("Empleado"));
+
+
+        listaCabezales.setAdapter(findCodigosVehiculos(Vehiculos.class,"B"));
+
+        //Llenamos la lista en pantalla con las claves de corte
+        String [] clavesCorte = this.getResources().getStringArray(R.array.clave_corte);
+        List<String> listaClavesCorte = Arrays.asList(clavesCorte);
+        if (listaClavesCorte != null && !listaClavesCorte.isEmpty() ){
+            ArrayAdapter<String> adapterClaveCorte = new ArrayAdapter<>(this.context, android.R.layout.simple_selectable_list_item,listaClavesCorte);
+            listaClaveCorte.setAdapter(adapterClaveCorte);
+        }
 
     }
 
@@ -169,5 +193,24 @@ public class Formulario2 extends Fragment {
         }
         return true;
     }
+
+    private ArrayAdapter<String> findCodigosVehiculos(Class entidad, String codigoGrupo ) {
+
+        EntityManager entityManager = ourInstance.context.getEntityManager();
+        List<Entity> entidades =  entityManager.find(entidad, "*", Vehiculos.CODIGO_GRUPO + " = '" + codigoGrupo + "' and " + Vehiculos.STATUS + " = 1", null);
+        List<String> listado = new ArrayList<>();
+        for ( Entity a : entidades ){
+            String descripcion = a.getColumnValueList().getAsString(Vehiculos.CODIGO_GRUPO);
+            descripcion += String.format("%02d", Integer.parseInt(a.getColumnValueList().getAsString(Vehiculos.CODIGO_SUBGRUPO)));
+            descripcion += String.format("%03d", Integer.parseInt(a.getColumnValueList().getAsString(Vehiculos.CODIGO_VEHICULO)));
+            listado.add(descripcion);
+        }
+
+        if ( listado != null && !listado.isEmpty() ) {
+            return new ArrayAdapter<>(this.context, android.R.layout.simple_selectable_list_item, listado);
+        }else
+            return new ArrayAdapter<>(this.context, android.R.layout.simple_selectable_list_item, new ArrayList<String>());
+    }
+
 
 }
