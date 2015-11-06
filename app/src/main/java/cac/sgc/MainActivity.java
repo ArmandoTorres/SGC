@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private FloatingActionButton fab_app;
     private EntityManager entityManager;
 
-
     //Layout's en pantalla.
     private GridLayout gridLayoutNextBack;
     private GridLayout glyMainMenu;
@@ -96,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             startActivity(savedInstanceState.getString("UltimoFragmentoCargado"));
 
         configurarBaseDatos();
-
     }
 
     @Override
@@ -447,15 +445,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 transaccion.setValue(Transaccion.CODIGO_APUNTADOR, formulario4.getEditTextCodigoApuntador().getText().toString());
                 transaccion.setValue(Transaccion.CODIGO_VAGON, formulario4.getListaCodigoVagones().getSelectedItem().toString());
 
-                Log.e("Campos: ", "Campos: " + getEntityManager().findOnce(Transaccion.class,"*",null,null));
-
+                //Buscamos el ultimo numero de envio.
                 Rangos rango = (Rangos) getEntityManager().findOnce(Rangos.class,"max("+Rangos.ENVIO_ACTUAL+")+1 "+Rangos.ENVIO_ACTUAL,""+Rangos.DISPOSITIVO+" = 'Dispositivo 1'",null);
-
+                //Setiamos el numero de envio.
                 transaccion.setValue(Transaccion.NO_ENVIO, rango.getColumnValueList().getAsString(Rangos.ENVIO_ACTUAL));
+                //Actualizamos el valor del envio.
+                getEntityManager().update(rango, "" + Rangos.DISPOSITIVO + " = 'Dispositivo 1'", null);
 
+                //Grabamos la transaccion.
                 transaccion = (Transaccion) getEntityManager().save(transaccion);
-
-                Log.e("Resultado","Valor del PK: "+transaccion.getColumnValueList().getAsString(Transaccion.CORRELATIVO));
 
             }
             return true;
@@ -519,57 +517,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         getEntityManager().addTable(Empleados.class);
         getEntityManager().addTable(Rangos.class);
         getEntityManager().addTable(Transaccion.class);
+
         getEntityManager().init();
-
-        /*Fincas fincas = new Fincas().entityConfig();
-        fincas.setValue(Fincas.FINCA,"1");
-        fincas.setValue(Fincas.DESCRIPCION, "Santana");
-        fincas = (Fincas) getEntityManager().save(fincas);
-
-        Log.e("Finca: ", "Fincas: " + fincas.getColumnValueList().getAsString(Fincas.FINCA));
-
-        Caniales caniales = new Caniales().entityConfig();
-        caniales.setValue(Caniales.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.FINCA));
-        caniales.setValue(Caniales.DESCRIPCION, "SANTA CRUZ # 306");
-        caniales = (Caniales) getEntityManager().save(caniales);
-
-        //Log.e("Caniales: ", "Caniales: "+caniales.getColumnValueList().getAsString(Caniales.CANIAL));
-
-        Lotes lotes = new Lotes().entityConfig();
-        lotes.setValue(Lotes.ID_FINCA, fincas.getColumnValueList().getAsString(Fincas.FINCA));
-        lotes.setValue(Lotes.ID_CANIAL, caniales.getColumnValueList().getAsString(Caniales.CANIAL));
-        lotes.setValue(Lotes.DESCRIPCION, "SALINAS CAMPO #-940");
-        lotes = (Lotes) getEntityManager().save(lotes);
-
-        //Log.e("Lotes: ", "Lotes: "+lotes.getColumnValueList().getAsString(Lotes.ID_LOTE));
-
-        Frentes fte = new Frentes().entityConfig();
-        fte.setValue("descripcion", "Frente Manual");
-        getEntityManager().save(fte);
-
-        Empleados emp = new Empleados().entityConfig();
-        emp.setValue(Empleados.EMPRESA,"30");
-        emp.setValue("nombre_puesto", "Conductor Cabezal");
-        emp.setValue("nombre", "Juan De los Santos");
-        emp.setValue("estado", "ACTIVO");
-        getEntityManager().save(emp);*/
-
-        Rangos rangos = new Rangos().entityConfig();
-        rangos.setValue(Rangos.EMPRESA,"30");
-        rangos.setValue(Rangos.PERIODO,"19");
-        rangos.setValue(Rangos.DISPOSITIVO, "Dispositivo 1");
-        rangos.setValue(Rangos.ENVIO_DESDE,"1");
-        rangos.setValue(Rangos.ENVIO_HASTA,"10");
-        rangos.setValue(Rangos.ENVIO_ACTUAL,"1");
-        rangos.setValue(Rangos.TICKET_DESDE,"1");
-        rangos.setValue(Rangos.TICKET_HASTA,"10");
-        rangos.setValue(Rangos.TICKET_ACTUAL,"1");
-        rangos.setValue(Rangos.STATUS, "ACTIVO");
-        getEntityManager().save(rangos);
-
-        /*Log.e("Valor","Valor Correlativo: "+rangos.getColumnValueList().getAsString(Rangos.CORRELATIVO));
-
-        rangos = (Rangos) getEntityManager().findOnce(Rangos.class, "MAX(" + Rangos.ENVIO_ACTUAL + ")+1 "+Rangos.ENVIO_ACTUAL,"dispositivo = 'Dispositivo 1'", null);
-        Log.e("Valor","Valor Envio: "+rangos.getColumnValueList().getAsString(Rangos.ENVIO_ACTUAL));*/
     }
 }

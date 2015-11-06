@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewOrdenQuema"
-            android:text="Introduzca - Orden de Quema"
+            android:text="Orden de Quema"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/editTextlote"/>
@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewFechaCorte"
-            android:text="Introduzca - Fecha Corte"
+            android:text="Fecha Corte"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/editTextOrdenQuema"/>
@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewClaveCorte"
-            android:text="Introduzca - Clave Corte"
+            android:text="Clave Corte"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/editTextFechaCorte"/>
@@ -67,7 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listaClaveCorte"
-            android:entries="@array/clave_corte"
             android:layout_below="@+id/textViewClaveCorte"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
@@ -77,7 +76,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewCodigoCabezal"
-            android:text="Introduzca - Codigo Cabezal"
+            android:text="Codigo Cabezal"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/listaClaveCorte"/>
@@ -86,7 +85,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listaCabezales"
-            android:entries="@array/cabezales"
             android:layout_below="@+id/textViewCodigoCabezal"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -96,7 +94,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewConductorCabezal"
-            android:text="Introduzca - Conductor Cabezal"
+            android:text="Conductor Cabezal"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/listaCabezales"/>

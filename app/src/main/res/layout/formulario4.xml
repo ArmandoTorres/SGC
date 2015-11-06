@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewCodigoApuntador"
-            android:text="Introduzca - Codigo Apuntador"
+            android:text="Codigo Apuntador"
             android:textStyle="bold"
             android:layout_marginTop="10dp" />
 
@@ -50,7 +50,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewCodigoVagon"
-            android:text="Introduzca - Codigo Vagon"
+            android:text="Codigo Vagon"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/editTextCodigoApuntador"/>
@@ -59,7 +59,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listaCodigoVagones"
-            android:entries="@array/vagones"
             android:layout_below="@+id/textViewCodigoVagon"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />

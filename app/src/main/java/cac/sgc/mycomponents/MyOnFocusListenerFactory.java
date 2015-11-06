@@ -7,14 +7,6 @@ import android.widget.TextView;
 
 import com.delacrmi.controller.Entity;
 import com.delacrmi.controller.EntityManager;
-import com.lowagie.text.pdf.hyphenation.TernaryTree;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import cac.sgc.entities.Frentes;
 
 /**
  * Created by Legal on 13/10/2015.

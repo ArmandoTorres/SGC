@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewFrenteCorte"
-            android:text="Introduzca - Frente de Corte"
+            android:text="Frente de Corte"
             android:textStyle="bold"
             android:layout_marginTop="10dp"/>
 
@@ -50,7 +50,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewFrenteAlce"
-            android:text="Introduzca - Frente de Alce"
+            android:text="Frente de Alce"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/editTextFrenteCorte"/>
@@ -85,7 +85,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewFinca"
-            android:text="Introduzca - La Finca"
+            android:text="La Finca"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/editTextFteAlce"/>
@@ -120,7 +120,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewCanial"
-            android:text="Introduzca - El Cañal"
+            android:text="El Cañal"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/editTextFinca"/>
@@ -155,7 +155,7 @@
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/textViewLote"
-                android:text="Introduzca - El Lote"
+                android:text="El Lote"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/editTextCanial"/>

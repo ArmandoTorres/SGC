@@ -12,15 +12,16 @@ public class SubGrupoVehiculos extends Entity {
     public static String CODIGO_GRUPO = "codigo_grupo";
     public static String CODIGO_SUBGRUPO = "codigo_subgrupo";
     public static String DESCRIPCION  = "descripcion";
+    public static String TABLE_NAME   = "mq_subgrupo_vehiculo";
 
     @Override
     public SubGrupoVehiculos entityConfig() {
-        setName("mq_subgrupo_vehiculo");
-        addColumn("id_empresa", "integer");
-        addColumn("codigo_grupo", "text");
-        addColumn("codigo_subgrupo","integer");
-        addColumn("descripcion","text");
-
+        setName(TABLE_NAME);
+        addColumn(ID_EMPRESA, "integer");
+        addColumn(CODIGO_GRUPO, "text");
+        addColumn(CODIGO_SUBGRUPO,"integer");
+        addColumn(DESCRIPCION,"text");
         return this;
     }
+
 }
