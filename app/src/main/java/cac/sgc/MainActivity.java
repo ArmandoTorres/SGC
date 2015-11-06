@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     public SyncFragment getSyncFragment(){
         if(syncFragment == null)
-            syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.164:3000");
+            syncFragment = SyncFragment.init(this,entityManager,"http://100.10.20.171:3000");
         return syncFragment;
     }
 
